@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bapxvxbkkf1k0"]
+
+[ext_resource type="ArrayMesh" uid="uid://dxwcxe4x5anh0" path="res://Resources/Assets/Models/Crawler.obj" id="1_j6vm5"]
+
+[node name="Crawler" type="MeshInstance3D" unique_id=516708973]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)
+mesh = ExtResource("1_j6vm5")

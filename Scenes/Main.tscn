@@ -1,0 +1,150 @@
+[gd_scene format=3 uid="uid://cjt7ekqxqju3a"]
+
+[ext_resource type="Script" uid="uid://cntqna6yp0ked" path="res://Scenes/Main.cs" id="1_r150o"]
+[ext_resource type="Texture2D" uid="uid://cc5kt02jdpcg7" path="res://Resources/Assets/Images/Trains/Pilots/Pilot1.png" id="2_idj7w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r150o"]
+bg_color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+border_width_bottom = 1
+border_color = Color(0.8, 0.5529412, 0.09019608, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_r150o"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_idj7w"]
+font = SubResource("SystemFont_r150o")
+font_color = Color(1, 0.6392157, 0.22745098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idj7w"]
+bg_color = Color(0.023529412, 0.03137255, 0.0627451, 1)
+border_width_top = 1
+border_color = Color(0.8, 0.5529412, 0.09019608, 1)
+
+[node name="Main" type="Node3D" unique_id=187841248]
+script = ExtResource("1_r150o")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=246331037]
+
+[node name="VBoxMainLayout" type="VBoxContainer" parent="UI" unique_id=241047759]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="PanelTopBar" type="PanelContainer" parent="UI/VBoxMainLayout" unique_id=70334555]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_r150o")
+
+[node name="Margin" type="MarginContainer" parent="UI/VBoxMainLayout/PanelTopBar" unique_id=466675467]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="UI/VBoxMainLayout/PanelTopBar/Margin" unique_id=1425736677]
+layout_mode = 2
+
+[node name="HBoxLeftStats" type="HBoxContainer" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox" unique_id=547337363]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrapLabel" type="Label" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox/HBoxLeftStats" unique_id=1368527583]
+layout_mode = 2
+
+[node name="DistanceLabel" type="Label" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox/HBoxLeftStats" unique_id=236874116]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox" unique_id=1545510016]
+layout_mode = 2
+text = "IRON STRATA"
+label_settings = SubResource("LabelSettings_idj7w")
+horizontal_alignment = 1
+
+[node name="HBoxRightStats" type="HBoxContainer" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox" unique_id=1359078537]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="DeckCountLabel" type="Label" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox/HBoxRightStats" unique_id=1783751485]
+layout_mode = 2
+
+[node name="ThreatLevelLabel" type="Label" parent="UI/VBoxMainLayout/PanelTopBar/Margin/HBox/HBoxRightStats" unique_id=2030484393]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="UI/VBoxMainLayout" unique_id=1576028508]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="PanelBottomBar" type="PanelContainer" parent="UI/VBoxMainLayout" unique_id=629507975]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_idj7w")
+
+[node name="Margin" type="MarginContainer" parent="UI/VBoxMainLayout/PanelBottomBar" unique_id=983143962]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxHUDColumns" type="HBoxContainer" parent="UI/VBoxMainLayout/PanelBottomBar/Margin" unique_id=1414522715]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxPilot" type="VBoxContainer" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns" unique_id=760308939]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxPilot" unique_id=623643287]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("2_idj7w")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="PassiveEffectLabel" type="Label" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxPilot" unique_id=20899757]
+layout_mode = 2
+text = "Passive"
+horizontal_alignment = 1
+
+[node name="PrimarySkillButton" type="Button" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxPilot" unique_id=1663324479]
+layout_mode = 2
+text = "Primary Skill"
+
+[node name="VBoxHand" type="VBoxContainer" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns" unique_id=1659392406]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HandLabel" type="Label" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxHand" unique_id=768741484]
+layout_mode = 2
+text = "— HAND —"
+horizontal_alignment = 1
+
+[node name="HBoxHandContainer" type="HBoxContainer" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxHand" unique_id=632761682]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+theme_override_constants/separation = -10
+alignment = 1
+
+[node name="VBoxAction" type="VBoxContainer" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns" unique_id=1623947300]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="ActionLabel" type="Label" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxAction" unique_id=65575394]
+layout_mode = 2
+text = "— ACTIONS —"
+horizontal_alignment = 1
+
+[node name="PauseButton" type="Button" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxAction" unique_id=651178511]
+layout_mode = 2
+text = "TACTICAL PAUSE"
+
+[node name="DrawButton" type="Button" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxAction" unique_id=1643797819]
+layout_mode = 2
+text = "DRAW CARD (25 ⚙)"

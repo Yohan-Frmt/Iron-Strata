@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b0uqd7w1k2ood"]
+
+[ext_resource type="ArrayMesh" uid="uid://c8q07ctarhxvy" path="res://Resources/Assets/Models/Wasp.obj" id="1_m0xqc"]
+
+[node name="Node3D" type="Node3D" unique_id=231761186]
+
+[node name="Wasp" type="MeshInstance3D" parent="." unique_id=1034220815]
+transform = Transform3D(-0.02, -3.0199159e-09, -1.3200472e-16, 0, -8.7422775e-10, 0.02, -3.0199159e-09, 0.02, 8.7422775e-10, 0, 0, 0)
+mesh = ExtResource("1_m0xqc")

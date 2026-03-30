@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dk7kahm61cw8f"]
+
+[node name="WagonPrefab" type="Node3D" unique_id=1419479508]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=1663977006]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1246677897]
+size = Vector3(4, 3.2, 6)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1358171709]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.1390986, 0)
+operation = 2
+size = Vector3(2.680664, 1, 8.479492)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D" unique_id=2058750292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5044222, 0)
+operation = 2
+size = Vector3(2.680664, 1.6975098, 5.2421875)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1727028406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36375237, -1.510429)
+operation = 2
+size = Vector3(5.6757813, 1, 0.97265625)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D" unique_id=844640224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36375237, 0.02785623)
+operation = 2
+size = Vector3(5.6757813, 1, 0.97265625)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1996922826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36375237, 1.5716692)
+operation = 2
+size = Vector3(5.6757813, 1, 0.97265625)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=333139703]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22361803, 0)
+light_color = Color(0, 0.6288045, 0.6291589, 1)
+light_energy = 5.0
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+omni_range = 11.096538

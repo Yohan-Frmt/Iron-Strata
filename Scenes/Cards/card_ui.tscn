@@ -1,0 +1,207 @@
+[gd_scene format=3 uid="uid://d0eiya0j18jki"]
+
+[ext_resource type="Script" uid="uid://bbd8fdmo367ef" path="res://Scenes/Cards/CardUi.cs" id="1_od36g"]
+[ext_resource type="Texture2D" uid="uid://thyxjh6dtl0c" path="res://Resources/Assets/Images/Cards/Wagons/Turret-MK1.png" id="2_506i7"]
+[ext_resource type="Texture2D" uid="uid://c52nxrk5qsp87" path="res://Resources/Assets/Images/Cards/Wagons/Frame.png" id="3_i7as5"]
+[ext_resource type="Texture2D" uid="uid://buy4nim0sf66c" path="res://Resources/Assets/Images/Cards/Icons/Rate.png" id="4_vt055"]
+[ext_resource type="Texture2D" uid="uid://ckupe8h7l1auo" path="res://Resources/Assets/Images/Cards/Icons/DEF.png" id="5_hsi13"]
+[ext_resource type="Texture2D" uid="uid://bmtkc5vgdbybe" path="res://Resources/Assets/Images/Cards/Icons/ATK.png" id="6_2ll7i"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vt055"]
+font_size = 8
+font_color = Color(0, 0, 0, 1)
+shadow_color = Color(0.3779188, 0.37791887, 0.37791884, 1)
+shadow_offset = Vector2(0.4, 0.4)
+
+[sub_resource type="SystemFont" id="SystemFont_i7as5"]
+font_names = PackedStringArray("Fira Code Retina")
+font_weight = 600
+
+[sub_resource type="LabelSettings" id="LabelSettings_4t43p"]
+font = SubResource("SystemFont_i7as5")
+font_size = 8
+shadow_color = Color(0.23392546, 0.23392546, 0.23392543, 1)
+shadow_offset = Vector2(0.4, 0.4)
+
+[sub_resource type="SystemFont" id="SystemFont_vt055"]
+font_names = PackedStringArray("Fira Code Retina")
+
+[node name="CardUi" type="Control" unique_id=1265219821 node_paths=PackedStringArray("_titleLabel", "_costLabel", "_descriptionLabel", "_artTexture")]
+clip_contents = true
+custom_minimum_size = Vector2(100, 160)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.980011
+offset_right = -1180.0
+offset_bottom = -564.98
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_od36g")
+_titleLabel = NodePath("Content/TitleLabel")
+_costLabel = NodePath("Content/CostLabel")
+_descriptionLabel = NodePath("Content/DescriptionLabel")
+_artTexture = NodePath("Art")
+
+[node name="Art" type="TextureRect" parent="." unique_id=475432821]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_506i7")
+expand_mode = 1
+
+[node name="Frame" type="TextureRect" parent="." unique_id=1797514403]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_i7as5")
+expand_mode = 1
+
+[node name="Content" type="Control" parent="." unique_id=1805631373]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="Content" unique_id=1942583400]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = 20.0
+grow_horizontal = 2
+text = "TURRET MK-1"
+label_settings = SubResource("LabelSettings_vt055")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CostLabel" type="Label" parent="Content" unique_id=1649493790]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 67.0
+offset_top = 20.980011
+offset_right = -20.0
+offset_bottom = 31.980011
+grow_horizontal = 2
+text = "25"
+label_settings = SubResource("LabelSettings_4t43p")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="Content" unique_id=610298752]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 106.98001
+offset_right = 89.0
+offset_bottom = 135.98001
+theme_override_fonts/normal_font = SubResource("SystemFont_vt055")
+theme_override_font_sizes/normal_font_size = 5
+theme_override_font_sizes/bold_font_size = 5
+bbcode_enabled = true
+text = "Bâtiment / Défense. Une tourelle automatisée conçue pour [b]protéger[/b] le train."
+
+[node name="RateTexture" type="TextureRect" parent="Content" unique_id=2066771138]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -21.02002
+offset_right = 36.0
+offset_bottom = -14.02002
+grow_vertical = 0
+size_flags_horizontal = 3
+texture = ExtResource("4_vt055")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="RateLabel" type="Label" parent="Content/RateTexture" unique_id=1761399139]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "25"
+label_settings = SubResource("LabelSettings_4t43p")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DefenseTexture" type="TextureRect" parent="Content" unique_id=1411794987]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -21.02002
+offset_right = 11.0
+offset_bottom = -14.02002
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+texture = ExtResource("5_hsi13")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="DefenseLabel" type="Label" parent="Content/DefenseTexture" unique_id=1098882263]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -2.0
+offset_right = -1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5"
+label_settings = SubResource("LabelSettings_4t43p")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DamageTexture" type="TextureRect" parent="Content" unique_id=588484615]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 138.98001
+offset_right = 89.0
+offset_bottom = 145.98001
+size_flags_horizontal = 3
+texture = ExtResource("6_2ll7i")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="DamageLabel" type="Label" parent="Content/DamageTexture" unique_id=1132547160]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -2.0
+offset_right = -1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "10"
+label_settings = SubResource("LabelSettings_4t43p")
+horizontal_alignment = 2
+vertical_alignment = 1

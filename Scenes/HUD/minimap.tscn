@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://gi3jhs2w1sgp"]
+
+[ext_resource type="Script" uid="uid://bjmt5y8g3gx1q" path="res://Scripts/UI/Minimap.cs" id="1_v4xw4"]
+
+[node name="Control" type="Control" unique_id=844328024]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_v4xw4")

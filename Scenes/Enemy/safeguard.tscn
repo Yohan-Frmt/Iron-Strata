@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cn1b7secstc2i"]
+
+[ext_resource type="ArrayMesh" uid="uid://ck040tea6yfn2" path="res://Resources/Assets/Models/Safeguard.obj" id="1_avsei"]
+
+[node name="Safeguard" type="MeshInstance3D" unique_id=1505727141]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = ExtResource("1_avsei")
