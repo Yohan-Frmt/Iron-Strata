@@ -1,0 +1,76 @@
+:root {
+    --strata-dark: #0a0a0a;
+    --strata-accent: #ff3e3e;
+}
+
+body {
+    background-color: var(--strata-dark);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes slowZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+.animate-slow-zoom {
+    animation: slowZoom 20s infinite alternate linear;
+}
+
+.fog-container {
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.5), transparent);
+}
+
+.light {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--strata-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 15px 5px var(--strata-accent);
+    opacity: 0.6;
+}
+
+.light-1 {
+    top: 20%;
+    left: 10%;
+    animation: blink 3s infinite alternate;
+}
+
+.light-2 {
+    bottom: 30%;
+    right: 15%;
+    animation: blink 5s infinite alternate-reverse;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 0.8; transform: scale(1.2); }
+}
+
+.nav-scrolled {
+    background-color: rgba(10, 10, 10, 0.95);
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+
+.delay-200 { animation-delay: 0.2s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-700 { animation-delay: 0.7s; }
