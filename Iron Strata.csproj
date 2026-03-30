@@ -10,6 +10,11 @@
     <Folder Include="Scenes\Wagons\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CHANGELOG.md" />
+    <Content Include="CODE_OF_CONDUCT.md" />
+    <Content Include="CONTRIBUTING.md" />
     <Content Include="README.md" />
+    <Content Include="SECURITY.md" />
+    <Content Include="SUPPORT.md" />
   </ItemGroup>
 </Project>

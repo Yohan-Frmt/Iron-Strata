@@ -1,0 +1,27 @@
+changelog:
+  exclude:
+    labels:
+      - skip-release
+    authors:
+      - octocat
+  categories:
+    - title: "Features"
+      labels:
+        - enhancement
+    - title: "Bug Fixes"
+      labels:
+        - bug
+    - title: "Documentation"
+      labels:
+        - documentation
+    - title: "Refactors"
+      labels:
+        - refactor
+    - title: "Performance"
+      labels:
+        - performance
+    - title: "Others"
+      labels:
+        - chore
+        - build
+        - ci

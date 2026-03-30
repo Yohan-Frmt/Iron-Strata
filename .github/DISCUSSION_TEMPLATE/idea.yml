@@ -1,0 +1,16 @@
+name: Ideas
+description: Share your ideas for new features or improvements.
+title: "[Idea]: "
+labels: ["enhancement", "discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for having an idea! Please share it below.
+  - type: textarea
+    id: idea
+    attributes:
+      label: What's your idea?
+      description: Describe your idea in detail.
+    validations:
+      required: true

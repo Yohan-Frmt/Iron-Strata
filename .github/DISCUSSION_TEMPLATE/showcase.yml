@@ -1,0 +1,16 @@
+name: Showcase
+description: Show off what you've done with Iron Strata.
+title: "[Showcase]: "
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what you're showing.
+    validations:
+      required: true
+  - type: textarea
+    id: images
+    attributes:
+      label: Screenshots/Videos
+      description: Paste images or links.

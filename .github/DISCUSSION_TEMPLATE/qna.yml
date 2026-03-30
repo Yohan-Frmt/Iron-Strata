@@ -1,0 +1,17 @@
+name: Q&A
+description: Ask a question and get answers.
+title: "[Q&A]: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What would you like to know?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide any background information or code snippets.

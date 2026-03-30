@@ -1,0 +1,13 @@
+# Labels based on file paths
+scripts:
+  - Scripts/**/*
+scenes:
+  - Scenes/**/*
+resources:
+  - Resources/**/*
+docs:
+  - README.md
+  - CONTRIBUTING.md
+  - "**/*.md"
+github-actions:
+  - .github/workflows/**/*
