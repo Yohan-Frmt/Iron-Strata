@@ -19,6 +19,10 @@ using IronStrata.Scripts.UI;
 
 namespace IronStrata.Scenes;
 
+/// <summary>
+/// The main entry point and controller for the game scene.
+/// It bootstraps the ECS world, registers systems, and manages the primary game loop setup.
+/// </summary>
 public partial class Main : Node
 {
     private const float CameraLeadX = 8f;
@@ -29,24 +33,36 @@ public partial class Main : Node
     private World _world;
     private ConstructionSystem _constructionSystem;
 
+    /// <summary>
+    /// Sets up the initial game state, world, and ECS systems.
+    /// </summary>
     public override void _Ready()
     {
         _world = GameWorld.Instance.World;
         SetupDebugLighting();
 
+        // Scene graph hierarchy roots.
         var trainRoot = new Node3D { Name = "TrainRoot" };
         AddChild(trainRoot);
         var enemyRoot = new Node3D { Name = "EnemyRoot" };
         AddChild(enemyRoot);
 
-        var camera = new Camera3D { Name = "Camera", Projection = Camera3D.ProjectionType.Orthogonal, Size = 35f, Position = new Vector3(CameraLeadX - 20f, 25f, 25f) };
+        // Camera setup.
+        var camera = new Camera3D { 
+            Name = "Camera", 
+            Projection = Camera3D.ProjectionType.Orthogonal, 
+            Size = 35f, 
+            Position = new Vector3(CameraLeadX - 20f, 25f, 25f) 
+        };
         AddChild(camera);
         camera.LookAt(new Vector3(CameraLeadX, 0f, 0f), Vector3.Up);
         camera.MakeCurrent();
 
+        // Environmental floor and collision.
         var floor = new MeshInstance3D { Name = "Floor" };
         floor.Mesh = new PlaneMesh { Size = new Vector2(2000f, 2000f) };
         floor.SetSurfaceOverrideMaterial(0, new StandardMaterial3D { AlbedoColor = new Color(0.15f, 0.15f, 0.18f) });
+        
         var floorBody = new StaticBody3D { Name = "FloorBody" };
         var floorShape = new CollisionShape3D { Shape = new BoxShape3D { Size = new Vector3(2000f, 1f, 2000f) } };
         floorShape.Position = new Vector3(0, -0.5f, 0);
@@ -54,11 +70,13 @@ public partial class Main : Node
         floor.AddChild(floorBody);
         AddChild(floor);
 
+        // UI Initialization.
         var hud = new CanvasLayer { Name = "HUD", Layer = 1 };
         AddChild(hud);
 
         var minimap = new Minimap();
-        minimap.SetPosition(new Vector2(GetViewport().GetVisibleRect().Size.X - 300, 20)); // Offset du bord
+        // Position minimap at the top-right corner.
+        minimap.SetPosition(new Vector2(GetViewport().GetVisibleRect().Size.X - 300, 20));
         hud.AddChild(minimap);
 
         var speedLabel = new Label { Position = new Vector2(24f, 20f) };
@@ -73,9 +91,11 @@ public partial class Main : Node
         _cardScene = GD.Load<PackedScene>("res://Scenes/Cards/card_ui.tscn");
         drawButton.Pressed += DrawCard;
 
+        // Initialize Train Entity.
         var trainEntity = _world.CreateEntity();
         _world.Add(trainEntity, new TrainMovementComponent { MaxSpeed = 5f, Acceleration = 1.0f, Deceleration = 5.0f });
 
+        // Generate and initialize Map Entity.
         var mapEntity = _world.CreateEntity();
         var mapComp = new MapComponent();
         var mapData = new MapGenerator().GenerateMap();
@@ -86,6 +106,7 @@ public partial class Main : Node
         }
         _world.Add(mapEntity, mapComp);
 
+        // Set starting position on the map.
         var startNodeId = mapComp.Layers[0][0];
         var targetNodeId = mapComp.AllNodes[startNodeId].NextNodes[0];
 
@@ -99,13 +120,21 @@ public partial class Main : Node
 
         _world.Add(mapEntity, new ResourceComponent { Scrap = ResourceRegistry.StartingScrap });
 
+        // Construction preview setup.
         var previewGhost = new MeshInstance3D { Name = "PreviewGhost", Visible = false };
-        previewGhost.Mesh = new BoxMesh { Size = new Vector3(TrainLayout.WagonLength, TrainLayout.WagonHeight, TrainLayout.WagonWidth) };
-        previewGhost.SetSurfaceOverrideMaterial(0, new StandardMaterial3D { Transparency = BaseMaterial3D.TransparencyEnum.Alpha, EmissionEnabled = true, EmissionEnergyMultiplier = 0.5f });
+        previewGhost.Mesh = new BoxMesh { 
+            Size = new Vector3(TrainLayout.WagonLength, TrainLayout.WagonHeight, TrainLayout.WagonWidth) 
+        };
+        previewGhost.SetSurfaceOverrideMaterial(0, new StandardMaterial3D { 
+            Transparency = BaseMaterial3D.TransparencyEnum.Alpha, 
+            EmissionEnabled = true, 
+            EmissionEnergyMultiplier = 0.5f 
+        });
         trainRoot.AddChild(previewGhost);
 
         _constructionSystem = new ConstructionSystem(camera, previewGhost, bottomHud, trainRoot);
 
+        // Register all logic systems to the runner.
         GameWorld.Instance.Runner
             .Add(new TrainMovementSystem(trainRoot, camera, speedLabel))
             .Add(new WagonConnectionSystem())
@@ -120,15 +149,21 @@ public partial class Main : Node
             .Add(new WagonHealthUiSystem())
             .Add(new EnemyMultiMeshSystem(enemyRoot));
 
+        // Initial wagons for testing.
         SpawnTestTrain(_world);
     }
 
+    /// <summary>
+    /// Event handler for the draw card button.
+    /// </summary>
     private void DrawCard()
     {
         var resEntity = _world.Query<ResourceComponent>().FirstOrDefault();
         if (resEntity == null) return;
+        
         var resources = _world.Get<ResourceComponent>(resEntity);
         if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) return;
+        
         resources.Scrap -= ResourceRegistry.CardDrawCost;
         var newCard = _cardScene.Instantiate<Scripts.UI.CardUi>();
         var randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
@@ -136,21 +171,31 @@ public partial class Main : Node
         newCard.Setup(randomType);
     }
 
+    // Bridge methods between UI and Construction System.
     public bool TryPlayCard(WagonType cardType, int cost, Vector2 mousePos) => _constructionSystem.TryPlayCard(_world, cardType, cost, mousePos);
     public void UpdatePreview(WagonType cardType, Vector2 mousePos) => _constructionSystem.UpdatePreview(_world, cardType, mousePos);
     public void HidePreview() => _constructionSystem.HidePreview();
 
+    /// <summary>
+    /// Spawns a basic locomotive and a few starting wagons.
+    /// </summary>
     private static void SpawnTestTrain(World world)
     {
         var loco = CreateWagon(world, 0, 0, WagonType.Locomotive, "loco", 500f, TrainLayout.ColorLoco, "LOCO");
+        
         var combat = CreateWagon(world, 1, 0, WagonType.Combat, "combat", 2000000f, TrainLayout.ColorCombat, "COMBAT");
         world.Add(combat, new ConnectionComponent { PreviousEntityId = loco.Id, NextEntityId = -1, Integrity = 1f });
+        
         var living = CreateWagon(world, 2, 0, WagonType.Living, "living", 2000000f, TrainLayout.ColorLiving, "LIVING");
         world.Add(living, new ConnectionComponent { PreviousEntityId = combat.Id, NextEntityId = -1, Integrity = 1f });
+        
         var combat2 = CreateWagon(world, 3, 0, WagonType.Combat, "combat", 2000000f, TrainLayout.ColorCombat, "COMBAT");
         world.Add(combat2, new ConnectionComponent { PreviousEntityId = living.Id, NextEntityId = -1, Integrity = 1f });
     }
 
+    /// <summary>
+    /// Factory method to create a wagon entity with standard components.
+    /// </summary>
     private static Entity CreateWagon(World world, int slot, int layer, WagonType type, string blueprint, float health, Color tint, string label)
     {
         var entity = world.CreateEntity();
@@ -158,14 +203,28 @@ public partial class Main : Node
         world.Add(entity, new WagonSlotComponent { SlotIndex = slot, Layer = layer });
         world.Add(entity, new HealthComponent { Max = health, Current = health });
         world.Add(entity, new RenderableComponent { Tint = tint, Label = label });
-        if (type == WagonType.Combat) world.Add(entity, new TurretComponent { Range = 30f, Damage = 15f, FireRate = 10f });
+        
+        if (type == WagonType.Combat) 
+            world.Add(entity, new TurretComponent { Range = 30f, Damage = 15f, FireRate = 10f });
+        
         return entity;
     }
 
+    /// <summary>
+    /// Sets up basic lighting and environment for the 3D scene.
+    /// </summary>
     private void SetupDebugLighting()
     {
-        AddChild(new DirectionalLight3D { LightEnergy = 1.5f, LightColor = Colors.White, Rotation = new Vector3(Mathf.DegToRad(-50f), Mathf.DegToRad(-30f), 0f) });
-        var env = new Environment { BackgroundMode = Environment.BGMode.Color, BackgroundColor = new Color(0.1f, 0.1f, 0.12f) };
+        AddChild(new DirectionalLight3D { 
+            LightEnergy = 1.5f, 
+            LightColor = Colors.White, 
+            Rotation = new Vector3(Mathf.DegToRad(-50f), Mathf.DegToRad(-30f), 0f) 
+        });
+        
+        var env = new Environment { 
+            BackgroundMode = Environment.BGMode.Color, 
+            BackgroundColor = new Color(0.1f, 0.1f, 0.12f) 
+        };
         AddChild(new Godot.WorldEnvironment { Environment = env });
     }
 }

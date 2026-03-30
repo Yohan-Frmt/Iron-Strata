@@ -5,10 +5,20 @@ using IronStrata.Scripts.Core.ECS;
 
 namespace IronStrata.Scripts.Systems.Map;
 
+/// <summary>
+/// System responsible for generating the visual representation of the world map in the 3D scene.
+/// This includes nodes (city zones) and the rails connecting them.
+/// </summary>
 public class MapRenderSystem(Node3D environmentRoot) : ISystem
 {
+    /// <summary>
+    /// Prevents multiple redraws of the static map geometry.
+    /// </summary>
     private bool _isGenerated = false;
 
+    /// <summary>
+    /// Checks if a map needs to be rendered and triggers the drawing logic.
+    /// </summary>
     public void Update(Core.ECS.World world, double delta)
     {
         if (_isGenerated) return;
@@ -22,13 +32,20 @@ public class MapRenderSystem(Node3D environmentRoot) : ISystem
         _isGenerated = true;
     }
 
+    /// <summary>
+    /// Iterates through all nodes in the map and creates their corresponding 3D meshes.
+    /// </summary>
     private void DrawMap(MapComponent map)
     {
         var railMaterial = new StandardMaterial3D { AlbedoColor = new Color(0.8f, 0.4f, 0.1f) };
-        var cityMaterial = new StandardMaterial3D { AlbedoColor = new Color(0.2f, 0.6f, 1.0f, 0.8f), Transparency = BaseMaterial3D.TransparencyEnum.Alpha };
+        var cityMaterial = new StandardMaterial3D { 
+            AlbedoColor = new Color(0.2f, 0.6f, 1.0f, 0.8f), 
+            Transparency = BaseMaterial3D.TransparencyEnum.Alpha 
+        };
 
         foreach (var node in map.AllNodes.Values)
         {
+            // Create a cylinder mesh to represent the city/settlement zone.
             var radius = 120f + GD.Randf() * 20f;
             var cityMesh = new MeshInstance3D { Name = $"Node_{node.Id}" };
             cityMesh.Mesh = new CylinderMesh { Height = 0.2f, TopRadius = radius, BottomRadius = radius };
@@ -38,11 +55,19 @@ public class MapRenderSystem(Node3D environmentRoot) : ISystem
             cityMesh.Position = nodePos3D;
             environmentRoot.AddChild(cityMesh);
 
-            foreach (var nextPos3D in node.NextNodes.Select(nextId => map.AllNodes[nextId]).Select(nextNode => new Vector3(nextNode.Position.X, 0.1f, nextNode.Position.Y)))
+            // Draw connections (rails) between this node and its successors.
+            foreach (var nextPos3D in node.NextNodes
+                         .Select(nextId => map.AllNodes[nextId])
+                         .Select(nextNode => new Vector3(nextNode.Position.X, 0.1f, nextNode.Position.Y)))
+            {
                 DrawRail(nodePos3D, nextPos3D, railMaterial);
+            }
         }
     }
 
+    /// <summary>
+    /// Creates a 3D box mesh representing a rail segment between two points.
+    /// </summary>
     private void DrawRail(Vector3 start, Vector3 end, Material mat)
     {
         var distance = start.DistanceTo(end);

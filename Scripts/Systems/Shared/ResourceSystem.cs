@@ -6,14 +6,27 @@ using IronStrata.Scripts.Registry;
 
 namespace IronStrata.Scripts.Systems.Shared;
 
+/// <summary>
+/// System that synchronizes resource data with the UI.
+/// </summary>
 public class ResourceSystem(Label scrapLabel, Button drawButton) : ISystem
 {
+    /// <summary>
+    /// Updates UI elements related to resources, such as the Scrap counter and draw button state.
+    /// </summary>
     public void Update(World world, double delta)
     {
         var resEntity = world.Query<ResourceComponent>().FirstOrDefault();
         if (resEntity == null) return;
+        
         var resources = world.Get<ResourceComponent>(resEntity);
-        if (scrapLabel != null) scrapLabel.Text = $"Scrap : {resources.Scrap}";
-        if (drawButton != null) drawButton.Disabled = resources.Scrap < ResourceRegistry.CardDrawCost;
+        
+        // Update the scrap counter text.
+        if (scrapLabel != null) 
+            scrapLabel.Text = $"Scrap : {resources.Scrap}";
+        
+        // Disable the draw button if the player can't afford it.
+        if (drawButton != null) 
+            drawButton.Disabled = resources.Scrap < ResourceRegistry.CardDrawCost;
     }
 }

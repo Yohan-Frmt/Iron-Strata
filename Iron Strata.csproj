@@ -9,4 +9,7 @@
     <Folder Include="Scenes\Cards\" />
     <Folder Include="Scenes\Wagons\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md" />
+  </ItemGroup>
 </Project>

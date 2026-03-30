@@ -8,9 +8,13 @@ using IronStrata.Scripts.Enums;
 
 namespace IronStrata.Scripts.UI;
 
+/// <summary>
+/// A 2D UI component that renders a simplified view of the rail network and the train's current position.
+/// </summary>
 public partial class Minimap : Control
 {
     private World _world;
+    
     private readonly Color _railColor = new(0.4f, 0.4f, 0.4f, 0.5f);
     private readonly Color _cityColor = new(0.2f, 0.6f, 1.0f);
     private readonly Color _dangerColor = new(1.0f, 0.3f, 0.3f);
@@ -19,17 +23,26 @@ public partial class Minimap : Control
     private Vector2 _mapSize = new(200, 150);
     private float _mapScale = 0.05f;
 
+    /// <summary>
+    /// Initializes the minimap and connects it to the ECS world.
+    /// </summary>
     public override void _Ready()
     {
         _world = GameWorld.Instance.World;
         CustomMinimumSize = _mapSize;
     }
 
+    /// <summary>
+    /// Requests a redraw of the minimap every frame.
+    /// </summary>
     public override void _Process(double delta)
     {
         QueueRedraw();
     }
 
+    /// <summary>
+    /// Handles the custom 2D drawing logic for the minimap.
+    /// </summary>
     public override void _Draw()
     {
         var mapEntity = _world.Query<MapComponent, LocationComponent>().FirstOrDefault();
@@ -38,16 +51,28 @@ public partial class Minimap : Control
         var map = _world.Get<MapComponent>(mapEntity);
         var loc = _world.Get<LocationComponent>(mapEntity);
 
+        // Calculate train position and the offset to keep the train centered.
         var trainPos = GetTrainMapPosition(map, loc);
         var centerOffset = _mapSize / 2f - trainPos * _mapScale;
+
+        // Draw rail lines.
         foreach (var node in map.AllNodes.Values)
         {
             var startGui = node.Position * _mapScale + centerOffset;
 
-            foreach (var endGui in node.NextNodes.Select(nextId => map.AllNodes[nextId].Position * _mapScale + centerOffset).Where(endGui => IsInsideBounds(startGui) || IsInsideBounds(endGui)))
-                DrawLine(startGui, endGui, _railColor, 1.5f);
+            foreach (var nextId in node.NextNodes)
+            {
+                var endGui = map.AllNodes[nextId].Position * _mapScale + centerOffset;
+                
+                // Only draw if at least one end of the line is within the minimap bounds.
+                if (IsInsideBounds(startGui) || IsInsideBounds(endGui))
+                {
+                    DrawLine(startGui, endGui, _railColor, 1.5f);
+                }
+            }
         }
 
+        // Draw nodes (cities, danger zones, etc.).
         foreach (var node in map.AllNodes.Values)
         {
             var nodeGui = node.Position * _mapScale + centerOffset;
@@ -56,12 +81,19 @@ public partial class Minimap : Control
             var color = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
             DrawCircle(nodeGui, 4f, color);
 
-            if (node.Id == loc.TargetNodeId) DrawArc(nodeGui, 7f, 0, Mathf.Tau, 16, Colors.Yellow, 1f);
+            // Highlight the current target node.
+            if (node.Id == loc.TargetNodeId) 
+                DrawArc(nodeGui, 7f, 0, Mathf.Tau, 16, Colors.Yellow, 1f);
         }
+
+        // Draw the train indicator.
         var trainGui = trainPos * _mapScale + centerOffset;
         DrawRect(new Rect2(trainGui - new Vector2(3, 3), new Vector2(6, 6)), _trainColor);
     }
 
+    /// <summary>
+    /// Interpolates the train's position on the 2D map based on travel progress.
+    /// </summary>
     private static Vector2 GetTrainMapPosition(MapComponent map, LocationComponent loc)
     {
         var start = map.AllNodes[loc.CurrentNodeId].Position;
@@ -73,6 +105,9 @@ public partial class Minimap : Control
         return start.Lerp(end, t);
     }
 
+    /// <summary>
+    /// Checks if a 2D GUI position is within the visible bounds of the minimap.
+    /// </summary>
     private bool IsInsideBounds(Vector2 pos)
     {
         return pos.X >= 0 && pos.X <= _mapSize.X && pos.Y >= 0 && pos.Y <= _mapSize.Y;

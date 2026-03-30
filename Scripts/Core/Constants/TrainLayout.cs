@@ -1,14 +1,20 @@
 using Godot;
+
 namespace IronStrata.Scripts.Core.Constants;
 
+/// <summary>
+/// Static constants defining the physical dimensions and visual styles of the train.
+/// </summary>
 public static class TrainLayout
 {
+    // Physical dimensions of a single wagon unit.
     public const float WagonLength  = 4.0f;
     public const float WagonWidth   = 6.0f;
     public const float WagonHeight  = 3.2f;
-    public const float WagonGap     = 0.3f;
-    public const float LayerOffset  = 3.4f;
+    public const float WagonGap     = 0.3f; // Gap between coupled wagons.
+    public const float LayerOffset  = 3.4f; // Vertical distance between stacked wagons.
 
+    // Standard color palette for different wagon types.
     public static readonly Color ColorLoco     = new(0.18f, 0.18f, 0.22f);
     public static readonly Color ColorCombat   = new(0.30f, 0.08f, 0.08f);
     public static readonly Color ColorLiving   = new(0.16f, 0.12f, 0.08f);
@@ -16,6 +22,9 @@ public static class TrainLayout
     public static readonly Color ColorResearch = new(0.14f, 0.08f, 0.22f);
     public static readonly Color ColorMedical  = new(0.06f, 0.18f, 0.12f);
     
+    /// <summary>
+    /// Calculates the local position of a wagon based on its slot and layer indices.
+    /// </summary>
     public static Vector3 GetLocalPosition(int slotIndex, int layer)
     {
         var x = -slotIndex * (WagonLength + WagonGap);

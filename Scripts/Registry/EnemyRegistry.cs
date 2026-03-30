@@ -5,6 +5,9 @@ using IronStrata.Scripts.Components.Character;
 
 namespace IronStrata.Scripts.Registry;
 
+/// <summary>
+/// Data structure defining the base stats and visual properties of an enemy type.
+/// </summary>
 public readonly struct EnemyDefinition(
     EnemyType type,
     float damage,
@@ -34,6 +37,9 @@ public readonly struct EnemyDefinition(
     public readonly string Label = label;
 }
 
+/// <summary>
+/// Rule for how many enemies of a certain type should spawn in a horde.
+/// </summary>
 public readonly struct HordeSpawnRule(EnemyType type, int count, float chance)
 {
     public readonly EnemyType Type = type;
@@ -41,8 +47,14 @@ public readonly struct HordeSpawnRule(EnemyType type, int count, float chance)
     public readonly float Chance = chance;
 }
 
+/// <summary>
+/// Central registry for all enemy types and spawning rules.
+/// </summary>
 public static class EnemyRegistry
 {
+    /// <summary>
+    /// Configuration data for each enemy type.
+    /// </summary>
     public static readonly Dictionary<EnemyType, EnemyDefinition> EnemyDefs = new()
     {
         [EnemyType.Crawler] = new EnemyDefinition(
@@ -87,6 +99,9 @@ public static class EnemyRegistry
         )
     };
 
+    /// <summary>
+    /// List of rules defining what can spawn during a horde event.
+    /// </summary>
     public static readonly List<HordeSpawnRule> SpawnRules =
     [
         new(type: EnemyType.Crawler, count: 20, chance: 1f),

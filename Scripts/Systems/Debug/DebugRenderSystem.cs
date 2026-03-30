@@ -6,15 +6,23 @@ using IronStrata.Scripts.Components.Shared;
 
 namespace IronStrata.Scripts.Systems.Debug;
 
+/// <summary>
+/// Development-only system that renders visual debug information in the 3D scene.
+/// This includes attack ranges, target lines, and movement paths.
+/// </summary>
 public class DebugRenderSystem : ISystem
 {
     private readonly ImmediateMesh _immediateMesh;
     private readonly Node3D _trainRoot;
 
+    /// <summary>
+    /// Initializes the debug rendering infrastructure.
+    /// </summary>
     public DebugRenderSystem(Node3D trainRoot)
     {
         _trainRoot = trainRoot;
         _immediateMesh = new ImmediateMesh();
+        
         var material = new StandardMaterial3D
         {
             ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
@@ -32,36 +40,53 @@ public class DebugRenderSystem : ISystem
         trainRoot.GetTree().CurrentScene.AddChild(debugMeshInstance);
     }
 
+    /// <summary>
+    /// Clears and redraws debug lines and shapes for the current frame.
+    /// </summary>
     public void Update(World world, double delta)
     {
         _immediateMesh.ClearSurfaces();
         _immediateMesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
+
+        // Render debug info for enemies.
         foreach (var entity in world.Query<EnemyComponent, PositionComponent>())
         {
             var enemy = world.Get<EnemyComponent>(entity);
             var pos = world.Get<PositionComponent>(entity);
+            
+            // Draw attack range circle (Red).
             DrawCircle3D(pos.Value, enemy.AttackRange, new Color(1f, 0f, 0f, 0.5f));
+            
             if (!world.IsAlive(enemy.CurrentTarget)) continue;
+            
+            // Draw a line to the current target (Orange).
             var slotComp = world.Get<WagonSlotComponent>(enemy.CurrentTarget);
             const float wagonSize = 5f;
             var targetLocalPos = new Vector3(-slotComp.SlotIndex * wagonSize, 0, 0);
             var targetGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
-            DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f)); // Ligne orange
+            
+            DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f));
         }
 
+        // Render debug info for train turrets.
         foreach (var entity in world.Query<WagonSlotComponent, TurretComponent>())
         {
             var slotComp = world.Get<WagonSlotComponent>(entity);
             var weapon = world.Get<TurretComponent>(entity);
+            
             var targetLocalPos = new Vector3(-slotComp.SlotIndex * 5f, 0, 0);
             var wagonGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
+            
+            // Draw turret range circle (Blue).
             DrawCircle3D(wagonGlobalPos, weapon.Range, new Color(0f, 0.5f, 1f, 0.5f));
         }
-
 
         _immediateMesh.SurfaceEnd();
     }
 
+    /// <summary>
+    /// Draws a 3D line between two points in the debug mesh.
+    /// </summary>
     private void DrawLine3D(Vector3 start, Vector3 end, Color color)
     {
         _immediateMesh.SurfaceSetColor(color);
@@ -70,6 +95,9 @@ public class DebugRenderSystem : ISystem
         _immediateMesh.SurfaceAddVertex(end + Vector3.Up * 0.5f);
     }
 
+    /// <summary>
+    /// Draws a horizontal 3D circle in the debug mesh.
+    /// </summary>
     private void DrawCircle3D(Vector3 center, float radius, Color color)
     {
         const int segments = 32;
@@ -77,8 +105,10 @@ public class DebugRenderSystem : ISystem
         {
             var angle1 = i / (float)segments * Mathf.Tau;
             var angle2 = (i + 1) / (float)segments * Mathf.Tau;
+            
             var p1 = center + new Vector3(Mathf.Cos(angle1) * radius, 0.2f, Mathf.Sin(angle1) * radius);
             var p2 = center + new Vector3(Mathf.Cos(angle2) * radius, 0.2f, Mathf.Sin(angle2) * radius);
+            
             _immediateMesh.SurfaceSetColor(color);
             _immediateMesh.SurfaceAddVertex(p1);
             _immediateMesh.SurfaceSetColor(color);
