@@ -56,7 +56,7 @@ The antagonists are not machines, but silicon-based organisms performing mainten
 *   `Scenes/`: Godot scene files for HUD, Wagons, and Enemies.
 *   `Scripts/`: Core logic, ECS (Entity Component System), and game systems.
 *   `Resources/`: Game assets including models, images, and card definitions.
-*   `pr.md`: Full design documentation and technical specification.
+*   `project.md`: Full design documentation and technical specification.
 
 ## Development Roadmap
 
