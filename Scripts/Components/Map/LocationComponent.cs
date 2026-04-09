@@ -36,4 +36,9 @@ public class LocationComponent : IComponent
     /// True if the entity is within a city or settlement zone.
     /// </summary>
     public bool IsInCityZone;
+
+    /// <summary>
+    /// Indicates whether the entity is currently awaiting the selection of a path for traversal.
+    /// </summary
+    public bool AwaitingPathSelection;
 }

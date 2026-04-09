@@ -17,7 +17,7 @@ using IronStrata.Scripts.Systems.Shared;
 using IronStrata.Scripts.Systems.Train;
 using IronStrata.Scripts.UI;
 
-namespace IronStrata.Scenes;
+namespace IronStrata.Scripts;
 
 /// <summary>
 /// The main entry point and controller for the game scene.
@@ -32,6 +32,7 @@ public partial class Main : Node
 
     private World _world;
     private ConstructionSystem _constructionSystem;
+    private TacticalPauseSystem _pauseSystem;
 
     /// <summary>
     /// Sets up the initial game state, world, and ECS systems.
@@ -41,13 +42,11 @@ public partial class Main : Node
         _world = GameWorld.Instance.World;
         SetupDebugLighting();
 
-        // Scene graph hierarchy roots.
         var trainRoot = new Node3D { Name = "TrainRoot" };
         AddChild(trainRoot);
         var enemyRoot = new Node3D { Name = "EnemyRoot" };
         AddChild(enemyRoot);
 
-        // Camera setup.
         var camera = new Camera3D { 
             Name = "Camera", 
             Projection = Camera3D.ProjectionType.Orthogonal, 
@@ -57,8 +56,8 @@ public partial class Main : Node
         AddChild(camera);
         camera.LookAt(new Vector3(CameraLeadX, 0f, 0f), Vector3.Up);
         camera.MakeCurrent();
+        camera.ProcessMode = ProcessModeEnum.Always; 
 
-        // Environmental floor and collision.
         var floor = new MeshInstance3D { Name = "Floor" };
         floor.Mesh = new PlaneMesh { Size = new Vector2(2000f, 2000f) };
         floor.SetSurfaceOverrideMaterial(0, new StandardMaterial3D { AlbedoColor = new Color(0.15f, 0.15f, 0.18f) });
@@ -70,15 +69,41 @@ public partial class Main : Node
         floor.AddChild(floorBody);
         AddChild(floor);
 
-        // UI Initialization.
         var hud = new CanvasLayer { Name = "HUD", Layer = 1 };
         AddChild(hud);
 
         var minimap = new Minimap();
-        // Position minimap at the top-right corner.
         minimap.SetPosition(new Vector2(GetViewport().GetVisibleRect().Size.X - 300, 20));
         hud.AddChild(minimap);
 
+        var pauseOverlay = new ColorRect {
+            Color = new Color(0, 0, 0, 0.3f), // Noir transparent
+            AnchorsPreset = (int)Control.LayoutPreset.FullRect,
+            MouseFilter = Control.MouseFilterEnum.Ignore
+        };
+        
+        var stateEntity = _world.CreateEntity();
+        _world.Add(stateEntity, new GameStateComponent());
+        
+        var pauseLabel = new Label {
+            Text = "PAUSE TACTIQUE",
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            AnchorsPreset = (int)Control.LayoutPreset.Center
+        };
+        
+        _pauseSystem = new TacticalPauseSystem(pauseOverlay);
+        var pauseButton = GetNode<Button>("UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxAction/PauseButton");
+        if (pauseButton != null) {
+            pauseButton.Pressed += () => _pauseSystem.TriggerPause();
+            pauseButton.ProcessMode = ProcessModeEnum.Always;
+        } else {
+            GD.PrintErr("Le bouton de pause est introuvable, vérifiez l'Access as Unique Name !");
+        }
+        pauseOverlay.AddChild(pauseLabel);
+        hud.AddChild(pauseOverlay);
+        pauseOverlay.ProcessMode = ProcessModeEnum.Always;
+        
         var speedLabel = new Label { Position = new Vector2(24f, 20f) };
         speedLabel.AddThemeColorOverride("font_color", new Color(0.55f, 0.70f, 1.0f));
         hud.AddChild(speedLabel);
@@ -137,6 +162,7 @@ public partial class Main : Node
         // Register all logic systems to the runner.
         GameWorld.Instance.Runner
             .Add(new TrainMovementSystem(trainRoot, camera, speedLabel))
+            .Add(_pauseSystem)
             .Add(new WagonConnectionSystem())
             .Add(new MapSystem(trainRoot))
             .Add(new MapRenderSystem(floor))

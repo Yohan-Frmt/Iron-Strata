@@ -19,7 +19,7 @@ public class MapRenderSystem(Node3D environmentRoot) : ISystem
     /// <summary>
     /// Checks if a map needs to be rendered and triggers the drawing logic.
     /// </summary>
-    public void Update(Core.ECS.World world, double delta)
+    public void Update(World world, double delta)
     {
         if (_isGenerated) return;
 
@@ -45,7 +45,6 @@ public class MapRenderSystem(Node3D environmentRoot) : ISystem
 
         foreach (var node in map.AllNodes.Values)
         {
-            // Create a cylinder mesh to represent the city/settlement zone.
             var radius = 120f + GD.Randf() * 20f;
             var cityMesh = new MeshInstance3D { Name = $"Node_{node.Id}" };
             cityMesh.Mesh = new CylinderMesh { Height = 0.2f, TopRadius = radius, BottomRadius = radius };
@@ -55,7 +54,6 @@ public class MapRenderSystem(Node3D environmentRoot) : ISystem
             cityMesh.Position = nodePos3D;
             environmentRoot.AddChild(cityMesh);
 
-            // Draw connections (rails) between this node and its successors.
             foreach (var nextPos3D in node.NextNodes
                          .Select(nextId => map.AllNodes[nextId])
                          .Select(nextNode => new Vector3(nextNode.Position.X, 0.1f, nextNode.Position.Y)))
