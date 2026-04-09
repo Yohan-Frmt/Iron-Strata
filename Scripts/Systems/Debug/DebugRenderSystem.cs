@@ -48,18 +48,15 @@ public class DebugRenderSystem : ISystem
         _immediateMesh.ClearSurfaces();
         _immediateMesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
 
-        // Render debug info for enemies.
         foreach (var entity in world.Query<EnemyComponent, PositionComponent>())
         {
             var enemy = world.Get<EnemyComponent>(entity);
             var pos = world.Get<PositionComponent>(entity);
             
-            // Draw attack range circle (Red).
             DrawCircle3D(pos.Value, enemy.AttackRange, new Color(1f, 0f, 0f, 0.5f));
             
             if (!world.IsAlive(enemy.CurrentTarget)) continue;
             
-            // Draw a line to the current target (Orange).
             var slotComp = world.Get<WagonSlotComponent>(enemy.CurrentTarget);
             const float wagonSize = 5f;
             var targetLocalPos = new Vector3(-slotComp.SlotIndex * wagonSize, 0, 0);
@@ -68,7 +65,6 @@ public class DebugRenderSystem : ISystem
             DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f));
         }
 
-        // Render debug info for train turrets.
         foreach (var entity in world.Query<WagonSlotComponent, TurretComponent>())
         {
             var slotComp = world.Get<WagonSlotComponent>(entity);
@@ -77,7 +73,6 @@ public class DebugRenderSystem : ISystem
             var targetLocalPos = new Vector3(-slotComp.SlotIndex * 5f, 0, 0);
             var wagonGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
             
-            // Draw turret range circle (Blue).
             DrawCircle3D(wagonGlobalPos, weapon.Range, new Color(0f, 0.5f, 1f, 0.5f));
         }
 

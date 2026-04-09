@@ -47,15 +47,13 @@ public partial class Minimap : Control
     {
         var mapEntity = _world.Query<MapComponent, LocationComponent>().FirstOrDefault();
         if (mapEntity is { IsNull: true }) return;
-
+        if (!_world.Has<MapComponent>(mapEntity) || !_world.Has<LocationComponent>(mapEntity)) return;
         var map = _world.Get<MapComponent>(mapEntity);
         var loc = _world.Get<LocationComponent>(mapEntity);
 
-        // Calculate train position and the offset to keep the train centered.
         var trainPos = GetTrainMapPosition(map, loc);
         var centerOffset = _mapSize / 2f - trainPos * _mapScale;
 
-        // Draw rail lines.
         foreach (var node in map.AllNodes.Values)
         {
             var startGui = node.Position * _mapScale + centerOffset;
@@ -64,7 +62,6 @@ public partial class Minimap : Control
             {
                 var endGui = map.AllNodes[nextId].Position * _mapScale + centerOffset;
                 
-                // Only draw if at least one end of the line is within the minimap bounds.
                 if (IsInsideBounds(startGui) || IsInsideBounds(endGui))
                 {
                     DrawLine(startGui, endGui, _railColor, 1.5f);
@@ -72,7 +69,6 @@ public partial class Minimap : Control
             }
         }
 
-        // Draw nodes (cities, danger zones, etc.).
         foreach (var node in map.AllNodes.Values)
         {
             var nodeGui = node.Position * _mapScale + centerOffset;
@@ -81,12 +77,10 @@ public partial class Minimap : Control
             var color = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
             DrawCircle(nodeGui, 4f, color);
 
-            // Highlight the current target node.
             if (node.Id == loc.TargetNodeId) 
                 DrawArc(nodeGui, 7f, 0, Mathf.Tau, 16, Colors.Yellow, 1f);
         }
 
-        // Draw the train indicator.
         var trainGui = trainPos * _mapScale + centerOffset;
         DrawRect(new Rect2(trainGui - new Vector2(3, 3), new Vector2(6, 6)), _trainColor);
     }
