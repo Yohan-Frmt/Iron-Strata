@@ -6,6 +6,7 @@ using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Registry;
 
 namespace IronStrata.Scripts.Systems.Combat;
@@ -33,7 +34,7 @@ public class TurretSystem(Node3D trainRoot) : ISystem
             var localPos = TrainLayout.GetLocalPosition(slot.SlotIndex, slot.Layer);
             var turretGlobalPos = trainRoot.GlobalPosition + localPos + new Vector3(0, 2f, 0);
             
-            var closestEnemy = Entity.Null;
+            var closestEnemy = Option<Entity>.None;
             var minDistanceSq = turret.Range * turret.Range;
 
             // Simple nearest-neighbor search for targets.
@@ -45,29 +46,34 @@ public class TurretSystem(Node3D trainRoot) : ISystem
                 if (!(distSq < minDistanceSq)) continue;
                 
                 minDistanceSq = distSq;
-                closestEnemy = enemyEntity;
+                closestEnemy = Option<Entity>.Some(enemyEntity);
             }
 
-            if (closestEnemy.IsNull) continue;
+            closestEnemy.Match(enemy => 
+            {
+                // Fire at the enemy.
+                var enemyHealth = world.Get<HealthComponent>(enemy);
+                var enemyPos = world.Get<PositionComponent>(enemy).Value;
+                
+                enemyHealth.Current -= turret.Damage;
+                turret.Cooldown = 1f / turret.FireRate;
+                
+                DrawLaser(turretGlobalPos, enemyPos);
 
-            // Fire at the enemy.
-            var enemyHealth = world.Get<HealthComponent>(closestEnemy);
-            var closestEnemyPos = world.Get<PositionComponent>(closestEnemy).Value;
-            
-            enemyHealth.Current -= turret.Damage;
-            turret.Cooldown = 1f / turret.FireRate;
-            
-            DrawLaser(turretGlobalPos, closestEnemyPos);
-
-            // Handle enemy death.
-            if (!(enemyHealth.Current <= 0)) continue;
-            
-            // Reward player with scrap for kills.
-            var resEntity = world.Query<ResourceComponent>().FirstOrDefault();
-            if (resEntity != null) 
-                world.Get<ResourceComponent>(resEntity).Scrap += ResourceRegistry.ScrapPerKill;
-            
-            world.DestroyEntity(closestEnemy);
+                // Handle enemy death.
+                if (enemyHealth.Current <= 0)
+                {
+                    // Reward player with scrap for kills.
+                    world.Query<ResourceComponent>()
+                        .FirstOptional()
+                        .Match(resEntity => 
+                        {
+                            world.Get<ResourceComponent>(resEntity).Scrap += ResourceRegistry.ScrapPerKill;
+                        }, () => { });
+                    
+                    world.DestroyEntity(enemy);
+                }
+            }, () => { });
         }
     }
 

@@ -7,6 +7,7 @@ using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.Autoloads;
 using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Map;
 using IronStrata.Scripts.Registry;
 using IronStrata.Scripts.Systems.Combat;
@@ -184,17 +185,19 @@ public partial class Main : Node
     /// </summary>
     private void DrawCard()
     {
-        var resEntity = _world.Query<ResourceComponent>().FirstOrDefault();
-        if (resEntity == null) return;
-        
-        var resources = _world.Get<ResourceComponent>(resEntity);
-        if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) return;
-        
-        resources.Scrap -= ResourceRegistry.CardDrawCost;
-        var newCard = _cardScene.Instantiate<Scripts.UI.CardUi>();
-        var randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
-        _handContainer.AddChild(newCard);
-        newCard.Setup(randomType);
+        _world.Query<ResourceComponent>()
+            .FirstOptional()
+            .Bind(e => _world.GetOptional<ResourceComponent>(e))
+            .Match(resources => 
+            {
+                if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) return;
+                
+                resources.Scrap -= ResourceRegistry.CardDrawCost;
+                var newCard = _cardScene.Instantiate<Scripts.UI.CardUi>();
+                var randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
+                _handContainer.AddChild(newCard);
+                newCard.Setup(randomType);
+            }, () => { });
     }
 
     // Bridge methods between UI and Construction System.

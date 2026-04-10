@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using IronStrata.Scripts.Components.Character;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Registry;
 
@@ -98,6 +99,16 @@ public static class EnemyRegistry
             isFlying: true
         )
     };
+
+    /// <summary>
+    /// Safe lookup for an enemy definition by type.
+    /// </summary>
+    public static Result<EnemyDefinition, string> GetEnemyDefinition(EnemyType type)
+    {
+        return EnemyDefs.TryGetValue(type, out var def) 
+            ? Result<EnemyDefinition, string>.Ok(def) 
+            : Result<EnemyDefinition, string>.Err($"Enemy type {type} not found in registry.");
+    }
 
     /// <summary>
     /// List of rules defining what can spawn during a horde event.

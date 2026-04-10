@@ -4,6 +4,7 @@ using Godot;
 using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Core.Autoloads;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Enums;
 
 namespace IronStrata.Scripts.UI;
@@ -45,44 +46,46 @@ public partial class Minimap : Control
     /// </summary>
     public override void _Draw()
     {
-        var mapEntity = _world.Query<MapComponent, LocationComponent>().FirstOrDefault();
-        if (mapEntity is { IsNull: true }) return;
-        if (!_world.Has<MapComponent>(mapEntity) || !_world.Has<LocationComponent>(mapEntity)) return;
-        var map = _world.Get<MapComponent>(mapEntity);
-        var loc = _world.Get<LocationComponent>(mapEntity);
-
-        var trainPos = GetTrainMapPosition(map, loc);
-        var centerOffset = _mapSize / 2f - trainPos * _mapScale;
-
-        foreach (var node in map.AllNodes.Values)
-        {
-            var startGui = node.Position * _mapScale + centerOffset;
-
-            foreach (var nextId in node.NextNodes)
+        _world.Query<MapComponent, LocationComponent>()
+            .FirstOptional()
+            .Match(mapEntity => 
             {
-                var endGui = map.AllNodes[nextId].Position * _mapScale + centerOffset;
-                
-                if (IsInsideBounds(startGui) || IsInsideBounds(endGui))
+                var map = _world.Get<MapComponent>(mapEntity);
+                var loc = _world.Get<LocationComponent>(mapEntity);
+
+                var trainPos = GetTrainMapPosition(map, loc);
+                var centerOffset = _mapSize / 2f - trainPos * _mapScale;
+
+                foreach (var node in map.AllNodes.Values)
                 {
-                    DrawLine(startGui, endGui, _railColor, 1.5f);
+                    var startGui = node.Position * _mapScale + centerOffset;
+
+                    foreach (var nextId in node.NextNodes)
+                    {
+                        var endGui = map.AllNodes[nextId].Position * _mapScale + centerOffset;
+                        
+                        if (IsInsideBounds(startGui) || IsInsideBounds(endGui))
+                        {
+                            DrawLine(startGui, endGui, _railColor, 1.5f);
+                        }
+                    }
                 }
-            }
-        }
 
-        foreach (var node in map.AllNodes.Values)
-        {
-            var nodeGui = node.Position * _mapScale + centerOffset;
-            if (!IsInsideBounds(nodeGui)) continue;
+                foreach (var node in map.AllNodes.Values)
+                {
+                    var nodeGui = node.Position * _mapScale + centerOffset;
+                    if (!IsInsideBounds(nodeGui)) continue;
 
-            var color = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
-            DrawCircle(nodeGui, 4f, color);
+                    var color = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
+                    DrawCircle(nodeGui, 4f, color);
 
-            if (node.Id == loc.TargetNodeId) 
-                DrawArc(nodeGui, 7f, 0, Mathf.Tau, 16, Colors.Yellow, 1f);
-        }
+                    if (node.Id == loc.TargetNodeId) 
+                        DrawArc(nodeGui, 7f, 0, Mathf.Tau, 16, Colors.Yellow, 1f);
+                }
 
-        var trainGui = trainPos * _mapScale + centerOffset;
-        DrawRect(new Rect2(trainGui - new Vector2(3, 3), new Vector2(6, 6)), _trainColor);
+                var trainGui = trainPos * _mapScale + centerOffset;
+                DrawRect(new Rect2(trainGui - new Vector2(3, 3), new Vector2(6, 6)), _trainColor);
+            }, () => { });
     }
 
     /// <summary>

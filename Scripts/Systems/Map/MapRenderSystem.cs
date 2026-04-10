@@ -2,6 +2,7 @@ using System.Linq;
 using Godot;
 using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Systems.Map;
 
@@ -23,13 +24,14 @@ public class MapRenderSystem(Node3D environmentRoot) : ISystem
     {
         if (_isGenerated) return;
 
-        var mapEntity = world.Query<MapComponent>().FirstOrDefault();
-        if (mapEntity == null) return;
-
-        var map = world.Get<MapComponent>(mapEntity);
-        DrawMap(map);
-
-        _isGenerated = true;
+        world.Query<MapComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<MapComponent>(e))
+            .Match(map => 
+            {
+                DrawMap(map);
+                _isGenerated = true;
+            }, () => { });
     }
 
     /// <summary>

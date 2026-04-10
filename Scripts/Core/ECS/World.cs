@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Core.ECS;
 
@@ -89,6 +90,22 @@ public class World
     }
 
     /// <summary>
+    /// Retrieves a component from an entity as an Option.
+    /// </summary>
+    /// <typeparam name="T">The type of the component.</typeparam>
+    /// <returns>An Option containing the component if found, or None otherwise.</returns>
+    public Option<T> GetOptional<T>(Entity entity) where T : IComponent
+    {
+        var type = typeof(T);
+        if (_stores.TryGetValue(type, out var store) && store.TryGetValue(entity.Id, out var raw))
+        {
+            return Option<T>.Some((T)raw);
+        }
+
+        return Option<T>.None;
+    }
+
+    /// <summary>
     /// Retrieves a component from an entity.
     /// </summary>
     /// <typeparam name="T">The type of the component.</typeparam>
@@ -96,9 +113,8 @@ public class World
     /// <exception cref="InvalidOperationException">Thrown if the entity does not have the component.</exception>
     public T Get<T>(Entity entity) where T : IComponent
     {
-        return TryGet<T>(entity, out var component)
-            ? component!
-            : throw new InvalidOperationException($"Entity {entity.Id} does not have component {typeof(T).Name}");
+        return GetOptional<T>(entity).UnwrapOrElse(() => 
+            throw new InvalidOperationException($"Entity {entity.Id} does not have component {typeof(T).Name}"));
     }
 
     /// <summary>

@@ -4,6 +4,7 @@ using IronStrata.Scripts.Components.Render;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Systems.Render;
 
@@ -31,8 +32,9 @@ public class RenderSystem : ISystem
     {
         // Get the total distance traveled for time-based visual effects.
         var distance = world.Query<TrainMovementComponent>()
-            .Select(mv => world.Get<TrainMovementComponent>(mv).DistanceTraveled)
-            .FirstOrDefault();
+            .FirstOptional()
+            .Bind(e => world.GetOptional<TrainMovementComponent>(e))
+            .Match(mv => mv.DistanceTraveled, () => 0f);
 
         foreach (var entity in world.Query<RenderableComponent, WagonSlotComponent>())
         {
@@ -101,7 +103,8 @@ public class RenderSystem : ISystem
     /// </summary>
     private void OnEntityDestroyed(Entity entity)
     {
-        var node = _trainRoot.GetNodeOrNull<Node3D>($"Wagon_{entity.Id}");
-        node?.QueueFree();
+        _trainRoot.GetNodeOrNull<Node3D>($"Wagon_{entity.Id}")
+            .ToOption()
+            .Match(node => node.QueueFree(), () => { });
     }
 }

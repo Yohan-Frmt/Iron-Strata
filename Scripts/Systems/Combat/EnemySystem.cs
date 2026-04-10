@@ -8,6 +8,7 @@ using IronStrata.Scripts.Components.Render;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Registry;
 
 namespace IronStrata.Scripts.Systems.Combat;
@@ -26,9 +27,10 @@ public class EnemySystem(Node3D trainRoot) : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        var loc = world.Query<LocationComponent>().FirstOrDefault();
-        var isInCity = false;
-        if (loc is { IsNull: false }) isInCity = world.Get<LocationComponent>(loc).IsInCityZone;
+        var isInCity = world.Query<LocationComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<LocationComponent>(e))
+            .Match(l => l.IsInCityZone, () => false);
 
         if (isInCity)
         {
@@ -55,82 +57,87 @@ public class EnemySystem(Node3D trainRoot) : ISystem
             var loco = world.Get<MovementComponent>(entity);
 
             // Target acquisition.
-            if (enemy.CurrentTarget == null || !world.IsAlive(enemy.CurrentTarget))
+            var needsNewTarget = enemy.CurrentTarget.Match(target => !world.IsAlive(target), () => true);
+            if (needsNewTarget)
                 enemy.CurrentTarget = FindBestTarget(enemy.Type, wagons, world);
 
-            if (enemy.CurrentTarget == null) continue;
-
-            var slotComp = world.Get<WagonSlotComponent>(enemy.CurrentTarget);
-            const float wagonSize = 5f;
-            const float wagonPhysicalRadius = 4.0f; // Collision radius of the wagon
-            
-            // Calculate target position in global space.
-            var targetGlobalPos = trainRoot.GlobalPosition + new Vector3(-slotComp.SlotIndex * wagonSize, 2.0f, 0);
-            var distanceToCenter = pos.Value.DistanceTo(targetGlobalPos);
-
-            // Combat logic.
-            if (distanceToCenter <= enemy.AttackRange + wagonPhysicalRadius)
+            enemy.CurrentTarget.Match(target => 
             {
-                enemy.AttackTimer -= (float)delta;
-                if (!(enemy.AttackTimer <= 0)) continue;
+                var slotComp = world.Get<WagonSlotComponent>(target);
+                const float wagonSize = 5f;
+                const float wagonPhysicalRadius = 4.0f; // Collision radius of the wagon
+                
+                // Calculate target position in global space.
+                var targetGlobalPos = trainRoot.GlobalPosition + new Vector3(-slotComp.SlotIndex * wagonSize, 2.0f, 0);
+                var distanceToCenter = pos.Value.DistanceTo(targetGlobalPos);
 
-                enemy.AttackTimer = 1f / enemy.AttackSpeed;
-                var health = world.Get<HealthComponent>(enemy.CurrentTarget);
-                health.Current -= enemy.Damage;
-
-                if (health.Current <= 0) HandleWagonDestruction(world, enemy.CurrentTarget);
-            }
-            else
-            {
-                // Movement and Boids-like behavior (separation).
-                var moveDir = (targetGlobalPos - pos.Value).Normalized();
-                var repulsionForce = Vector3.Zero;
-                var neighbors = 0;
-
-                // Repulsion from other enemies.
-                foreach (var otherEntity in allEnemies)
+                // Combat logic.
+                if (distanceToCenter <= enemy.AttackRange + wagonPhysicalRadius)
                 {
-                    if (entity.Equals(otherEntity)) continue;
+                    enemy.AttackTimer -= (float)delta;
+                    if (enemy.AttackTimer <= 0)
+                    {
+                        enemy.AttackTimer = 1f / enemy.AttackSpeed;
+                        var health = world.Get<HealthComponent>(target);
+                        health.Current -= enemy.Damage;
 
-                    var otherPos = world.Get<PositionComponent>(otherEntity).Value;
-                    var distToOther = pos.Value.DistanceTo(otherPos);
-                    const float separationRadius = 10.0f;
-
-                    if (!(distToOther < separationRadius) || !(distToOther > 0.01f)) continue;
-
-                    var pushDir = (pos.Value - otherPos).Normalized();
-                    repulsionForce += pushDir * (separationRadius - distToOther);
-                    neighbors++;
+                        if (health.Current <= 0) HandleWagonDestruction(world, target);
+                    }
                 }
-
-                // Repulsion from wagons to avoid clipping.
-                foreach (var wagon in wagons)
+                else
                 {
-                    var wSlot = world.Get<WagonSlotComponent>(wagon);
-                    var wPos = trainRoot.GlobalPosition + new Vector3(-wSlot.SlotIndex * wagonSize, 2.0f, 0);
-                    var distToWagon = pos.Value.DistanceTo(wPos);
+                    // Movement and Boids-like behavior (separation).
+                    var moveDir = (targetGlobalPos - pos.Value).Normalized();
+                    var repulsionForce = Vector3.Zero;
+                    var neighbors = 0;
 
-                    if (!(distToWagon < wagonPhysicalRadius + 0.5f)) continue;
+                    // Repulsion from other enemies.
+                    foreach (var otherEntity in allEnemies)
+                    {
+                        if (entity.Equals(otherEntity)) continue;
 
-                    var pushDir = (pos.Value - wPos).Normalized();
-                    repulsionForce += pushDir * ((wagonPhysicalRadius + 0.5f) - distToWagon) * 5.0f;
-                    neighbors++;
+                        var otherPos = world.Get<PositionComponent>(otherEntity).Value;
+                        var distToOther = pos.Value.DistanceTo(otherPos);
+                        const float separationRadius = 10.0f;
+
+                        if (!(distToOther < separationRadius) || !(distToOther > 0.01f)) continue;
+
+                        var pushDir = (pos.Value - otherPos).Normalized();
+                        repulsionForce += pushDir * (separationRadius - distToOther);
+                        neighbors++;
+                    }
+
+                    // Repulsion from wagons to avoid clipping.
+                    foreach (var wagon in wagons)
+                    {
+                        var wSlot = world.Get<WagonSlotComponent>(wagon);
+                        var wPos = trainRoot.GlobalPosition + new Vector3(-wSlot.SlotIndex * wagonSize, 2.0f, 0);
+                        var distToWagon = pos.Value.DistanceTo(wPos);
+
+                        if (!(distToWagon < wagonPhysicalRadius + 0.5f)) continue;
+
+                        var pushDir = (pos.Value - wPos).Normalized();
+                        repulsionForce += pushDir * ((wagonPhysicalRadius + 0.5f) - distToWagon) * 5.0f;
+                        neighbors++;
+                    }
+
+                    if (neighbors > 0)
+                    {
+                        repulsionForce /= neighbors;
+                        moveDir = (moveDir + repulsionForce * 1.5f).Normalized();
+                    }
+
+                    // Apply movement.
+                    pos.Value += moveDir * loco.Speed * (float)delta;
+
+                    // Simple gravity for non-flying enemies.
+                    if (!loco.IsFlying)
+                    {
+                        pos.Value.Y -= 9.81f * (float)delta;
+                        if (pos.Value.Y < 0) pos.Value.Y = 0; // Ground level
+                    }
                 }
-
-                if (neighbors > 0)
-                {
-                    repulsionForce /= neighbors;
-                    moveDir = (moveDir + repulsionForce * 1.5f).Normalized();
-                }
-
-                // Apply movement.
-                pos.Value += moveDir * loco.Speed * (float)delta;
-
-                // Simple gravity for non-flying enemies.
-                if (loco.IsFlying) continue;
-                pos.Value.Y -= 9.81f * (float)delta;
-                if (pos.Value.Y < 0) pos.Value.Y = 0; // Ground level
-            }
+            }, () => { });
         }
     }
 
@@ -207,9 +214,9 @@ public class EnemySystem(Node3D trainRoot) : ISystem
     /// <summary>
     /// Determines which wagon an enemy should target based on its type-specific logic and wagon priorities.
     /// </summary>
-    private static Entity FindBestTarget(EnemyType enemyType, List<Entity> wagons, World world)
+    private static Option<Entity> FindBestTarget(EnemyType enemyType, List<Entity> wagons, World world)
     {
-        var bestTarget = Entity.Null;
+        var bestTarget = Option<Entity>.None;
         var bestScore = -99999f;
 
         foreach (var wagon in wagons)
@@ -252,7 +259,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem
 
             if (!(score > bestScore)) continue;
             bestScore = score;
-            bestTarget = wagon;
+            bestTarget = Option<Entity>.Some(wagon);
         }
 
         return bestTarget;

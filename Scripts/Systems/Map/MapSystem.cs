@@ -3,6 +3,7 @@ using Godot;
 using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Enums;
 
 namespace IronStrata.Scripts.Systems.Map;
@@ -18,15 +19,22 @@ public class MapSystem(Node3D trainRoot) : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        var mapEntity = world.Query<MapComponent, LocationComponent>().FirstOrDefault();
-        var moveEntity = world.Query<TrainMovementComponent>().FirstOrDefault();
+        world.Query<MapComponent, LocationComponent>()
+            .FirstOptional()
+            .Zip(world.Query<TrainMovementComponent>().FirstOptional())
+            .Match(entities => 
+            {
+                var (mapEntity, moveEntity) = entities;
+                var loc = world.Get<LocationComponent>(mapEntity);
+                var map = world.Get<MapComponent>(mapEntity);
+                var move = world.Get<TrainMovementComponent>(moveEntity);
 
-        if (mapEntity == null || moveEntity == null) return;
+                UpdateMovement(loc, map, move, delta);
+            }, () => { });
+    }
 
-        var loc = world.Get<LocationComponent>(mapEntity);
-        var map = world.Get<MapComponent>(mapEntity);
-        var move = world.Get<TrainMovementComponent>(moveEntity);
-
+    private void UpdateMovement(LocationComponent loc, MapComponent map, TrainMovementComponent move, double delta)
+    {
         if (!loc.IsInTransit) return;
 
         var startNode = map.AllNodes[loc.CurrentNodeId];

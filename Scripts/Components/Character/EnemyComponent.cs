@@ -1,4 +1,5 @@
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Components.Character;
 
@@ -25,7 +26,7 @@ public class EnemyComponent : IComponent
     /// <summary>
     /// The current target entity this enemy is attacking or pursuing.
     /// </summary>
-    public Entity CurrentTarget; 
+    public Option<Entity> CurrentTarget = Option<Entity>.None; 
 
     /// <summary>
     /// Current cooldown timer for attacks.

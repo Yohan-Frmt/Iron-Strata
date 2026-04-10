@@ -6,6 +6,7 @@ using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Systems.Train;
 
@@ -38,17 +39,18 @@ public class ConstructionSystem : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        var locEntity = world.Query<LocationComponent>().FirstOrDefault();
-        if (locEntity == null) return;
-        
-        var loc = world.Get<LocationComponent>(locEntity);
-        
-        // Show/hide the construction HUD based on whether the train is in transit.
-        if (_bottomHud != null) _bottomHud.Visible = loc.IsInTransit;
-        
-        // Hide the placement preview if not in transit.
-        if (!loc.IsInTransit && _previewGhost.Visible) 
-            _previewGhost.Visible = false;
+        world.Query<LocationComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<LocationComponent>(e))
+            .Match(loc => 
+            {
+                // Show/hide the construction HUD based on whether the train is in transit.
+                if (_bottomHud != null) _bottomHud.Visible = loc.IsInTransit;
+                
+                // Hide the placement preview if not in transit.
+                if (!loc.IsInTransit && _previewGhost.Visible) 
+                    _previewGhost.Visible = false;
+            }, () => { });
     }
 
     /// <summary>
@@ -65,8 +67,11 @@ public class ConstructionSystem : ISystem
     /// </summary>
     public void UpdatePreview(World world, WagonType cardType, Vector2 mousePos)
     {
-        var loc = world.Query<LocationComponent>().Select(e => world.Get<LocationComponent>(e)).FirstOrDefault();
-        if (loc is not { IsInTransit: true }) return;
+        var locOption = world.Query<LocationComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<LocationComponent>(e));
+
+        if (locOption.Match(l => !l.IsInTransit, () => true)) return;
 
         // Perform raycast from camera to world.
         var spaceState = _bottomHud.GetViewport().World3D.DirectSpaceState;
@@ -160,14 +165,19 @@ public class ConstructionSystem : ISystem
     /// <returns>True if the card was successfully played, false otherwise.</returns>
     public bool TryPlayCard(World world, WagonType cardType, int cost, Vector2 mousePos)
     {
-        var loc = world.Query<LocationComponent>().Select(e => world.Get<LocationComponent>(e)).FirstOrDefault();
-        if (loc is not { IsInTransit: true }) return false;
+        var locOption = world.Query<LocationComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<LocationComponent>(e));
+
+        if (locOption.Match(l => !l.IsInTransit, () => true)) return false;
 
         // Check if player has enough resources.
-        var resEntity = world.Query<ResourceComponent>().FirstOrDefault();
-        if (resEntity == null) return false;
-        var resources = world.Get<ResourceComponent>(resEntity);
-        if (resources.Scrap < cost) return false;
+        var resOption = world.Query<ResourceComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<ResourceComponent>(e));
+
+        if (resOption.Match(r => r.Scrap < cost, () => true)) return false;
+        var resources = resOption.Unwrap();
 
         var spaceState = _bottomHud.GetViewport().World3D.DirectSpaceState;
         var rayOrigin = _camera.ProjectRayOrigin(mousePos);

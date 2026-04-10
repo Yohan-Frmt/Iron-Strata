@@ -4,6 +4,7 @@ using Godot;
 using IronStrata.Scenes;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
+using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.UI;
 
@@ -158,7 +159,9 @@ public partial class CardUi : Control
     private static int GetCurrentScrap()
     {
         var world = Core.Autoloads.GameWorld.Instance.World;
-        var resEntity = world.Query<ResourceComponent>().FirstOrDefault();
-        return resEntity != null ? world.Get<ResourceComponent>(resEntity).Scrap : 0;
+        return world.Query<ResourceComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<ResourceComponent>(e))
+            .Match(r => r.Scrap, () => 0);
     }
 }
