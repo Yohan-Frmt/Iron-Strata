@@ -54,15 +54,21 @@ public class DebugRenderSystem : ISystem
             var pos = world.Get<PositionComponent>(entity);
             
             DrawCircle3D(pos.Value, enemy.AttackRange, new Color(1f, 0f, 0f, 0.5f));
-            
-            if (!world.IsAlive(enemy.CurrentTarget)) continue;
-            
-            var slotComp = world.Get<WagonSlotComponent>(enemy.CurrentTarget);
-            const float wagonSize = 5f;
-            var targetLocalPos = new Vector3(-slotComp.SlotIndex * wagonSize, 0, 0);
-            var targetGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
-            
-            DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f));
+
+
+            enemy.CurrentTarget.Match(target =>
+            {
+                if (!world.IsAlive(target)) return;
+                world.GetOptional<WagonSlotComponent>(target).Match(slot =>
+                    {
+                        var slotIndex = slot.SlotIndex;
+                        const float wagonSize = 5f;
+                        var targetLocalPos = new Vector3(-slotIndex * wagonSize, 0, 0);
+                        var targetGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
+                        DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f));
+                    }, () => { }
+                );
+            }, () => {}); 
         }
 
         foreach (var entity in world.Query<WagonSlotComponent, TurretComponent>())
