@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['game_20loop_0',['4. CORE GAME LOOP',['../md_project.html#autotoc_md38',1,'']]],
+  ['gameplay_20pillars_1',['Core Gameplay Pillars',['../index.html#autotoc_md2',1,'']]],
+  ['gamestatecomponent_2',['GameStateComponent',['../class_iron_strata_1_1_scripts_1_1_components_1_1_shared_1_1_game_state_component.html',1,'IronStrata::Scripts::Components::Shared']]],
+  ['gamestatecomponent_2ecs_3',['GameStateComponent.cs',['../_game_state_component_8cs.html',1,'']]],
+  ['gameworld_4',['GameWorld',['../class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html',1,'IronStrata::Scripts::Core::Autoloads']]],
+  ['gameworld_2ecs_5',['GameWorld.cs',['../_game_world_8cs.html',1,'']]],
+  ['gate_6',['Gate',['../namespace_iron_strata_1_1_scripts_1_1_enums.html#a69b8663fe1a66bc5afccba54871886e1ad25b4bd4c72aa2c07ee87adb10b59f16',1,'IronStrata::Scripts::Enums']]],
+  ['gate_20structure_7',['15.2 Gate Structure',['../md_project.html#autotoc_md103',1,'']]],
+  ['gates_8',['15. BOSS ENCOUNTERS — THE GATES',['../md_project.html#autotoc_md101',1,'']]],
+  ['gates_20overview_9',['15.1 Gates Overview',['../md_project.html#autotoc_md102',1,'']]],
+  ['generatemap_10',['GenerateMap',['../class_iron_strata_1_1_scripts_1_1_map_1_1_map_generator.html#a0560db3bfe96ce90386249b5cdc5ede1',1,'IronStrata::Scripts::Map::MapGenerator']]],
+  ['generation_11',['8.1 Passenger Generation',['../md_project.html#autotoc_md63',1,'']]],
+  ['generation_20—_20the_20megastructure_12',['13. PROCEDURAL GENERATION — THE MEGASTRUCTURE',['../md_project.html#autotoc_md93',1,'']]],
+  ['generation_20algorithm_13',['13.1 The Tunnel Generation Algorithm',['../md_project.html#autotoc_md94',1,'']]],
+  ['get_3c_20t_20_3e_14',['Get&lt; T &gt;',['../class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html#a4867ad421865a9dae55e3abaea4647d8',1,'IronStrata::Scripts::Core::ECS::World']]],
+  ['getenemydefinition_15',['GetEnemyDefinition',['../class_iron_strata_1_1_scripts_1_1_registry_1_1_enemy_registry.html#aa7ce7a31b62c33235b45f49b8a782ee9',1,'IronStrata::Scripts::Registry::EnemyRegistry']]],
+  ['gethashcode_16',['GetHashCode',['../class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_entity.html#a77f8b7b31985606609f0cdd1e0a99d93',1,'IronStrata.Scripts.Core.ECS.Entity.GetHashCode()'],['../struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#a8e512eb236c8ad0df1447386afd56368',1,'IronStrata.Scripts.Core.Types.Option-1-g.GetHashCode()'],['../struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result-2-g.html#abe2c7926137a3091969d9578a12907cd',1,'IronStrata.Scripts.Core.Types.Result-2-g.GetHashCode()']]],
+  ['getlocalposition_17',['GetLocalPosition',['../class_iron_strata_1_1_scripts_1_1_core_1_1_constants_1_1_train_layout.html#a1a2683f925c4142d06ce205f003aae88',1,'IronStrata::Scripts::Core::Constants::TrainLayout']]],
+  ['getoptional_3c_20t_20_3e_18',['GetOptional&lt; T &gt;',['../class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html#a53651c588be5f06f7a8ba41e727ce811',1,'IronStrata::Scripts::Core::ECS::World']]],
+  ['global_20map_19',['14.2 The Global Map',['../md_project.html#autotoc_md99',1,'']]],
+  ['glossary_20of_20terms_20',['APPENDIX A — Glossary of Terms',['../md_project.html#autotoc_md151',1,'']]],
+  ['guarantee_21',['13.2 No-Two-Runs Guarantee',['../md_project.html#autotoc_md95',1,'']]],
+  ['guardian_20catalog_22',['15.3 Guardian Catalog',['../md_project.html#autotoc_md104',1,'']]]
+];

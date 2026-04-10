@@ -13,6 +13,9 @@
     <Content Include="CHANGELOG.md" />
     <Content Include="CODE_OF_CONDUCT.md" />
     <Content Include="CONTRIBUTING.md" />
+    <Content Include="Doxyfile" />
+    <Content Include="generate_docs.bat" />
+    <Content Include="generate_docs.ps1" />
     <Content Include="README.md" />
     <Content Include="SECURITY.md" />
     <Content Include="SUPPORT.md" />
