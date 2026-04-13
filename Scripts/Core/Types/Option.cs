@@ -66,10 +66,10 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     /// <summary>
     /// Executes the appropriate action based on whether the option is Some or None.
     /// </summary>
-    public void Match(Action<T> onSome, Action onNone)
+    public void Match(Action<T> onSome, Action onNone = null)
     {
         if (_isSome) onSome(_value);
-        else onNone();
+        else onNone?.Invoke();
     }
 
     /// <summary>
@@ -77,12 +77,13 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     /// </summary>
     public U Match<U>(Func<T, U> onSome, Func<U> onNone) => _isSome ? onSome(_value) : onNone();
 
-    public bool Equals(Option<T> other)
-    {
-        if (!_isSome && !other._isSome) return true;
-        if (_isSome && other._isSome) return EqualityComparer<T>.Default.Equals(_value, other._value);
-        return false;
-    }
+    public bool Equals(Option<T> other) =>
+        _isSome switch
+        {
+            false when !other._isSome => true,
+            true when other._isSome => EqualityComparer<T>.Default.Equals(_value, other._value),
+            _ => false
+        };
 
     public override bool Equals(object obj) => obj is Option<T> other && Equals(other);
 
@@ -93,13 +94,4 @@ public readonly struct Option<T> : IEquatable<Option<T>>
     public static bool operator !=(Option<T> left, Option<T> right) => !left.Equals(right);
 
     public static implicit operator Option<T>(T value) => value is null ? None : Some(value);
-}
-
-/// <summary>
-/// Helper class for creating Option instances.
-/// </summary>
-public static class Option
-{
-    public static Option<T> Some<T>(T value) => Option<T>.Some(value);
-    public static Option<T> None<T>() => Option<T>.None;
 }

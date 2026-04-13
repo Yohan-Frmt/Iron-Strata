@@ -1,5 +1,6 @@
 using System.Linq;
 using Godot;
+using IronStrata.Scripts.Components.Camera;
 using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Components.Render;
 using IronStrata.Scripts.Components.Shared;
@@ -10,6 +11,7 @@ using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Map;
 using IronStrata.Scripts.Registry;
+using IronStrata.Scripts.Systems.Camera;
 using IronStrata.Scripts.Systems.Combat;
 using IronStrata.Scripts.Systems.Debug;
 using IronStrata.Scripts.Systems.Map;
@@ -34,6 +36,7 @@ public partial class Main : Node
     private World _world;
     private ConstructionSystem _constructionSystem;
     private TacticalPauseSystem _pauseSystem;
+    private CameraSystem _cameraSystem;
 
     /// <summary>
     /// Sets up the initial game state, world, and ECS systems.
@@ -48,16 +51,28 @@ public partial class Main : Node
         var enemyRoot = new Node3D { Name = "EnemyRoot" };
         AddChild(enemyRoot);
 
-        var camera = new Camera3D { 
-            Name = "Camera", 
-            Projection = Camera3D.ProjectionType.Orthogonal, 
-            Size = 35f, 
-            Position = new Vector3(CameraLeadX - 20f, 25f, 25f) 
+        var springArm = new SpringArm3D { 
+            SpringLength = 35f, 
+            ProcessMode = ProcessModeEnum.Always,
+            Rotation = new Vector3(Mathf.DegToRad(-45f), 0f, 0f),
+            CollisionMask = 2
         };
-        AddChild(camera);
-        camera.LookAt(new Vector3(CameraLeadX, 0f, 0f), Vector3.Up);
+
+        var camera = new Camera3D
+        {
+            ProcessMode = ProcessModeEnum.Always
+        };
+        trainRoot.AddChild(springArm);
+        springArm.AddChild(camera);
         camera.MakeCurrent();
-        camera.ProcessMode = ProcessModeEnum.Always; 
+        _cameraSystem = new CameraSystem();
+
+        var camEntity = _world.CreateEntity();
+        _world.Add(camEntity, new CameraComponent { 
+            SpringArm = springArm, 
+            Camera = camera,
+            TargetRotation = springArm.Rotation
+        });
 
         var floor = new MeshInstance3D { Name = "Floor" };
         floor.Mesh = new PlaneMesh { Size = new Vector2(2000f, 2000f) };
@@ -93,7 +108,6 @@ public partial class Main : Node
             AnchorsPreset = (int)Control.LayoutPreset.Center
         };
         
-        _pauseSystem = new TacticalPauseSystem(pauseOverlay);
         var pauseButton = GetNode<Button>("UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxAction/PauseButton");
         if (pauseButton != null) {
             pauseButton.Pressed += () => _pauseSystem.TriggerPause();
@@ -101,6 +115,8 @@ public partial class Main : Node
         } else {
             GD.PrintErr("Le bouton de pause est introuvable, vérifiez l'Access as Unique Name !");
         }
+        
+        _pauseSystem = new TacticalPauseSystem(pauseOverlay);
         pauseOverlay.AddChild(pauseLabel);
         hud.AddChild(pauseOverlay);
         pauseOverlay.ProcessMode = ProcessModeEnum.Always;
@@ -117,11 +133,9 @@ public partial class Main : Node
         _cardScene = GD.Load<PackedScene>("res://Scenes/Cards/card_ui.tscn");
         drawButton.Pressed += DrawCard;
 
-        // Initialize Train Entity.
         var trainEntity = _world.CreateEntity();
         _world.Add(trainEntity, new TrainMovementComponent { MaxSpeed = 5f, Acceleration = 1.0f, Deceleration = 5.0f });
 
-        // Generate and initialize Map Entity.
         var mapEntity = _world.CreateEntity();
         var mapComp = new MapComponent();
         var mapData = new MapGenerator().GenerateMap();
@@ -132,7 +146,6 @@ public partial class Main : Node
         }
         _world.Add(mapEntity, mapComp);
 
-        // Set starting position on the map.
         var startNodeId = mapComp.Layers[0][0];
         var targetNodeId = mapComp.AllNodes[startNodeId].NextNodes[0];
 
@@ -146,7 +159,6 @@ public partial class Main : Node
 
         _world.Add(mapEntity, new ResourceComponent { Scrap = ResourceRegistry.StartingScrap });
 
-        // Construction preview setup.
         var previewGhost = new MeshInstance3D { Name = "PreviewGhost", Visible = false };
         previewGhost.Mesh = new BoxMesh { 
             Size = new Vector3(TrainLayout.WagonLength, TrainLayout.WagonHeight, TrainLayout.WagonWidth) 
@@ -158,11 +170,11 @@ public partial class Main : Node
         });
         trainRoot.AddChild(previewGhost);
 
-        _constructionSystem = new ConstructionSystem(camera, previewGhost, bottomHud, trainRoot);
+        _constructionSystem = new ConstructionSystem(previewGhost, bottomHud, trainRoot);
 
-        // Register all logic systems to the runner.
         GameWorld.Instance.Runner
-            .Add(new TrainMovementSystem(trainRoot, camera, speedLabel))
+            .Add(new TrainMovementSystem(speedLabel))
+            .Add(_cameraSystem)
             .Add(_pauseSystem)
             .Add(new WagonConnectionSystem())
             .Add(new MapSystem(trainRoot))
@@ -176,8 +188,12 @@ public partial class Main : Node
             .Add(new WagonHealthUiSystem())
             .Add(new EnemyMultiMeshSystem(enemyRoot));
 
-        // Initial wagons for testing.
         SpawnTestTrain(_world);
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        _cameraSystem?.OnInput(@event);
     }
 
     /// <summary>
@@ -187,11 +203,10 @@ public partial class Main : Node
     {
         _world.Query<ResourceComponent>()
             .FirstOptional()
-            .Bind(e => _world.GetOptional<ResourceComponent>(e))
+            .Bind(_world.GetOptional<ResourceComponent>)
             .Match(resources => 
             {
                 if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) return;
-                
                 resources.Scrap -= ResourceRegistry.CardDrawCost;
                 var newCard = _cardScene.Instantiate<Scripts.UI.CardUi>();
                 var randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
@@ -200,9 +215,28 @@ public partial class Main : Node
             }, () => { });
     }
 
-    // Bridge methods between UI and Construction System.
-    public bool TryPlayCard(WagonType cardType, int cost, Vector2 mousePos) => _constructionSystem.TryPlayCard(_world, cardType, cost, mousePos);
-    public void UpdatePreview(WagonType cardType, Vector2 mousePos) => _constructionSystem.UpdatePreview(_world, cardType, mousePos);
+    /// <summary>
+    /// Attempts to play a card by building the specified wagon type at the mouse position, if the conditions are met.
+    /// </summary>
+    /// <param name="cardType">The type of wagon card to play.</param>
+    /// <param name="cost">The resource cost to play the card.</param>
+    /// <param name="mousePos">The global position of the mouse where the card is to be played.</param>
+    /// <returns>Returns true if the card was successfully played; otherwise, false.</returns>
+    public Result<bool, string> TryPlayCard(WagonType cardType, int cost, Vector2 mousePos) =>
+        _constructionSystem.TryPlayCard(_world, cardType, cost, mousePos);
+
+    /// <summary>
+    /// Updates the 3D preview of a wagon being placed during construction.
+    /// </summary>
+    /// <param name="cardType">The type of wagon being previewed.</param>
+    /// <param name="mousePos">The current position of the mouse, used to determine the preview's location in the game world.</param>
+    public void UpdatePreview(WagonType cardType, Vector2 mousePos) =>
+        _constructionSystem.UpdatePreview(_world, cardType, mousePos);
+
+    /// <summary>
+    /// Hides the wagon placement preview ghost from the game view.
+    /// This method ensures the visual representation of a card preview is no longer displayed.
+    /// </summary>
     public void HidePreview() => _constructionSystem.HidePreview();
 
     /// <summary>
@@ -254,6 +288,6 @@ public partial class Main : Node
             BackgroundMode = Environment.BGMode.Color, 
             BackgroundColor = new Color(0.1f, 0.1f, 0.12f) 
         };
-        AddChild(new Godot.WorldEnvironment { Environment = env });
+        AddChild(new WorldEnvironment { Environment = env });
     }
 }
