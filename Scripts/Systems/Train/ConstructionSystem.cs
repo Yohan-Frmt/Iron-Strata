@@ -1,7 +1,5 @@
 using System.Linq;
 using Godot;
-using Godot.Collections;
-using IronStrata.Scripts.Components.Camera;
 using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Components.Render;
 using IronStrata.Scripts.Components.Shared;
@@ -13,24 +11,12 @@ using IronStrata.Scripts.Core.Types;
 namespace IronStrata.Scripts.Systems.Train;
 
 /// <summary>
-/// Represents a configuration for visualizing a preview object within the game.
-/// It defines the position, scale, colors, and visibility state of the preview object.
-/// </summary>
-internal struct PreviewConfig
-{
-    public Vector3 Position { get; init; }
-    public Vector3 Scale { get; init; }
-    public Color AlbedoColor { get; init; }
-    public Color Emission { get; init; }
-    public bool Visible { get; init; }
-}
-
-/// <summary>
 /// System that handles the construction of new wagons and upgrading existing ones.
 /// It manages the interaction between the player's mouse and the 3D train model.
 /// </summary>
 public class ConstructionSystem : ISystem
 {
+    private readonly Camera3D _camera;
     private readonly MeshInstance3D _previewGhost;
     private readonly StandardMaterial3D _previewMat;
     private readonly Control _bottomHud;
@@ -39,8 +25,9 @@ public class ConstructionSystem : ISystem
     /// <summary>
     /// Initializes a new instance of the ConstructionSystem.
     /// </summary>
-    public ConstructionSystem(MeshInstance3D previewGhost, Control bottomHud, Node3D trainRoot)
+    public ConstructionSystem(Camera3D camera, MeshInstance3D previewGhost, Control bottomHud, Node3D trainRoot)
     {
+        _camera = camera;
         _previewGhost = previewGhost;
         _bottomHud = bottomHud;
         _trainRoot = trainRoot;
@@ -54,13 +41,16 @@ public class ConstructionSystem : ISystem
     {
         world.Query<LocationComponent>()
             .FirstOptional()
-            .Bind(world.GetOptional<LocationComponent>)
-            .Match(loc =>
-                {
-                    if (_bottomHud != null) _bottomHud.Visible = loc.IsInTransit;
-                    if (!loc.IsInTransit && _previewGhost.Visible) _previewGhost.Visible = false;
-                }
-            );
+            .Bind(e => world.GetOptional<LocationComponent>(e))
+            .Match(loc => 
+            {
+                // Show/hide the construction HUD based on whether the train is in transit.
+                if (_bottomHud != null) _bottomHud.Visible = loc.IsInTransit;
+                
+                // Hide the placement preview if not in transit.
+                if (!loc.IsInTransit && _previewGhost.Visible) 
+                    _previewGhost.Visible = false;
+            }, () => { });
     }
 
     /// <summary>
@@ -77,209 +67,154 @@ public class ConstructionSystem : ISystem
     /// </summary>
     public void UpdatePreview(World world, WagonType cardType, Vector2 mousePos)
     {
-        var shouldExit = world.Query<LocationComponent>()
+        var locOption = world.Query<LocationComponent>()
             .FirstOptional()
-            .Bind(world.GetOptional<LocationComponent>)
-            .Match(
-                l => !l.IsInTransit,
-                () => true
-            );
+            .Bind(e => world.GetOptional<LocationComponent>(e));
 
-        if (shouldExit)
-        {
-            _previewGhost.Visible = false;
-            return;
-        }
+        if (locOption.Match(l => !l.IsInTransit, () => true)) return;
 
-        world.Query<CameraComponent>()
-            .FirstOptional()
-            .Bind(world.GetOptional<CameraComponent>)
-            .Match(cam =>
-            {
-                PerformRaycast(cam.Camera, mousePos)
-                    .Bind(GetColliderData)
-                    .Bind(collider => ProcessCollision(world, collider.Collider, collider.Position, cardType))
-                    .Match(
-                        ApplyPreviewConfig,
-                        () => _previewGhost.Visible = false
-                    );
-            });
-    }
-
-    /// <summary>
-    /// Performs a raycast from the camera to the mouse position.
-    /// </summary>
-    /// <param name="camera"></param>
-    /// <param name="mousePos"></param>
-    /// <returns></returns>
-    private Option<Dictionary> PerformRaycast(Camera3D camera, Vector2 mousePos)
-    {
+        // Perform raycast from camera to world.
         var spaceState = _bottomHud.GetViewport().World3D.DirectSpaceState;
-        var rayOrigin = camera.ProjectRayOrigin(mousePos);
-        var rayEnd = rayOrigin + camera.ProjectRayNormal(mousePos) * 1000f;
+        var rayOrigin = _camera.ProjectRayOrigin(mousePos);
+        var rayEnd = rayOrigin + _camera.ProjectRayNormal(mousePos) * 1000f;
         var query = PhysicsRayQueryParameters3D.Create(rayOrigin, rayEnd);
         query.CollideWithAreas = true;
 
         var result = spaceState.IntersectRay(query);
-        return result.Count > 0
-            ? Option<Dictionary>.Some(result)
-            : Option<Dictionary>.None;
-    }
 
-    /// <summary>
-    /// Applies the specified preview configuration to the preview object.
-    /// </summary>
-    /// <param name="config">The configuration to apply to the preview object.</param>
-    private void ApplyPreviewConfig(PreviewConfig config)
-    {
-        _previewGhost.Position = config.Position;
-        _previewGhost.Scale = config.Scale;
-        _previewMat.AlbedoColor = config.AlbedoColor;
-        _previewMat.Emission = config.Emission;
-        _previewGhost.Visible = config.Visible;
-    }
+        if (result.Count <= 0) return;
 
+        var collider = (Node3D)result["collider"];
+
+        // Check if we hit an existing wagon.
+        if (collider.HasMeta("EntityId"))
+        {
+            var entityId = (int)collider.GetMeta("EntityId");
+            var hitEntity = new Entity(entityId);
+
+            if (world.IsAlive(hitEntity))
+            {
+                var hitSlot = world.Get<WagonSlotComponent>(hitEntity);
+                var highestLayer = -1;
+                var topType = WagonType.Locomotive;
+
+                // Find the topmost wagon at this slot index.
+                foreach (var e in world.Query<WagonSlotComponent, WagonTypeComponent>())
+                {
+                    var s = world.Get<WagonSlotComponent>(e);
+                    if (s.SlotIndex != hitSlot.SlotIndex || s.Layer <= highestLayer) continue;
+                    highestLayer = s.Layer;
+                    topType = world.Get<WagonTypeComponent>(e).Type;
+                }
+
+                // Cannot build on top of the locomotive.
+                if (topType == WagonType.Locomotive) 
+                { 
+                    _previewGhost.Visible = false; 
+                    return; 
+                }
+
+                // If types match, it's an upgrade (yellow highlight).
+                if (topType == cardType)
+                {
+                    _previewMat.AlbedoColor = new Color(1.0f, 0.8f, 0.2f, 0.6f);
+                    _previewMat.Emission = new Color(1.0f, 0.8f, 0.2f);
+                    _previewGhost.Position = TrainLayout.GetLocalPosition(hitSlot.SlotIndex, highestLayer);
+                    _previewGhost.Scale = new Vector3(1.1f, 1.1f, 1.1f);
+                }
+                // Otherwise, it's a new layer (blue highlight).
+                else
+                {
+                    _previewMat.AlbedoColor = new Color(0.2f, 0.6f, 1.0f, 0.6f);
+                    _previewMat.Emission = new Color(0.2f, 0.6f, 1.0f);
+                    _previewGhost.Position = TrainLayout.GetLocalPosition(hitSlot.SlotIndex, highestLayer + 1);
+                    _previewGhost.Scale = Vector3.One;
+                }
+                _previewGhost.Visible = true;
+                return;
+            }
+        }
+        // Check if we hit the floor to append a new wagon at the end of the train.
+        else if (collider.Name == "FloorBody")
+        {
+            var hitPoint = (Vector3)result["position"];
+            var localHit = _trainRoot.ToLocal(hitPoint);
+            var maxSlot = world.Query<WagonSlotComponent>()
+                .Select(e => world.Get<WagonSlotComponent>(e).SlotIndex)
+                .Prepend(0).Max();
+            
+            var lastWagonX = -maxSlot * (TrainLayout.WagonLength + TrainLayout.WagonGap);
+            
+            // If mouse is behind the last wagon, show placement ghost (green highlight).
+            if (localHit.X < lastWagonX + 2f)
+            {
+                _previewMat.AlbedoColor = new Color(0.2f, 1.0f, 0.2f, 0.6f);
+                _previewMat.Emission = new Color(0.2f, 1.0f, 0.2f);
+                _previewGhost.Position = TrainLayout.GetLocalPosition(maxSlot + 1, 0);
+                _previewGhost.Scale = Vector3.One;
+                _previewGhost.Visible = true;
+                return;
+            }
+        }
+        _previewGhost.Visible = false;
+    }
 
     /// <summary>
     /// Attempts to play a card (build or upgrade a wagon) at the current mouse position.
     /// </summary>
     /// <returns>True if the card was successfully played, false otherwise.</returns>
-    public Result<bool, string> TryPlayCard(World world, WagonType cardType, int cost, Vector2 mousePos)
+    public bool TryPlayCard(World world, WagonType cardType, int cost, Vector2 mousePos)
     {
-        var resOption = world.Query<ResourceComponent>().FirstOptional().Bind(world.GetOptional<ResourceComponent>);
-        if (resOption.Match(r => r.Scrap < cost, () => true)) 
-            return Result.Err<bool, string>("Not enough scrap!");
-        
-        return world.Query<CameraComponent>()
+        var locOption = world.Query<LocationComponent>()
             .FirstOptional()
-            .Bind(world.GetOptional<CameraComponent>)
-            .Match(
-                cam => ExecutePlacement(world, cam.Camera, cardType, cost, mousePos, resOption.Unwrap()),
-                () => Result.Err<bool, string>("Camera not found")
-            );
-    }
+            .Bind(e => world.GetOptional<LocationComponent>(e));
 
-    /// <summary>
-    /// Executes the placement of a new wagon or updates an existing one based on the provided parameters.
-    /// </summary>
-    /// <param name="world">The ECS world instance containing all entities and components.</param>
-    /// <param name="camera">The 3D camera used for raycasting to determine placement location.</param>
-    /// <param name="type">The type of wagon to place or update.</param>
-    /// <param name="cost">The resource cost for the placement action.</param>
-    /// <param name="mousePos">The mouse position in screen space used for raycasting.</param>
-    /// <param name="resources">The resource component containing information on available resources.</param>
-    /// <returns>
-    /// A Result object containing a boolean indicating success or failure, or an error message describing the reason for failure.
-    /// </returns>
-    private Result<bool, string> ExecutePlacement(World world, Camera3D camera, WagonType type, int cost, Vector2 mousePos, ResourceComponent resources)
-    {
-        return PerformRaycast(camera, mousePos)
-            .Bind(GetColliderData)
-            .Match(
-                data => 
-                {
-                    if (data.Collider.HasMeta("EntityId"))
-                    {
-                        var entityId = (int)data.Collider.GetMeta("EntityId");
-                        ApplyCardToWagon(world, new Entity(entityId), type);
-                        resources.Scrap -= cost;
-                        return Result.Ok<bool, string>(true);
-                    }
+        if (locOption.Match(l => !l.IsInTransit, () => true)) return false;
 
-                    if (data.Collider.Name == "FloorBody" && IsValidFloorSpace(world, data.Position))
-                    {
-                        var maxSlot = GetMaxSlot(world);
-                        CreateNewWagon(world, maxSlot + 1, 0, type);
-                        resources.Scrap -= cost;
-                        return Result.Ok<bool, string>(true);
-                    }
+        // Check if player has enough resources.
+        var resOption = world.Query<ResourceComponent>()
+            .FirstOptional()
+            .Bind(e => world.GetOptional<ResourceComponent>(e));
 
-                    return Result.Err<bool, string>("Invalid placement area");
-                },
-                () => Result.Err<bool, string>("Nothing hit")
-            );
-    }
+        if (resOption.Match(r => r.Scrap < cost, () => true)) return false;
+        var resources = resOption.Unwrap();
 
-    /// <summary>
-    /// Extracts collider and position data from the provided result dictionary.
-    /// </summary>
-    /// <param name="result">The dictionary containing raycast hit data, expected to have "collider" and "position" keys.</param>
-    /// <returns>An <see cref="Option{T}"/> containing a tuple with the collided <see cref="Node3D"/> and its hit position
-    /// as a <see cref="Vector3"/>, or <see cref="Option.None"/> if the required data is missing.</returns>
-    private static Option<(Node3D Collider, Vector3 Position)> GetColliderData(Dictionary result)
-    {
-        if (result.TryGetValue("collider", out var col) && result.TryGetValue("position", out var pos))
-            return Option<(Node3D, Vector3)>.Some(((Node3D)col, (Vector3)pos));
-        return Option<(Node3D, Vector3)>.None;
-    }
+        var spaceState = _bottomHud.GetViewport().World3D.DirectSpaceState;
+        var rayOrigin = _camera.ProjectRayOrigin(mousePos);
+        var rayEnd = rayOrigin + _camera.ProjectRayNormal(mousePos) * 1000f;
+        var query = PhysicsRayQueryParameters3D.Create(rayOrigin, rayEnd);
+        query.CollideWithAreas = true;
+        var result = spaceState.IntersectRay(query);
 
-    /// <summary>
-    /// Processes a collision to determine the appropriate preview configuration for placing or upgrading a wagon.
-    /// </summary>
-    /// <param name="world">The game world containing all entities and components.</param>
-    /// <param name="collider">The node corresponding to the object that was collided with.</param>
-    /// <param name="hitPos">The position of the collision in world coordinates.</param>
-    /// <param name="cardType">The type of wagon card being processed.</param>
-    /// <returns>An Option containing a <see cref="PreviewConfig"/> if a valid preview configuration can be generated; otherwise, None.</returns>
-    private Option<PreviewConfig> ProcessCollision(World world, Node3D collider, Vector3 hitPos, WagonType cardType)
-    {
+        if (result.Count <= 0) return false;
+        var collider = (Node3D)result["collider"];
+
+        // Handle hitting an existing wagon.
         if (collider.HasMeta("EntityId"))
         {
             var entityId = (int)collider.GetMeta("EntityId");
-            var hitEntity = new Entity(entityId);
-            if (!world.IsAlive(hitEntity)) return Option<PreviewConfig>.None;
-
-            var hitSlot = world.Get<WagonSlotComponent>(hitEntity);
-            var (highestLayer, topType) = FindTopWagon(world, hitSlot.SlotIndex);
-
-            if (topType == WagonType.Locomotive) return Option<PreviewConfig>.None;
-
-            var isUpgrade = topType == cardType;
-            return Option<PreviewConfig>.Some(new PreviewConfig {
-                Position = TrainLayout.GetLocalPosition(hitSlot.SlotIndex, isUpgrade ? highestLayer : highestLayer + 1),
-                Scale = isUpgrade ? new Vector3(1.1f, 1.1f, 1.1f) : Vector3.One,
-                AlbedoColor = isUpgrade ? new Color(1, 0.8f, 0.2f, 0.6f) : new Color(0.2f, 0.6f, 1, 0.6f),
-                Emission = isUpgrade ? new Color(1, 0.8f, 0.2f) : new Color(0.2f, 0.6f, 1),
-                Visible = true
-            });
+            ApplyCardToWagon(world, new Entity(entityId), cardType);
+            resources.Scrap -= cost;
+            return true;
         }
-
-        if (collider.Name == "FloorBody" && IsValidFloorSpace(world, hitPos))
-        {
-            return Option<PreviewConfig>.Some(new PreviewConfig {
-                Position = TrainLayout.GetLocalPosition(GetMaxSlot(world) + 1, 0),
-                Scale = Vector3.One,
-                AlbedoColor = new Color(0.2f, 1, 0.2f, 0.6f),
-                Emission = new Color(0.2f, 1, 0.2f),
-                Visible = true
-            });
-        }
-
-        return Option<PreviewConfig>.None;
+        
+        // Handle hitting the ground to append a new wagon.
+        if (collider.Name != "FloorBody") return false;
+        
+        var hitPoint = (Vector3)result["position"];
+        var localHit = _trainRoot.ToLocal(hitPoint);
+        var maxSlot = world.Query<WagonSlotComponent>()
+            .Select(e => world.Get<WagonSlotComponent>(e).SlotIndex)
+            .Prepend(0).Max();
+        
+        var lastWagonX = -maxSlot * (TrainLayout.WagonLength + TrainLayout.WagonGap);
+        if (!(localHit.X < lastWagonX + 2f)) return false;
+        
+        CreateNewWagon(world, maxSlot + 1, 0, cardType);
+        resources.Scrap -= cost;
+        return true;
     }
 
-    private bool IsValidFloorSpace(World world, Vector3 globalHitPos)
-    {
-        var localHit = _trainRoot.ToLocal(globalHitPos);
-        var lastWagonX = -GetMaxSlot(world) * (TrainLayout.WagonLength + TrainLayout.WagonGap);
-        return localHit.X < lastWagonX + 2f;
-    }
-
-    private static int GetMaxSlot(World world) => world.Query<WagonSlotComponent>()
-        .Select(e => world.Get<WagonSlotComponent>(e).SlotIndex)
-        .Prepend(0).Max();
-
-    private static (int layer, WagonType type) FindTopWagon(World world, int slotIndex)
-    {
-        var wagons = world.Query<WagonSlotComponent, WagonTypeComponent>()
-            .Select(e => (Slot: world.Get<WagonSlotComponent>(e), world.Get<WagonTypeComponent>(e).Type))
-            .Where(w => w.Slot.SlotIndex == slotIndex)
-            .OrderByDescending(w => w.Slot.Layer)
-            .FirstOrDefault();
-            
-        return wagons.Slot != null ? (wagons.Slot.Layer, wagons.Type) : (-1, WagonType.Locomotive);
-    }
-    
     /// <summary>
     /// Applies a card's effect to an existing wagon stack.
     /// If the types match, it upgrades the top wagon; otherwise, it builds a new one on top.
@@ -291,6 +226,7 @@ public class ConstructionSystem : ISystem
         var topEntity = hitEntity;
         var highestLayer = -1;
 
+        // Find the topmost wagon in the stack.
         foreach (var e in world.Query<WagonSlotComponent, WagonTypeComponent>())
         {
             var s = world.Get<WagonSlotComponent>(e);
@@ -302,17 +238,22 @@ public class ConstructionSystem : ISystem
         var topType = world.Get<WagonTypeComponent>(topEntity).Type;
         if (topType == WagonType.Locomotive) return;
 
+        // Upgrade if types match.
         if (topType == cardType)
         {
             var health = world.Get<HealthComponent>(topEntity);
             health.Max += 50f;
             health.Current += 50f;
-
-            if (cardType != WagonType.Combat || !world.Has<TurretComponent>(topEntity)) return;
-            var turret = world.Get<TurretComponent>(topEntity);
-            turret.Damage += 10f;
-            turret.FireRate += 3f;
+            
+            // Special case for combat wagon upgrades.
+            if (cardType == WagonType.Combat && world.Has<TurretComponent>(topEntity))
+            {
+                var turret = world.Get<TurretComponent>(topEntity);
+                turret.Damage += 10f;
+                turret.FireRate += 3f;
+            }
         }
+        // Build new layer if types differ.
         else
         {
             CreateNewWagon(world, hitSlot.SlotIndex, highestLayer + 1, cardType);
@@ -339,6 +280,7 @@ public class ConstructionSystem : ISystem
         world.Add(entity, new HealthComponent { Max = 150f, Current = 150f });
         world.Add(entity, new RenderableComponent { Tint = tint, Label = type.ToString().ToUpper() });
 
+        // Add specific components based on wagon type.
         if (type == WagonType.Combat)
             world.Add(entity, new TurretComponent { Range = 35f, Damage = 15f, FireRate = 6f });
     }

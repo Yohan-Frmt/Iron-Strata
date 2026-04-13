@@ -28,6 +28,11 @@ public class Entity(int id) : IEquatable<Entity>
     public override string ToString() => $"Entity {Id}";
 
     /// <summary>
+    /// Represents a null or non-existent entity.
+    /// </summary>
+    public static readonly Entity Null = new(-1);
+
+    /// <summary>
     /// Returns true if this entity is the Null entity.
     /// </summary>
     public bool IsNull => Id == -1;

@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using Godot;
+using IronStrata.Scenes;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.Types;
@@ -74,8 +77,6 @@ public partial class CardUi : Control
                 _descriptionLabel.Text = "Generates knowledge over time.";
                 _artTexture.Texture = GD.Load<Texture2D>("res://Resources/Assets/Images/Cards/Wagons/Research.png");
                 break;
-            case WagonType.Locomotive:
-            case WagonType.Medical:
             default:
                 break;
         }
@@ -111,6 +112,8 @@ public partial class CardUi : Control
                 if (mouseButton.Pressed)
                 {
                     if (GetCurrentScrap() < PlayCost) return;
+
+                    // Start dragging.
                     _isDragging = true;
                     IsAnyCardDragged = true;
                     _startPos = GlobalPosition;
@@ -120,13 +123,14 @@ public partial class CardUi : Control
                 }
                 else if (_isDragging)
                 {
+                    // Stop dragging and attempt to play the card.
                     _isDragging = false;
                     IsAnyCardDragged = false;
                     ZIndex = 0;
                     Modulate = new Color(1f, 1f, 1f);
                     main?.HidePreview();
 
-                    var success = main != null && main.TryPlayCard(TypeToApply, PlayCost, GetGlobalMousePosition()).IsOk;
+                    var success = main != null && main.TryPlayCard(TypeToApply, PlayCost, GetGlobalMousePosition());
                     if (!success)
                     {
                         // Return to hand if play failed.
@@ -135,12 +139,14 @@ public partial class CardUi : Control
                     }
                     else
                     {
+                        // Successfully played, remove from hand.
                         QueueFree();
                     }
                 }
                 break;
 
             case InputEventMouseMotion mouseMotion when _isDragging:
+                // Update position and 3D preview while dragging.
                 GlobalPosition += mouseMotion.Relative;
                 main?.UpdatePreview(TypeToApply, GetGlobalMousePosition());
                 break;

@@ -58,7 +58,10 @@ public class World
     public void DestroyEntity(Entity entity)
     {
         if (!_alive.Contains(entity.Id)) return;
+        
+        // Remove all components associated with this entity.
         foreach (var store in _stores.Values) store.Remove(entity.Id);
+        
         _alive.Remove(entity.Id);
         _recycled.Enqueue(entity.Id);
         OnEntityDestroyed?.Invoke(entity);
@@ -80,17 +83,27 @@ public class World
     /// <typeparam name="T">The type of the component.</typeparam>
     /// <param name="entity">The target entity.</param>
     /// <param name="component">The component instance to add.</param>
-    public void Add<T>(Entity entity, T component) where T : IComponent => GetOrCreateStore<T>()[entity.Id] = component;
+    public void Add<T>(Entity entity, T component) where T : IComponent
+    {
+        var store = GetOrCreateStore<T>();
+        store[entity.Id] = component;
+    }
 
     /// <summary>
     /// Retrieves a component from an entity as an Option.
     /// </summary>
     /// <typeparam name="T">The type of the component.</typeparam>
     /// <returns>An Option containing the component if found, or None otherwise.</returns>
-    public Option<T> GetOptional<T>(Entity entity) where T : IComponent =>
-        _stores.TryGetValue(typeof(T), out var store) && store.TryGetValue(entity.Id, out var raw)
-            ? Option<T>.Some((T)raw)
-            : Option<T>.None;
+    public Option<T> GetOptional<T>(Entity entity) where T : IComponent
+    {
+        var type = typeof(T);
+        if (_stores.TryGetValue(type, out var store) && store.TryGetValue(entity.Id, out var raw))
+        {
+            return Option<T>.Some((T)raw);
+        }
+
+        return Option<T>.None;
+    }
 
     /// <summary>
     /// Retrieves a component from an entity.
@@ -98,9 +111,11 @@ public class World
     /// <typeparam name="T">The type of the component.</typeparam>
     /// <returns>The requested component instance.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the entity does not have the component.</exception>
-    public T Get<T>(Entity entity) where T : IComponent =>
-        GetOptional<T>(entity).UnwrapOrElse(() => 
+    public T Get<T>(Entity entity) where T : IComponent
+    {
+        return GetOptional<T>(entity).UnwrapOrElse(() => 
             throw new InvalidOperationException($"Entity {entity.Id} does not have component {typeof(T).Name}"));
+    }
 
     /// <summary>
     /// Attempts to retrieve a component from an entity.
@@ -111,11 +126,13 @@ public class World
     /// <returns>True if the component exists for the entity, false otherwise.</returns>
     public bool TryGet<T>(Entity entity, out T component) where T : IComponent
     {
-        if (_stores.TryGetValue(typeof(T), out var store) && store.TryGetValue(entity.Id, out var raw))
+        var type = typeof(T);
+        if (_stores.TryGetValue(type, out var store) && store.TryGetValue(entity.Id, out var raw))
         {
             component = (T)raw;
             return true;
         }
+
         component = default;
         return false;
     }
@@ -125,7 +142,8 @@ public class World
     /// </summary>
     public bool Has<T>(Entity entity) where T : IComponent
     {
-        return _stores.TryGetValue(typeof(T), out var store) && store.ContainsKey(entity.Id);
+        var type = typeof(T);
+        return _stores.TryGetValue(type, out var store) && store.ContainsKey(entity.Id);
     }
 
     /// <summary>
@@ -133,7 +151,9 @@ public class World
     /// </summary>
     public void Remove<T>(Entity entity) where T : IComponent
     {
-        if (_stores.TryGetValue(typeof(T), out var store)) store.Remove(entity.Id);
+        var type = typeof(T);
+        if (_stores.TryGetValue(type, out var store))
+            store.Remove(entity.Id);
     }
 
     /// <summary>
@@ -141,9 +161,14 @@ public class World
     /// </summary>
     public IEnumerable<Entity> Query<T>() where T : IComponent
     {
-        if (!_stores.TryGetValue(typeof(T), out var store)) yield break;
+        var type = typeof(T);
+        if (!_stores.TryGetValue(type, out var store)) yield break;
+        
+        // Copy keys to allow modification during iteration if needed, though usually not recommended.
         foreach (var id in store.Keys.ToList().Where(id => _alive.Contains(id)))
+        {
             yield return new Entity(id);
+        }
     }
 
     /// <summary>
@@ -172,9 +197,10 @@ public class World
     /// </summary>
     private Dictionary<int, IComponent> GetOrCreateStore<T>() where T : IComponent
     {
-        if (_stores.TryGetValue(typeof(T), out var store)) return store;
+        var type = typeof(T);
+        if (_stores.TryGetValue(type, out var store)) return store;
         store = [];
-        _stores[typeof(T)] = store;
+        _stores[type] = store;
         return store;
     }
 }
