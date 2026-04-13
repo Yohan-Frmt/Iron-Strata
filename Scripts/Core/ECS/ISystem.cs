@@ -1,3 +1,5 @@
+using Godot;
+
 namespace IronStrata.Scripts.Core.ECS;
 
 /// <summary>
