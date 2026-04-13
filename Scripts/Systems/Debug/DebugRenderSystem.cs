@@ -1,8 +1,8 @@
 using Godot;
-using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Components.Character;
-using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Components.Shared;
+using IronStrata.Scripts.Components.Train;
+using IronStrata.Scripts.Core.ECS;
 
 namespace IronStrata.Scripts.Systems.Debug;
 

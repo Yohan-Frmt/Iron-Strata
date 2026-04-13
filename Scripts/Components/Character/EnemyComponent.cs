@@ -4,7 +4,7 @@ using IronStrata.Scripts.Core.Types;
 namespace IronStrata.Scripts.Components.Character;
 
 /// <summary>
-/// Defines the various types of silicon-based lifeforms (enemies).
+/// Defines the various types of enemies.
 /// </summary>
 public enum EnemyType { Crawler, Safeguard, Wasp }
 
