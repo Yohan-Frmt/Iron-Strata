@@ -8,7 +8,6 @@ public static class WorldEnvironment
     {
         SetupWorldEnvironment(root);
         SetupAmbientLight(root);
-        SetupTunnelLights(root);
     }
 
     private static void SetupWorldEnvironment(Node root)
@@ -16,29 +15,31 @@ public static class WorldEnvironment
         var env = new Environment();
 
         env.BackgroundMode = Environment.BGMode.Color;
-        env.BackgroundColor = new Color(0.01f, 0.01f, 0.015f);
-        env.BackgroundIntensity = 0f;
+        env.BackgroundColor = new Color(0.005f, 0.005f, 0.01f);
+        // env.BackgroundIntensity = 0f;
 
         env.AmbientLightSource = Environment.AmbientSource.Color;
         env.AmbientLightColor = new Color(0.06f, 0.07f, 0.10f);
-        env.AmbientLightEnergy = 0.15f;
+        env.AmbientLightEnergy = 0.4f;
 
         env.SsaoEnabled = true;
         env.SsaoRadius = 1.2f;
         env.SsaoIntensity = 2.8f;
         env.SsaoDetail = 0.5f;
 
-        env.FogEnabled = true;
-        env.FogMode = Environment.FogModeEnum.Depth;
-        env.FogLightColor = new Color(0.06f, 0.08f, 0.12f);
-        env.FogDensity = 0.018f;
-        env.FogDepthBegin = 18f;
-        env.FogDepthEnd = 55f;
+        env.FogEnabled = false;
+
+        env.VolumetricFogEnabled = true;
+        env.VolumetricFogDensity = 0.003f;
+        env.VolumetricFogLength = 400f;
+        env.VolumetricFogAlbedo = new Color(0.01f, 0.01f, 0.02f);
+        env.VolumetricFogEmission = new Color(0, 0, 0);
+        env.VolumetricFogAmbientInject = 0.8f;
 
         env.GlowEnabled = true;
-        env.GlowIntensity = 0.7f;
+        env.GlowIntensity = 1.0f;
         env.GlowStrength = 1.4f;
-        env.GlowBloom = 0.15f;
+        env.GlowBloom = 0.1f;
         env.GlowHdrThreshold = 0.8f;
 
         env.TonemapMode = Environment.ToneMapper.Filmic;
@@ -50,7 +51,7 @@ public static class WorldEnvironment
         env.AdjustmentContrast = 1.25f;
         env.AdjustmentSaturation = 0.72f;
 
-        root.AddChild(new Godot.WorldEnvironment { Environment = env });
+        root.AddChild(new Godot.WorldEnvironment { Name = "WorldEnvironment", Environment = env });
     }
 
     private static void SetupAmbientLight(Node root)
@@ -58,7 +59,7 @@ public static class WorldEnvironment
         var dirLight = new DirectionalLight3D
         {
             LightColor = new Color(0.55f, 0.60f, 0.80f),
-            LightEnergy = 0.12f,
+            LightEnergy = 2f,
             ShadowEnabled = true,
             Rotation = new Vector3(Mathf.DegToRad(-70f), Mathf.DegToRad(30f), 0f)
         };
@@ -69,10 +70,10 @@ public static class WorldEnvironment
     {
         var positions = new (Vector3 pos, Color color, float energy, float range)[]
         {
-            (new Vector3(5f, 6f, 0f), new Color(0.4f, 0.7f, 1.0f), 1.5f, 12f),
-            (new Vector3(22f, 6f, 0f), new Color(0.3f, 0.6f, 0.9f), 1.2f, 10f),
-            (new Vector3(38f, 6f, 0f), new Color(0.4f, 0.7f, 1.0f), 1.5f, 12f),
-            (new Vector3(12f, -1f, 0f), new Color(1.0f, 0.5f, 0.2f), 0.8f, 7f),
+            (new Vector3(5f, 6f, 0f), new Color(0.4f, 0.7f, 1.0f), 10.5f, 12f),
+            (new Vector3(22f, 6f, 0f), new Color(0.3f, 0.6f, 0.9f), 10.2f, 10f),
+            (new Vector3(38f, 6f, 0f), new Color(0.4f, 0.7f, 1.0f), 10.5f, 12f),
+            (new Vector3(12f, -1f, 0f), new Color(1.0f, 0.5f, 0.2f), 10.8f, 7f),
         };
 
         foreach (var (pos, color, energy, range) in positions)
