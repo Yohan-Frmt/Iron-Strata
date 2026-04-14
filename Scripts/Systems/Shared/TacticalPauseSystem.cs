@@ -20,13 +20,13 @@ public class TacticalPauseSystem(Control pauseOverlay) : ISystem
     {
         _world.Query<GameStateComponent>()
             .FirstOptional()
-            .Bind(entity => _world.GetOptional<GameStateComponent>(entity))
-            .Match(state => 
+            .Bind(_world.GetOptional<GameStateComponent>)
+            .Match(state =>
             {
                 if (!state.CanPause) return;
                 state.IsPaused = !state.IsPaused;
                 TogglePause(state.IsPaused);
-            }, () => { });
+            });
     }
 
     private void TogglePause(bool paused)

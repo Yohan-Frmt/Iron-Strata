@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Core.Autoloads;
@@ -23,6 +21,7 @@ public partial class Minimap : Control
 
     private Vector2 _mapSize = new(200, 150);
     private float _mapScale = 0.05f;
+    private const float RevealRadius = 1500f;
 
     /// <summary>
     /// Initializes the minimap and connects it to the ECS world.
@@ -58,11 +57,17 @@ public partial class Minimap : Control
 
                 foreach (var node in map.AllNodes.Values)
                 {
+                    if (node.Position.DistanceTo(trainPos) > RevealRadius) continue;
+                    
                     var startGui = node.Position * _mapScale + centerOffset;
 
                     foreach (var nextId in node.NextNodes)
                     {
-                        var endGui = map.AllNodes[nextId].Position * _mapScale + centerOffset;
+                        var endNode = map.AllNodes[nextId];
+                        
+                        if (endNode.Position.DistanceTo(trainPos) > RevealRadius) continue;
+                        
+                        var endGui = endNode.Position * _mapScale + centerOffset;
                         
                         if (IsInsideBounds(startGui) || IsInsideBounds(endGui))
                         {
@@ -73,11 +78,17 @@ public partial class Minimap : Control
 
                 foreach (var node in map.AllNodes.Values)
                 {
+                    var distance = node.Position.DistanceTo(trainPos);
+                    if (distance > RevealRadius) continue;
+                    
                     var nodeGui = node.Position * _mapScale + centerOffset;
                     if (!IsInsideBounds(nodeGui)) continue;
 
-                    var color = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
-                    DrawCircle(nodeGui, 4f, color);
+                    var alpha = Mathf.Clamp(1.0f - (distance / RevealRadius), 0.2f, 1.0f);
+                    var baseColor = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
+                    var colorWithFog = new Color(baseColor.R, baseColor.G, baseColor.B, alpha);
+                    
+                    DrawCircle(nodeGui, 4f, colorWithFog);
 
                     if (node.Id == loc.TargetNodeId) 
                         DrawArc(nodeGui, 7f, 0, Mathf.Tau, 16, Colors.Yellow, 1f);
@@ -85,7 +96,7 @@ public partial class Minimap : Control
 
                 var trainGui = trainPos * _mapScale + centerOffset;
                 DrawRect(new Rect2(trainGui - new Vector2(3, 3), new Vector2(6, 6)), _trainColor);
-            }, () => { });
+            });
     }
 
     /// <summary>

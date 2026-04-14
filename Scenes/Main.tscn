@@ -19,8 +19,9 @@ bg_color = Color(0.023529412, 0.03137255, 0.0627451, 1)
 border_width_top = 1
 border_color = Color(0.8, 0.5529412, 0.09019608, 1)
 
-[node name="Main" type="Node3D" unique_id=187841248]
+[node name="Main" type="Node3D" unique_id=187841248 node_paths=PackedStringArray("_worldRoot")]
 script = ExtResource("1_r150o")
+_worldRoot = NodePath(".")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=246331037]
 
@@ -148,3 +149,6 @@ text = "TACTICAL PAUSE"
 [node name="DrawButton" type="Button" parent="UI/VBoxMainLayout/PanelBottomBar/Margin/HBoxHUDColumns/VBoxAction" unique_id=1643797819]
 layout_mode = 2
 text = "DRAW CARD (25 ⚙)"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1971828023]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 472.73358, 0)
