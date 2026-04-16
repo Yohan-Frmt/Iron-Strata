@@ -11,17 +11,17 @@ public enum EnemyType { Crawler, Safeguard, Wasp }
 /// <summary>
 /// Component that marks an entity as an enemy and stores its combat-related data.
 /// </summary>
-public class EnemyComponent : IComponent
+public struct EnemyComponent()
 {
     /// <summary>
     /// The specific type of enemy.
     /// </summary>
-    public EnemyType Type;
+    public EnemyType Type = EnemyType.Crawler;
 
     /// <summary>
     /// The amount of damage this enemy deals.
     /// </summary>
-    public float Damage;
+    public float Damage = 0;
 
     /// <summary>
     /// The current target entity this enemy is attacking or pursuing.

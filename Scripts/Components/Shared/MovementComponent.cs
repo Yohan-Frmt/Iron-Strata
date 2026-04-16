@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Shared;
 /// <summary>
 /// Component that defines how an entity moves through the world.
 /// </summary>
-public class MovementComponent : IComponent
+public struct MovementComponent
 {
     /// <summary>
     /// The movement speed of the entity.

@@ -65,27 +65,4 @@ public static class WorldEnvironment
         };
         root.AddChild(dirLight);
     }
-
-    private static void SetupTunnelLights(Node root)
-    {
-        var positions = new (Vector3 pos, Color color, float energy, float range)[]
-        {
-            (new Vector3(5f, 6f, 0f), new Color(0.4f, 0.7f, 1.0f), 10.5f, 12f),
-            (new Vector3(22f, 6f, 0f), new Color(0.3f, 0.6f, 0.9f), 10.2f, 10f),
-            (new Vector3(38f, 6f, 0f), new Color(0.4f, 0.7f, 1.0f), 10.5f, 12f),
-            (new Vector3(12f, -1f, 0f), new Color(1.0f, 0.5f, 0.2f), 10.8f, 7f),
-        };
-
-        foreach (var (pos, color, energy, range) in positions)
-        {
-            root.AddChild(new OmniLight3D
-            {
-                Position = pos,
-                LightColor = color,
-                LightEnergy = energy,
-                OmniRange = range,
-                ShadowEnabled = true
-            });
-        }
-    }
 }

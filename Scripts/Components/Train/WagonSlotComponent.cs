@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Train;
 /// <summary>
 /// Component that defines the spatial position of a wagon within the train's logical grid.
 /// </summary>
-public class WagonSlotComponent : IComponent
+public struct WagonSlotComponent
 {
     /// <summary>
     /// The horizontal index in the train layout (how far from the locomotive).

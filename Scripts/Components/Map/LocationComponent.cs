@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Map;
 /// <summary>
 /// Tracks the physical location of an entity on the world map.
 /// </summary>
-public class LocationComponent : IComponent 
+public struct LocationComponent() 
 {
     /// <summary>
     /// The ID of the current node where the entity is located.

@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Train;
 /// <summary>
 /// Manages the survival-critical economic resources of the train.
 /// </summary>
-public class EconomyComponent : IComponent
+public struct EconomyComponent()
 {
     /// <summary>
     /// Current stock of food and life support supplies.

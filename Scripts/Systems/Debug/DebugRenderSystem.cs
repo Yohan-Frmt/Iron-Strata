@@ -50,31 +50,34 @@ public class DebugRenderSystem : ISystem
 
         foreach (var entity in world.Query<EnemyComponent, PositionComponent>())
         {
-            var enemy = world.Get<EnemyComponent>(entity);
-            var pos = world.Get<PositionComponent>(entity);
+            ref readonly var enemy = ref world.Get<EnemyComponent>(entity);
+            ref readonly var pos = ref world.Get<PositionComponent>(entity);
             
             DrawCircle3D(pos.Value, enemy.AttackRange, new Color(1f, 0f, 0f, 0.5f));
 
 
-            enemy.CurrentTarget.Match(target =>
+            if (enemy.CurrentTarget.IsSome)
             {
-                if (!world.IsAlive(target)) return;
-                world.GetOptional<WagonSlotComponent>(target).Match(slot =>
-                    {
-                        var slotIndex = slot.SlotIndex;
-                        const float wagonSize = 5f;
-                        var targetLocalPos = new Vector3(-slotIndex * wagonSize, 0, 0);
-                        var targetGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
-                        DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f));
-                    }, () => { }
-                );
-            }, () => {}); 
+                var target = enemy.CurrentTarget.Unwrap();
+                if (!world.IsAlive(target)) continue;
+                
+                var slotOpt = world.GetOptional<WagonSlotComponent>(target);
+                if (slotOpt.IsSome)
+                {
+                    var slot = slotOpt.Unwrap();
+                    var slotIndex = slot.SlotIndex;
+                    const float wagonSize = 5f;
+                    var targetLocalPos = new Vector3(-slotIndex * wagonSize, 0, 0);
+                    var targetGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;
+                    DrawLine3D(pos.Value, targetGlobalPos, new Color(1f, 0.5f, 0f, 0.8f));
+                }
+            }
         }
 
         foreach (var entity in world.Query<WagonSlotComponent, TurretComponent>())
         {
-            var slotComp = world.Get<WagonSlotComponent>(entity);
-            var weapon = world.Get<TurretComponent>(entity);
+            ref readonly var slotComp = ref world.Get<WagonSlotComponent>(entity);
+            ref readonly var weapon = ref world.Get<TurretComponent>(entity);
             
             var targetLocalPos = new Vector3(-slotComp.SlotIndex * 5f, 0, 0);
             var wagonGlobalPos = _trainRoot.GlobalPosition + targetLocalPos;

@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using IronStrata.Scenes;
 using IronStrata.Scripts.Components.Character;
@@ -23,8 +22,8 @@ public class TurretSystem(Node3D trainRoot) : ISystem
     {
         foreach (var turretEntity in world.Query<TurretComponent, WagonSlotComponent>())
         {
-            var turret = world.Get<TurretComponent>(turretEntity);
-            var slot = world.Get<WagonSlotComponent>(turretEntity);
+            ref var turret = ref world.Get<TurretComponent>(turretEntity);
+            ref var slot = ref world.Get<WagonSlotComponent>(turretEntity);
             
             // Cooldown management.
             turret.Cooldown -= (float)delta;
@@ -49,10 +48,11 @@ public class TurretSystem(Node3D trainRoot) : ISystem
                 closestEnemy = Option<Entity>.Some(enemyEntity);
             }
 
-            closestEnemy.Match(enemy => 
+            if (closestEnemy.IsSome)
             {
+                var enemy = closestEnemy.Unwrap();
                 // Fire at the enemy.
-                var enemyHealth = world.Get<HealthComponent>(enemy);
+                ref var enemyHealth = ref world.Get<HealthComponent>(enemy);
                 var enemyPos = world.Get<PositionComponent>(enemy).Value;
                 
                 enemyHealth.Current -= turret.Damage;
@@ -64,16 +64,15 @@ public class TurretSystem(Node3D trainRoot) : ISystem
                 if (enemyHealth.Current <= 0)
                 {
                     // Reward player with scrap for kills.
-                    world.Query<ResourceComponent>()
-                        .FirstOptional()
-                        .Match(resEntity => 
-                        {
-                            world.Get<ResourceComponent>(resEntity).Scrap += ResourceRegistry.ScrapPerKill;
-                        }, () => { });
+                    var resEntityOpt = world.QueryFirst<ResourceComponent>();
+                    if (resEntityOpt.IsSome)
+                    {
+                        world.Get<ResourceComponent>(resEntityOpt.Unwrap()).Scrap += ResourceRegistry.ScrapPerKill;
+                    }
                     
                     world.DestroyEntity(enemy);
                 }
-            }, () => { });
+            }
         }
     }
 

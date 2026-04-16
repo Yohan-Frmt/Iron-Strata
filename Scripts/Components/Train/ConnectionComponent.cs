@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Train;
 /// <summary>
 /// Component that defines the coupling between two wagons in the train.
 /// </summary>
-public class ConnectionComponent : IComponent
+public struct ConnectionComponent
 {
     /// <summary>
     /// The ID of the wagon ahead of this one.

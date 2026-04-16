@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Shared;
 /// <summary>
 /// Component that tracks the health or durability of an entity.
 /// </summary>
-public partial class HealthComponent : IComponent
+public struct HealthComponent
 {
     /// <summary>
     /// The maximum possible health for this entity.

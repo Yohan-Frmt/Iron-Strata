@@ -153,9 +153,11 @@ public partial class CardUi : Control
     private static int GetCurrentScrap()
     {
         var world = Core.Autoloads.GameWorld.Instance.World;
-        return world.Query<ResourceComponent>()
-            .FirstOptional()
-            .Bind(e => world.GetOptional<ResourceComponent>(e))
-            .Match(r => r.Scrap, () => 0);
+        var resEntityOpt = world.QueryFirst<ResourceComponent>();
+        if (resEntityOpt.IsSome)
+        {
+            return world.Get<ResourceComponent>(resEntityOpt.Unwrap()).Scrap;
+        }
+        return 0;
     }
 }

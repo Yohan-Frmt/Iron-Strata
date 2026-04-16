@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Core.ECS;
@@ -17,18 +16,17 @@ public class ResourceSystem(Label scrapLabel, Button drawButton) : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        world.Query<ResourceComponent>()
-            .FirstOptional()
-            .Bind(e => world.GetOptional<ResourceComponent>(e))
-            .Match(resources => 
-            {
-                // Update the scrap counter text.
-                if (scrapLabel != null) 
-                    scrapLabel.Text = $"Scrap : {resources.Scrap}";
-                
-                // Disable the draw button if the player can't afford it.
-                if (drawButton != null) 
-                    drawButton.Disabled = resources.Scrap < ResourceRegistry.CardDrawCost;
-            }, () => { });
+        var resEntityOpt = world.QueryFirst<ResourceComponent>();
+        if (resEntityOpt.IsSome)
+        {
+            ref var resources = ref world.Get<ResourceComponent>(resEntityOpt.Unwrap());
+            // Update the scrap counter text.
+            if (scrapLabel != null) 
+                scrapLabel.Text = $"Scrap : {resources.Scrap}";
+            
+            // Disable the draw button if the player can't afford it.
+            if (drawButton != null) 
+                drawButton.Disabled = resources.Scrap < ResourceRegistry.CardDrawCost;
+        }
     }
 }

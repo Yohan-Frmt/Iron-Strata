@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using IronStrata.Scripts.Components.Render;
 using IronStrata.Scripts.Components.Train;
@@ -30,30 +29,30 @@ public class RenderSystem : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        // Get the total distance traveled for time-based visual effects.
-        var distance = world.Query<TrainMovementComponent>()
-            .FirstOptional()
-            .Bind(e => world.GetOptional<TrainMovementComponent>(e))
-            .Match(mv => mv.DistanceTraveled, () => 0f);
+        var distance = 0f;
+        var trainStore = world.GetStore<TrainMovementComponent>();
+        if (trainStore.Count > 0) 
+        {
+            distance = trainStore.GetByIndex(0).DistanceTraveled;
+        }
 
         foreach (var entity in world.Query<RenderableComponent, WagonSlotComponent>())
         {
-            var r = world.Get<RenderableComponent>(entity);
-            var slot = world.Get<WagonSlotComponent>(entity);
+            ref var render = ref world.Get<RenderableComponent>(entity);
+            ref readonly var slot = ref world.Get<WagonSlotComponent>(entity);
 
-            // Lazy creation of the visual representation if it doesn't exist.
-            if (r.Node == null)
+            if (render.Node == null)
             {
-                r.Node = BuildSafeWagon(entity, r);
-                _trainRoot.AddChild(r.Node);
+                var node = BuildSafeWagon(entity, render);
+                _trainRoot.AddChild(node);
+                render.Node = node;
             }
 
-            // Apply a procedural bobbing animation based on distance and slot index.
-            var bobbingPhase = (distance * 0.5f) + (slot.SlotIndex * 1.5f);
-            var bobY = Mathf.Sin(bobbingPhase) * 0.1f; 
+            var targetPos = TrainLayout.GetLocalPosition(slot.SlotIndex, slot.Layer);
             
-            var basePos = TrainLayout.GetLocalPosition(slot.SlotIndex, slot.Layer);
-            r.Node.Position = basePos + new Vector3(0, bobY, 0);
+            // Apply visual bobbing effect based on train progress.
+            var bobbing = Mathf.Sin(distance * 0.5f + slot.SlotIndex) * 0.1f;
+            render.Node.Position = targetPos + Vector3.Up * bobbing;
         }
     }
 

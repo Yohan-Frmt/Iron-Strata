@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Train;
 /// <summary>
 /// Component for wagons equipped with defensive turret systems.
 /// </summary>
-public class TurretComponent : IComponent
+public struct TurretComponent()
 {
     /// <summary>
     /// The maximum distance at which the turret can engage targets.

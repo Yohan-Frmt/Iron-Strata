@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Core.ECS;
@@ -18,20 +17,17 @@ public class TacticalPauseSystem(Control pauseOverlay) : ISystem
 
     public void TriggerPause()
     {
-        _world.Query<GameStateComponent>()
-            .FirstOptional()
-            .Bind(_world.GetOptional<GameStateComponent>)
-            .Match(state =>
-            {
-                if (!state.CanPause) return;
-                state.IsPaused = !state.IsPaused;
-                TogglePause(state.IsPaused);
-            });
+        var stateEntityOpt = _world.QueryFirst<GameStateComponent>();
+        if (stateEntityOpt.IsNone) return;
+        ref var state = ref _world.Get<GameStateComponent>(stateEntityOpt.Unwrap());
+        if (!state.CanPause) return;
+        state.IsPaused = !state.IsPaused;
+        TogglePause(state.IsPaused);
     }
 
-    private void TogglePause(bool paused)
+    private void TogglePause(bool isPaused)
     {
-        Engine.TimeScale = paused ? 0.0f : 1.0f;
-        pauseOverlay.Visible = paused;
+        Engine.TimeScale = isPaused ? 0.0f : 1.0f;
+        if (pauseOverlay != null) pauseOverlay.Visible = isPaused;
     }
 }

@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using Godot;
 using IronStrata.Scripts.Components.Camera;
 using IronStrata.Scripts.Components.Map;
@@ -50,7 +50,7 @@ public partial class Main : Node3D
         var enemyRoot = new Node3D { Name = "EnemyRoot" };
         AddChild(trainRoot);
         AddChild(enemyRoot);
-        
+
         var headlight = new SpotLight3D
         {
             Position = new Vector3(0f, 3f, 0f),
@@ -164,7 +164,9 @@ public partial class Main : Node3D
         var mapData = new MapGenerator().GenerateMap();
         foreach (var layer in mapData)
         {
-            mapComp.Layers.Add(layer.Select(n => n.Id).ToList());
+            var layerIds = new List<int>(layer.Count);
+            foreach (var node in layer) layerIds.Add(node.Id);
+            mapComp.Layers.Add(layerIds);
             foreach (var node in layer) mapComp.AllNodes[node.Id] = node;
         }
 
@@ -206,6 +208,7 @@ public partial class Main : Node3D
             .Add(new FogSystem(envNode))
             .Add(_cameraSystem)
             .Add(_pauseSystem)
+            .Add(new MapInputSystem())
             .Add(new WagonConnectionSystem())
             .Add(new MapSystem(trainRoot))
             .Add(new MapRenderSystem(floor))
@@ -235,18 +238,17 @@ public partial class Main : Node3D
     /// </summary>
     private void DrawCard()
     {
-        _world.Query<ResourceComponent>()
-            .FirstOptional()
-            .Bind(_world.GetOptional<ResourceComponent>)
-            .Match(resources =>
-            {
-                if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) return;
-                resources.Scrap -= ResourceRegistry.CardDrawCost;
-                var newCard = _cardScene.Instantiate<Scripts.UI.CardUi>();
-                var randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
-                _handContainer.AddChild(newCard);
-                newCard.Setup(randomType);
-            }, () => { });
+        var resEntityOpt = _world.QueryFirst<ResourceComponent>();
+        if (resEntityOpt.IsSome)
+        {
+            ref var resources = ref _world.Get<ResourceComponent>(resEntityOpt.Unwrap());
+            if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) return;
+            resources.Scrap -= ResourceRegistry.CardDrawCost;
+            var newCard = _cardScene.Instantiate<CardUi>();
+            var randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
+            _handContainer.AddChild(newCard);
+            newCard.Setup(randomType);
+        }
     }
 
     /// <summary>

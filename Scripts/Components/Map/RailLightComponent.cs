@@ -3,7 +3,7 @@ using IronStrata.Scripts.Core.ECS;
 
 namespace IronStrata.Scripts.Components.Map;
 
-public class RailLightComponent : IComponent
+public struct RailLightComponent
 {
     public OmniLight3D LightNode;
 }

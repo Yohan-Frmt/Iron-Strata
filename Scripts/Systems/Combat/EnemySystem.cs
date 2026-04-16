@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using IronStrata.Scripts.Components.Character;
 using IronStrata.Scripts.Components.Map;
@@ -27,10 +26,12 @@ public class EnemySystem(Node3D trainRoot) : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        var isInCity = world.Query<LocationComponent>()
-            .FirstOptional()
-            .Bind(e => world.GetOptional<LocationComponent>(e))
-            .Match(l => l.IsInCityZone, () => false);
+        var locEntityOpt = world.QueryFirst<LocationComponent>();
+        var isInCity = false;
+        if (locEntityOpt.IsSome)
+        {
+            isInCity = world.Get<LocationComponent>(locEntityOpt.Unwrap()).IsInCityZone;
+        }
 
         if (isInCity)
         {
@@ -38,7 +39,10 @@ public class EnemySystem(Node3D trainRoot) : ISystem
             if (_hordeTimer >= HordeSpawnInterval)
             {
                 _hordeTimer = 0f;
-                foreach (var rule in EnemyRegistry.SpawnRules.Where(rule => GD.Randf() <= rule.Chance)) SpawnHorde(world, rule.Count, rule.Type);
+                foreach (var rule in EnemyRegistry.SpawnRules)
+                {
+                    if (GD.Randf() <= rule.Chance) SpawnHorde(world, rule.Count, rule.Type);
+                }
             }
         }
         else
@@ -46,24 +50,28 @@ public class EnemySystem(Node3D trainRoot) : ISystem
             _hordeTimer = 0f;
         }
 
-        var wagons = world.Query<WagonSlotComponent, WagonTypeComponent, HealthComponent>().ToList();
+        var wagons = new List<Entity>();
+        foreach (var e in world.Query<WagonSlotComponent, WagonTypeComponent, HealthComponent>()) wagons.Add(e);
         if (wagons.Count == 0) return;
-        var allEnemies = world.Query<EnemyComponent, PositionComponent>().ToList();
+
+        var allEnemies = new List<Entity>();
+        foreach (var e in world.Query<EnemyComponent, PositionComponent>()) allEnemies.Add(e);
+        
         foreach (var entity in world.Query<EnemyComponent, PositionComponent, MovementComponent>())
         {
-            // Spatially handle enemy movement and interactions.
-            var enemy = world.Get<EnemyComponent>(entity);
-            var pos = world.Get<PositionComponent>(entity);
-            var loco = world.Get<MovementComponent>(entity);
+            ref var enemy = ref world.Get<EnemyComponent>(entity);
+            ref var pos = ref world.Get<PositionComponent>(entity);
+            ref var loco = ref world.Get<MovementComponent>(entity);
 
             // Target acquisition.
             var needsNewTarget = enemy.CurrentTarget.Match(target => !world.IsAlive(target), () => true);
             if (needsNewTarget)
                 enemy.CurrentTarget = FindBestTarget(enemy.Type, wagons, world);
 
-            enemy.CurrentTarget.Match(target => 
+            if (enemy.CurrentTarget.IsSome)
             {
-                var slotComp = world.Get<WagonSlotComponent>(target);
+                var target = enemy.CurrentTarget.Unwrap();
+                ref var slotComp = ref world.Get<WagonSlotComponent>(target);
                 const float wagonSize = 5f;
                 const float wagonPhysicalRadius = 4.0f; // Collision radius of the wagon
                 
@@ -78,7 +86,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem
                     if (enemy.AttackTimer <= 0)
                     {
                         enemy.AttackTimer = 1f / enemy.AttackSpeed;
-                        var health = world.Get<HealthComponent>(target);
+                        ref var health = ref world.Get<HealthComponent>(target);
                         health.Current -= enemy.Damage;
 
                         if (health.Current <= 0) HandleWagonDestruction(world, target);
@@ -110,7 +118,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem
                     // Repulsion from wagons to avoid clipping.
                     foreach (var wagon in wagons)
                     {
-                        var wSlot = world.Get<WagonSlotComponent>(wagon);
+                        ref var wSlot = ref world.Get<WagonSlotComponent>(wagon);
                         var wPos = trainRoot.GlobalPosition + new Vector3(-wSlot.SlotIndex * wagonSize, 2.0f, 0);
                         var distToWagon = pos.Value.DistanceTo(wPos);
 
@@ -137,7 +145,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem
                         if (pos.Value.Y < 0) pos.Value.Y = 0; // Ground level
                     }
                 }
-            }, () => { });
+            }
         }
     }
 
@@ -147,16 +155,17 @@ public class EnemySystem(Node3D trainRoot) : ISystem
     /// </summary>
     private void HandleWagonDestruction(World world, Entity target)
     {
-        var hitSlot = world.Get<WagonSlotComponent>(target);
+        ref var hitSlot = ref world.Get<WagonSlotComponent>(target);
         GD.Print($"Wagon at index {hitSlot.SlotIndex} (layer {hitSlot.Layer}) destroyed!");
 
         if (hitSlot.SlotIndex == 0) GD.PrintErr("!!! GAME OVER - LOCOMOTIVE DESTROYED !!!");
 
-        var allWagons = world.Query<WagonSlotComponent>().ToList();
+        var allWagons = new List<Entity>();
+        foreach (var e in world.Query<WagonSlotComponent>()) allWagons.Add(e);
         foreach (var w in allWagons)
         {
             if (!world.IsAlive(w)) continue;
-            var wSlot = world.Get<WagonSlotComponent>(w);
+            ref var wSlot = ref world.Get<WagonSlotComponent>(w);
 
             // Destroy this wagon if it's the one hit OR if it's stacked on top of it.
             if (wSlot.SlotIndex == hitSlot.SlotIndex && wSlot.Layer >= hitSlot.Layer) 
@@ -221,8 +230,8 @@ public class EnemySystem(Node3D trainRoot) : ISystem
 
         foreach (var wagon in wagons)
         {
-            var typeComp = world.Get<WagonTypeComponent>(wagon);
-            var slotComp = world.Get<WagonSlotComponent>(wagon);
+            ref var typeComp = ref world.Get<WagonTypeComponent>(wagon);
+            ref var slotComp = ref world.Get<WagonSlotComponent>(wagon);
             
             // Base score favors higher wagons and certain types.
             var score = GetDefaultTypePriority(typeComp.Type) + (slotComp.Layer * 50);

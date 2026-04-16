@@ -17,7 +17,13 @@
     <Content Include="generate_docs.bat" />
     <Content Include="generate_docs.ps1" />
     <Content Include="README.md" />
+    <Content Include="Scripts\Map\RailSampler.cs.uid" />
+    <Content Include="Scripts\Systems\Shared\MapInputSystem.cs.uid" />
+    <Content Include="Scripts\UI\MapOverlay.cs.uid" />
     <Content Include="SECURITY.md" />
     <Content Include="SUPPORT.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Scripts\Components\Render\MultiMeshRenderComponent.cs" />
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ public enum WagonType { Locomotive, Living, Combat, Storage, Research, Medical }
 /// <summary>
 /// Component that defines the functional role and blueprint of a wagon.
 /// </summary>
-public partial class WagonTypeComponent : IComponent
+public struct WagonTypeComponent
 {
     /// <summary>
     /// The high-level functional category of the wagon.

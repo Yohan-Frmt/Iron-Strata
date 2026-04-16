@@ -6,7 +6,7 @@ namespace IronStrata.Scripts.Components.Render;
 /// <summary>
 /// Component that enables individual 3D rendering for an entity.
 /// </summary>
-public class RenderableComponent : IComponent
+public struct RenderableComponent()
 {
     /// <summary>
     /// The actual Godot Node3D instance in the scene tree.

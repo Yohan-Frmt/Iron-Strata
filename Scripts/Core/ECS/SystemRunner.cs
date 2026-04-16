@@ -40,7 +40,10 @@ public class SystemRunner(World world)
     /// <param name="delta">The time elapsed since the last frame in seconds.</param>
     public void Update(double delta)
     {
-        foreach (var system in _systems) system.Update(world, delta);
+        for (var i = 0; i < _systems.Count; i++)
+        {
+            _systems[i].Update(world, delta);
+        }
     }
 
     /// <summary>
@@ -49,6 +52,9 @@ public class SystemRunner(World world)
     /// <param name="delta">The fixed time step in seconds.</param>
     public void FixedUpdate(double delta)
     {
-        foreach (var system in _fixedSystems) system.FixedUpdate(world, delta);
+        for (var i = 0; i < _fixedSystems.Count; i++)
+        {
+            _fixedSystems[i].FixedUpdate(world, delta);
+        }
     }
 }

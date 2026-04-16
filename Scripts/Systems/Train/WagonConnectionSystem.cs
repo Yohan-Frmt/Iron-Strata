@@ -18,8 +18,8 @@ public class WagonConnectionSystem : ISystem
     {
         foreach (var entity in world.Query<ConnectionComponent, HealthComponent>())
         {
-            var conn = world.Get<ConnectionComponent>(entity);
-            var health = world.Get<HealthComponent>(entity);
+            ref var conn = ref world.Get<ConnectionComponent>(entity);
+            ref var health = ref world.Get<HealthComponent>(entity);
             
             // If connection is weak and not welded, apply damage over time.
             if (!(conn.Integrity < 0.3f) || conn.IsWelded) continue;

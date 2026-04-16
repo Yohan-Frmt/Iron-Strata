@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using Godot.Collections;
 using IronStrata.Scripts.Components.Camera;
@@ -52,15 +51,13 @@ public class ConstructionSystem : ISystem
     /// </summary>
     public void Update(World world, double delta)
     {
-        world.Query<LocationComponent>()
-            .FirstOptional()
-            .Bind(world.GetOptional<LocationComponent>)
-            .Match(loc =>
-                {
-                    if (_bottomHud != null) _bottomHud.Visible = loc.IsInTransit;
-                    if (!loc.IsInTransit && _previewGhost.Visible) _previewGhost.Visible = false;
-                }
-            );
+        var locEntityOpt = world.QueryFirst<LocationComponent>();
+        if (locEntityOpt.IsSome)
+        {
+            ref var loc = ref world.Get<LocationComponent>(locEntityOpt.Unwrap());
+            if (_bottomHud != null) _bottomHud.Visible = loc.IsInTransit;
+            if (!loc.IsInTransit && _previewGhost.Visible) _previewGhost.Visible = false;
+        }
     }
 
     /// <summary>
@@ -77,13 +74,12 @@ public class ConstructionSystem : ISystem
     /// </summary>
     public void UpdatePreview(World world, WagonType cardType, Vector2 mousePos)
     {
-        var shouldExit = world.Query<LocationComponent>()
-            .FirstOptional()
-            .Bind(world.GetOptional<LocationComponent>)
-            .Match(
-                l => !l.IsInTransit,
-                () => true
-            );
+        var locEntityOpt = world.QueryFirst<LocationComponent>();
+        var shouldExit = true;
+        if (locEntityOpt.IsSome)
+        {
+            shouldExit = !world.Get<LocationComponent>(locEntityOpt.Unwrap()).IsInTransit;
+        }
 
         if (shouldExit)
         {
@@ -91,19 +87,18 @@ public class ConstructionSystem : ISystem
             return;
         }
 
-        world.Query<CameraComponent>()
-            .FirstOptional()
-            .Bind(world.GetOptional<CameraComponent>)
-            .Match(cam =>
-            {
-                PerformRaycast(cam.Camera, mousePos)
-                    .Bind(GetColliderData)
-                    .Bind(collider => ProcessCollision(world, collider.Collider, collider.Position, cardType))
-                    .Match(
-                        ApplyPreviewConfig,
-                        () => _previewGhost.Visible = false
-                    );
-            });
+        var camEntityOpt = world.QueryFirst<CameraComponent>();
+        if (camEntityOpt.IsSome)
+        {
+            var cam = world.Get<CameraComponent>(camEntityOpt.Unwrap());
+            PerformRaycast(cam.Camera, mousePos)
+                .Bind(GetColliderData)
+                .Bind(collider => ProcessCollision(world, collider.Collider, collider.Position, cardType))
+                .Match(
+                    ApplyPreviewConfig,
+                    () => _previewGhost.Visible = false
+                );
+        }
     }
 
     /// <summary>
@@ -146,17 +141,18 @@ public class ConstructionSystem : ISystem
     /// <returns>True if the card was successfully played, false otherwise.</returns>
     public Result<bool, string> TryPlayCard(World world, WagonType cardType, int cost, Vector2 mousePos)
     {
-        var resOption = world.Query<ResourceComponent>().FirstOptional().Bind(world.GetOptional<ResourceComponent>);
-        if (resOption.Match(r => r.Scrap < cost, () => true)) 
+        var resEntityOpt = world.QueryFirst<ResourceComponent>();
+        if (resEntityOpt.IsNone) return Result.Err<bool, string>("Resources not found!");
+        
+        ref var resources = ref world.Get<ResourceComponent>(resEntityOpt.Unwrap());
+        if (resources.Scrap < cost) 
             return Result.Err<bool, string>("Not enough scrap!");
         
-        return world.Query<CameraComponent>()
-            .FirstOptional()
-            .Bind(world.GetOptional<CameraComponent>)
-            .Match(
-                cam => ExecutePlacement(world, cam.Camera, cardType, cost, mousePos, resOption.Unwrap()),
-                () => Result.Err<bool, string>("Camera not found")
-            );
+        var camEntityOpt = world.QueryFirst<CameraComponent>();
+        if (camEntityOpt.IsNone) return Result.Err<bool, string>("Camera not found");
+        
+        ref readonly var cam = ref world.Get<CameraComponent>(camEntityOpt.Unwrap());
+        return ExecutePlacement(world, cam.Camera, cardType, cost, mousePos, ref resources);
     }
 
     /// <summary>
@@ -171,33 +167,29 @@ public class ConstructionSystem : ISystem
     /// <returns>
     /// A Result object containing a boolean indicating success or failure, or an error message describing the reason for failure.
     /// </returns>
-    private Result<bool, string> ExecutePlacement(World world, Camera3D camera, WagonType type, int cost, Vector2 mousePos, ResourceComponent resources)
+    private Result<bool, string> ExecutePlacement(World world, Camera3D camera, WagonType type, int cost, Vector2 mousePos, ref ResourceComponent resources)
     {
-        return PerformRaycast(camera, mousePos)
-            .Bind(GetColliderData)
-            .Match(
-                data => 
-                {
-                    if (data.Collider.HasMeta("EntityId"))
-                    {
-                        var entityId = (int)data.Collider.GetMeta("EntityId");
-                        ApplyCardToWagon(world, new Entity(entityId), type);
-                        resources.Scrap -= cost;
-                        return Result.Ok<bool, string>(true);
-                    }
+        var rayResult = PerformRaycast(camera, mousePos).Bind(GetColliderData);
+        if (rayResult.IsNone) return Result.Err<bool, string>("Nothing hit");
+        
+        var data = rayResult.Unwrap();
+        if (data.Collider.HasMeta("EntityId"))
+        {
+            var entityId = (int)data.Collider.GetMeta("EntityId");
+            ApplyCardToWagon(world, new Entity(entityId), type);
+            resources.Scrap -= cost;
+            return Result.Ok<bool, string>(true);
+        }
 
-                    if (data.Collider.Name == "FloorBody" && IsValidFloorSpace(world, data.Position))
-                    {
-                        var maxSlot = GetMaxSlot(world);
-                        CreateNewWagon(world, maxSlot + 1, 0, type);
-                        resources.Scrap -= cost;
-                        return Result.Ok<bool, string>(true);
-                    }
+        if (data.Collider.Name == "FloorBody" && IsValidFloorSpace(world, data.Position))
+        {
+            var maxSlot = GetMaxSlot(world);
+            CreateNewWagon(world, maxSlot + 1, 0, type);
+            resources.Scrap -= cost;
+            return Result.Ok<bool, string>(true);
+        }
 
-                    return Result.Err<bool, string>("Invalid placement area");
-                },
-                () => Result.Err<bool, string>("Nothing hit")
-            );
+        return Result.Err<bool, string>("Invalid placement area");
     }
 
     /// <summary>
@@ -229,7 +221,7 @@ public class ConstructionSystem : ISystem
             var hitEntity = new Entity(entityId);
             if (!world.IsAlive(hitEntity)) return Option<PreviewConfig>.None;
 
-            var hitSlot = world.Get<WagonSlotComponent>(hitEntity);
+            ref var hitSlot = ref world.Get<WagonSlotComponent>(hitEntity);
             var (highestLayer, topType) = FindTopWagon(world, hitSlot.SlotIndex);
 
             if (topType == WagonType.Locomotive) return Option<PreviewConfig>.None;
@@ -265,19 +257,33 @@ public class ConstructionSystem : ISystem
         return localHit.X < lastWagonX + 2f;
     }
 
-    private static int GetMaxSlot(World world) => world.Query<WagonSlotComponent>()
-        .Select(e => world.Get<WagonSlotComponent>(e).SlotIndex)
-        .Prepend(0).Max();
+    private static int GetMaxSlot(World world)
+    {
+        var max = 0;
+        foreach (var e in world.Query<WagonSlotComponent>())
+        {
+            var slot = world.Get<WagonSlotComponent>(e).SlotIndex;
+            if (slot > max) max = slot;
+        }
+        return max;
+    }
 
     private static (int layer, WagonType type) FindTopWagon(World world, int slotIndex)
     {
-        var wagons = world.Query<WagonSlotComponent, WagonTypeComponent>()
-            .Select(e => (Slot: world.Get<WagonSlotComponent>(e), world.Get<WagonTypeComponent>(e).Type))
-            .Where(w => w.Slot.SlotIndex == slotIndex)
-            .OrderByDescending(w => w.Slot.Layer)
-            .FirstOrDefault();
-            
-        return wagons.Slot != null ? (wagons.Slot.Layer, wagons.Type) : (-1, WagonType.Locomotive);
+        var topLayer = -1;
+        var topType = WagonType.Locomotive;
+        var found = false;
+
+        world.ForEach((ref WagonSlotComponent slot, ref WagonTypeComponent c2) => 
+        {
+            if (slot.SlotIndex != slotIndex) return;
+            if (slot.Layer <= topLayer) return;
+            topLayer = slot.Layer;
+            topType = c2.Type;
+            found = true;
+        });
+        
+        return found ? (topLayer, topType) : (-1, WagonType.Locomotive);
     }
     
     /// <summary>
@@ -287,13 +293,13 @@ public class ConstructionSystem : ISystem
     private static void ApplyCardToWagon(World world, Entity hitEntity, WagonType cardType)
     {
         if (!world.IsAlive(hitEntity)) return;
-        var hitSlot = world.Get<WagonSlotComponent>(hitEntity);
+        ref var hitSlot = ref world.Get<WagonSlotComponent>(hitEntity);
         var topEntity = hitEntity;
         var highestLayer = -1;
 
         foreach (var e in world.Query<WagonSlotComponent, WagonTypeComponent>())
         {
-            var s = world.Get<WagonSlotComponent>(e);
+            ref var s = ref world.Get<WagonSlotComponent>(e);
             if (s.SlotIndex != hitSlot.SlotIndex || s.Layer <= highestLayer) continue;
             highestLayer = s.Layer;
             topEntity = e;
@@ -304,12 +310,12 @@ public class ConstructionSystem : ISystem
 
         if (topType == cardType)
         {
-            var health = world.Get<HealthComponent>(topEntity);
+            ref var health = ref world.Get<HealthComponent>(topEntity);
             health.Max += 50f;
             health.Current += 50f;
 
             if (cardType != WagonType.Combat || !world.Has<TurretComponent>(topEntity)) return;
-            var turret = world.Get<TurretComponent>(topEntity);
+            ref var turret = ref world.Get<TurretComponent>(topEntity);
             turret.Damage += 10f;
             turret.FireRate += 3f;
         }

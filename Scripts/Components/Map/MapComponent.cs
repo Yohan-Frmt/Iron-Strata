@@ -7,7 +7,7 @@ namespace IronStrata.Scripts.Components.Map;
 /// <summary>
 /// Stores the overall structure of the procedurally generated world map.
 /// </summary>
-public class MapComponent : IComponent
+public struct MapComponent()
 {
     /// <summary>
     /// All nodes in the map indexed by their unique IDs.

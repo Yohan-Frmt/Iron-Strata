@@ -12,7 +12,7 @@ public class MapNode(int id, int layer, NodeType type, Vector2 position)
     /// <summary>
     /// Unique identifier for this node.
     /// </summary>
-    public int Id = id;
+    public readonly int Id = id;
 
     /// <summary>
     /// The horizontal layer index in the procedural generation grid.
@@ -33,4 +33,9 @@ public class MapNode(int id, int layer, NodeType type, Vector2 position)
     /// List of IDs of nodes that can be reached from this node.
     /// </summary>
     public List<int> NextNodes = [];
+
+    /// <summary>
+    /// Defines the distance from the center of this node to its boundary, representing the size or influence of the node.
+    /// </summary>
+    public float Radius;
 }

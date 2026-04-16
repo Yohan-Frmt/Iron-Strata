@@ -5,7 +5,7 @@ namespace IronStrata.Scripts.Components.Train;
 /// <summary>
 /// Component that defines the locomotion physics for the entire train.
 /// </summary>
-public class TrainMovementComponent : IComponent
+public struct TrainMovementComponent()
 {
     /// <summary>
     /// The current linear speed of the train.
