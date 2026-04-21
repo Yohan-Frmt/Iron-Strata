@@ -9,6 +9,8 @@ using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Registry;
+using IronStrata.Scripts.Enums;
+using IronStrata.Scripts.Map;
 
 namespace IronStrata.Scripts.Systems.Combat;
 
@@ -27,11 +29,26 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
     /// <param name="world">The global game world that manages entities and components.</param>
     /// <param name="delta">The time elapsed since the last update, used to calculate time-dependent changes.</param>
     public void Update(World world, double delta) {
-        Option<Entity> locationEntityOption = world.QueryFirst<LocationComponent>();
-        bool isInCity = false;
-        if (locationEntityOption.IsSome) { isInCity = world.Get<LocationComponent>(locationEntityOption.Unwrap()).IsInCityZone; }
+        Option<Entity> mapEntityOption = world.QueryFirst<MapComponent>();
+        bool shouldSpawn = false;
 
-        if (isInCity) {
+        if (mapEntityOption.IsSome) {
+            Entity entity = mapEntityOption.Unwrap();
+            if (world.Has<LocationComponent>(entity)) {
+                ref LocationComponent location = ref world.Get<LocationComponent>(entity);
+                ref MapComponent map = ref world.Get<MapComponent>(entity);
+                
+                if (!location.IsInTransit) {
+                    if (map.AllNodes.TryGetValue(location.CurrentNodeId, out MapNode currentNode)) {
+                        if ((currentNode.Type == NodeType.Combat || currentNode.Type == NodeType.Scavenge) && currentNode.Layer > 0) {
+                            shouldSpawn = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shouldSpawn) {
             _hordeTimer += (float)delta;
             if (_hordeTimer >= _hordeSpawnInterval) {
                 _hordeTimer = 0f;
