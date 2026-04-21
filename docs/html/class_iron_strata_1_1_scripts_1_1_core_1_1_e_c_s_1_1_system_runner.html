@@ -103,15 +103,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae271921de38e0d9dfc31fec0d834d576" id="r_ae271921de38e0d9dfc31fec0d834d576"><td class="memItemLeft"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html">SystemRunner</a>&#160;</td><td class="memItemRight"><a class="el" href="#ae271921de38e0d9dfc31fec0d834d576">Add</a> (<a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_fixed_system.html">IFixedSystem</a> system)</td></tr>
 <tr class="memdesc:ae271921de38e0d9dfc31fec0d834d576"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new physics system to be updated at a fixed interval.  <br /></td></tr>
 <tr class="memitem:a82a6b3b42d7cde0205e3cda213e26272" id="r_a82a6b3b42d7cde0205e3cda213e26272"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a82a6b3b42d7cde0205e3cda213e26272">Update</a> (double delta)</td></tr>
-<tr class="memdesc:a82a6b3b42d7cde0205e3cda213e26272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all registered frame systems.  <br /></td></tr>
+<tr class="memdesc:a82a6b3b42d7cde0205e3cda213e26272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all registered frame systems with the specified time delta.  <br /></td></tr>
 <tr class="memitem:a56ad40d733d5c0671b02cc9eddf31bac" id="r_a56ad40d733d5c0671b02cc9eddf31bac"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a56ad40d733d5c0671b02cc9eddf31bac">FixedUpdate</a> (double delta)</td></tr>
-<tr class="memdesc:a56ad40d733d5c0671b02cc9eddf31bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all registered physics systems.  <br /></td></tr>
+<tr class="memdesc:a56ad40d733d5c0671b02cc9eddf31bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all registered fixed systems with the provided fixed time step.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages the execution order and lifecycle of <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems. </p>
 <p>It delegates updates to registered frame and physics systems. </p>
 
-<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00009">9</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00010">10</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="ae271921de38e0d9dfc31fec0d834d576" name="ae271921de38e0d9dfc31fec0d834d576"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae271921de38e0d9dfc31fec0d834d576">&#9670;&#160;</a></span>Add() <span class="overload">[1/2]</span></h2>
@@ -137,7 +137,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a> instance for method chaining.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00030">30</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00029">29</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
 
 </div>
 </div>
@@ -184,7 +184,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates all registered physics systems. </p>
+<p>Updates all registered fixed systems with the provided fixed time step. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">delta</td><td>The fixed time step in seconds.</td></tr>
@@ -192,7 +192,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00049">49</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00046">46</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
 
 </div>
 </div>
@@ -211,7 +211,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates all registered frame systems. </p>
+<p>Updates all registered frame systems with the specified time delta. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">delta</td><td>The time elapsed since the last frame in seconds.</td></tr>
@@ -219,7 +219,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00040">40</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_system_runner_8cs_source.html#l00038">38</a> of file <a class="el" href="_system_runner_8cs_source.html">SystemRunner.cs</a>.</p>
 
 </div>
 </div>

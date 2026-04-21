@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['locationcomponent_2ecs_0',['LocationComponent.cs',['../_location_component_8cs.html',1,'']]]
+  ['inputsystem_2ecs_0',['InputSystem.cs',['../_input_system_8cs.html',1,'']]],
+  ['isystem_2ecs_1',['ISystem.cs',['../_i_system_8cs.html',1,'']]]
 ];

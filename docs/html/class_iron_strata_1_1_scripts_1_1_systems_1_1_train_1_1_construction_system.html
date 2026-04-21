@@ -101,31 +101,31 @@ Inheritance diagram for IronStrata.Scripts.Systems.Train.ConstructionSystem:</di
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_construction_system.png" usemap="#IronStrata_2EScripts_2ESystems_2ETrain_2EConstructionSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2ETrain_2EConstructionSystem_map" name="IronStrata_2EScripts_2ESystems_2ETrain_2EConstructionSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,308,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,308,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae7355140e7ee17db5cf05fecf11e2d49" id="r_ae7355140e7ee17db5cf05fecf11e2d49"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae7355140e7ee17db5cf05fecf11e2d49">ConstructionSystem</a> (Camera3D camera, MeshInstance3D previewGhost, Control bottomHud, Node3D trainRoot)</td></tr>
-<tr class="memdesc:ae7355140e7ee17db5cf05fecf11e2d49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_construction_system.html" title="System that handles the construction of new wagons and upgrading existing ones.">ConstructionSystem</a>.  <br /></td></tr>
+<tr class="memitem:ad15a0662217e25c904a1c0e28729b700" id="r_ad15a0662217e25c904a1c0e28729b700"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ad15a0662217e25c904a1c0e28729b700">ConstructionSystem</a> (MeshInstance3D previewGhost, Control bottomHud, Node3D trainRoot)</td></tr>
+<tr class="memdesc:ad15a0662217e25c904a1c0e28729b700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the construction-related functionalities within the train system, responsible for managing <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a>, previews, and material interactions.  <br /></td></tr>
 <tr class="memitem:a8ca6729a5a5915a3ca921b5f7e5f83a8" id="r_a8ca6729a5a5915a3ca921b5f7e5f83a8"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a8ca6729a5a5915a3ca921b5f7e5f83a8">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:a8ca6729a5a5915a3ca921b5f7e5f83a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the visibility of construction-related <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> and previews.  <br /></td></tr>
+<tr class="memdesc:a8ca6729a5a5915a3ca921b5f7e5f83a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the construction system state, controlling HUD visibility, preview ghost interactions, and transit status based on the current location.  <br /></td></tr>
 <tr class="memitem:a2af2b0e0c5b4fb82a48ec86d2b15b179" id="r_a2af2b0e0c5b4fb82a48ec86d2b15b179"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a2af2b0e0c5b4fb82a48ec86d2b15b179">HidePreview</a> ()</td></tr>
-<tr class="memdesc:a2af2b0e0c5b4fb82a48ec86d2b15b179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides the wagon placement preview ghost.  <br /></td></tr>
-<tr class="memitem:af425280fb1efad57f97c329b4c4b7a5b" id="r_af425280fb1efad57f97c329b4c4b7a5b"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af425280fb1efad57f97c329b4c4b7a5b">UpdatePreview</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, Vector2 mousePos)</td></tr>
-<tr class="memdesc:af425280fb1efad57f97c329b4c4b7a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the position and color of the placement preview based on mouse position.  <br /></td></tr>
-<tr class="memitem:a9ff724477bf24115ea76ad70230e1906" id="r_a9ff724477bf24115ea76ad70230e1906"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a9ff724477bf24115ea76ad70230e1906">TryPlayCard</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, int cost, Vector2 mousePos)</td></tr>
-<tr class="memdesc:a9ff724477bf24115ea76ad70230e1906"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to play a card (build or upgrade a wagon) at the current mouse position.  <br /></td></tr>
+<tr class="memdesc:a2af2b0e0c5b4fb82a48ec86d2b15b179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides the construction preview ghost in the train system, disabling its visibility.  <br /></td></tr>
+<tr class="memitem:a5ed71ead953ae90889e0f7c921278dcd" id="r_a5ed71ead953ae90889e0f7c921278dcd"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5ed71ead953ae90889e0f7c921278dcd">UpdatePreview</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, Vector2 mousePosition)</td></tr>
+<tr class="memdesc:a5ed71ead953ae90889e0f7c921278dcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the visual preview of a wagon placement within the construction system, including raycasting to identify the appropriate location and applying the configuration for the preview object based on the current mouse position and selected wagon type.  <br /></td></tr>
+<tr class="memitem:a2165c15f924858d8319f1f365cf00c65" id="r_a2165c15f924858d8319f1f365cf00c65"><td class="memItemLeft"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html">Result</a>&lt; bool, string &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2165c15f924858d8319f1f365cf00c65">TryPlayCard</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, int cost, Vector2 mousePos)</td></tr>
+<tr class="memdesc:a2165c15f924858d8319f1f365cf00c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to play a card (build or upgrade a wagon) at the current mouse position.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>System that handles the construction of new wagons and upgrading existing ones. </p>
 <p>It manages the interaction between the player's mouse and the 3D train model. </p>
 
-<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00017">17</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00059">59</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae7355140e7ee17db5cf05fecf11e2d49" name="ae7355140e7ee17db5cf05fecf11e2d49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7355140e7ee17db5cf05fecf11e2d49">&#9670;&#160;</a></span>ConstructionSystem()</h2>
+<a id="ad15a0662217e25c904a1c0e28729b700" name="ad15a0662217e25c904a1c0e28729b700"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad15a0662217e25c904a1c0e28729b700">&#9670;&#160;</a></span>ConstructionSystem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -133,11 +133,6 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">IronStrata.Scripts.Systems.Train.ConstructionSystem.ConstructionSystem </td>
           <td>(</td>
-          <td class="paramtype">Camera3D</td>          <td class="paramname"><span class="paramname"><em>camera</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">MeshInstance3D</td>          <td class="paramname"><span class="paramname"><em>previewGhost</em></span>, </td>
         </tr>
         <tr>
@@ -153,9 +148,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes a new instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_construction_system.html" title="System that handles the construction of new wagons and upgrading existing ones.">ConstructionSystem</a>. </p>
+<p>Handles the construction-related functionalities within the train system, responsible for managing <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a>, previews, and material interactions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00028">28</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00069">69</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
 
 </div>
 </div>
@@ -175,20 +170,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Hides the wagon placement preview ghost. </p>
+<p>Hides the construction preview ghost in the train system, disabling its visibility. </p>
+<p>This is used to remove any visual indicators for construction placement from the scene. </p>
 
-<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00059">59</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00096">96</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
 
 </div>
 </div>
-<a id="a9ff724477bf24115ea76ad70230e1906" name="a9ff724477bf24115ea76ad70230e1906"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ff724477bf24115ea76ad70230e1906">&#9670;&#160;</a></span>TryPlayCard()</h2>
+<a id="a2165c15f924858d8319f1f365cf00c65" name="a2165c15f924858d8319f1f365cf00c65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2165c15f924858d8319f1f365cf00c65">&#9670;&#160;</a></span>TryPlayCard()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool IronStrata.Scripts.Systems.Train.ConstructionSystem.TryPlayCard </td>
+          <td class="memname"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html">Result</a>&lt; bool, string &gt; IronStrata.Scripts.Systems.Train.ConstructionSystem.TryPlayCard </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a></td>          <td class="paramname"><span class="paramname"><em>world</em></span>, </td>
         </tr>
@@ -213,7 +209,7 @@ Public Member Functions</h2></td></tr>
 <p>Attempts to play a card (build or upgrade a wagon) at the current mouse position. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if the card was successfully played, false otherwise.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00166">166</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00174">174</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
 
 </div>
 </div>
@@ -236,16 +232,23 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the visibility of construction-related <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> and previews. </p>
+<p>Updates the construction system state, controlling HUD visibility, preview ghost interactions, and transit status based on the current location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world instance containing entities and their components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time elapsed since the last update, used for timing calculations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00040">40</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00082">82</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
 
 </div>
 </div>
-<a id="af425280fb1efad57f97c329b4c4b7a5b" name="af425280fb1efad57f97c329b4c4b7a5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af425280fb1efad57f97c329b4c4b7a5b">&#9670;&#160;</a></span>UpdatePreview()</h2>
+<a id="a5ed71ead953ae90889e0f7c921278dcd" name="a5ed71ead953ae90889e0f7c921278dcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ed71ead953ae90889e0f7c921278dcd">&#9670;&#160;</a></span>UpdatePreview()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,15 +266,22 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vector2</td>          <td class="paramname"><span class="paramname"><em>mousePos</em></span>&#160;)</td>
+          <td class="paramtype">Vector2</td>          <td class="paramname"><span class="paramname"><em>mousePosition</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the position and color of the placement preview based on mouse position. </p>
-<p>Uses raycasting to detect existing wagons or the ground. </p>
+<p>Updates the visual preview of a wagon placement within the construction system, including raycasting to identify the appropriate location and applying the configuration for the preview object based on the current mouse position and selected wagon type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world instance, used to query entities and retrieve components related to the construction system.</td></tr>
+    <tr><td class="paramname">cardType</td><td>The type of wagon being previewed, determining the configuration applied to the preview object.</td></tr>
+    <tr><td class="paramname">mousePosition</td><td>The current position of the mouse in screen coordinates, used for detecting the intended placement location.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00068">68</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_construction_system_8cs_source.html#l00108">108</a> of file <a class="el" href="_construction_system_8cs_source.html">ConstructionSystem.cs</a>.</p>
 
 </div>
 </div>

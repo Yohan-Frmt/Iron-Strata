@@ -1,5 +1,6 @@
 var namespace_iron_strata_1_1_scripts_1_1_components =
 [
+    [ "Camera", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_camera.html", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_camera" ],
     [ "Character", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_character.html", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_character" ],
     [ "Map", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_map.html", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_map" ],
     [ "Render", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_render.html", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_render" ],

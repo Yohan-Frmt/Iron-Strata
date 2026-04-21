@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['value_0',['Value',['../class_iron_strata_1_1_scripts_1_1_components_1_1_shared_1_1_position_component.html#aa372d650c671e137e7a69a6cde74bcdb',1,'IronStrata::Scripts::Components::Shared::PositionComponent']]],
+  ['value_0',['Value',['../struct_iron_strata_1_1_scripts_1_1_components_1_1_shared_1_1_position_component.html#aa372d650c671e137e7a69a6cde74bcdb',1,'IronStrata::Scripts::Components::Shared::PositionComponent']]],
   ['vertical_20prototype_1',['21.1 Phase 1 — The Vertical Prototype',['../md_project.html#autotoc_md139',1,'']]],
   ['vision_20foundations_2',['PART ONE — VISION &amp;amp; FOUNDATIONS',['../md_project.html#autotoc_md18',1,'']]],
   ['vision_20philosophy_3',['1. THE VISION &amp;amp; PHILOSOPHY',['../md_project.html#autotoc_md20',1,'']]],

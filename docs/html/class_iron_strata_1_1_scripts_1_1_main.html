@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_main.html','','class
 </div><!--header-->
 <div class="contents">
 
-<p>The main entry point and controller for the game scene.  
+<p>Serves as the core manager of the game scene, handling essential gameplay mechanics and scene interactions.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Main:</div>
@@ -105,17 +105,50 @@ Inheritance diagram for IronStrata.Scripts.Main:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a19c7d8660606a54db5055bc9dd2292ef" id="r_a19c7d8660606a54db5055bc9dd2292ef"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a19c7d8660606a54db5055bc9dd2292ef">_Ready</a> ()</td></tr>
-<tr class="memdesc:a19c7d8660606a54db5055bc9dd2292ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the initial game state, world, and <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems.  <br /></td></tr>
-<tr class="memitem:ad04cee1aa0e265178680b12948dca7cf" id="r_ad04cee1aa0e265178680b12948dca7cf"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ad04cee1aa0e265178680b12948dca7cf">TryPlayCard</a> (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, int cost, Vector2 mousePos)</td></tr>
-<tr class="memitem:a160eb222c34b71a93777ab6d23f28c66" id="r_a160eb222c34b71a93777ab6d23f28c66"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a160eb222c34b71a93777ab6d23f28c66">UpdatePreview</a> (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, Vector2 mousePos)</td></tr>
+<tr class="memdesc:a19c7d8660606a54db5055bc9dd2292ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes once the node has entered the scene tree.  <br /></td></tr>
+<tr class="memitem:a7f88d218fa956db546a638faec45f197" id="r_a7f88d218fa956db546a638faec45f197"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a7f88d218fa956db546a638faec45f197">_Input</a> (InputEvent @event)</td></tr>
+<tr class="memdesc:a7f88d218fa956db546a638faec45f197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes input events dispatched to the node during the game loop.  <br /></td></tr>
+<tr class="memitem:a10d9b3e69d749db30483ba530f11008b" id="r_a10d9b3e69d749db30483ba530f11008b"><td class="memItemLeft"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html">Result</a>&lt; bool, string &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a10d9b3e69d749db30483ba530f11008b">TryPlayCard</a> (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, int cost, Vector2 mousePosition)</td></tr>
+<tr class="memdesc:a10d9b3e69d749db30483ba530f11008b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to play a wagon card by constructing the specified wagon type at a given position, provided that all conditions, such as resources and placement validity, are satisfied.  <br /></td></tr>
+<tr class="memitem:a93d5c7ceb321beb4c4438dd823d57052" id="r_a93d5c7ceb321beb4c4438dd823d57052"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a93d5c7ceb321beb4c4438dd823d57052">UpdatePreview</a> (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> cardType, Vector2 mousePosition)</td></tr>
+<tr class="memdesc:a93d5c7ceb321beb4c4438dd823d57052"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the 3D preview of a wagon currently being placed during the construction phase.  <br /></td></tr>
 <tr class="memitem:a3133b4eeb805482325a30866b654473d" id="r_a3133b4eeb805482325a30866b654473d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3133b4eeb805482325a30866b654473d">HidePreview</a> ()</td></tr>
+<tr class="memdesc:a3133b4eeb805482325a30866b654473d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides the construction preview in the game, removing any visual or interactive elements associated with the player's current construction action.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The main entry point and controller for the game scene. </p>
-<p>It bootstraps the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world, registers systems, and manages the primary game loop setup. </p>
+<div class="textblock"><p>Serves as the core manager of the game scene, handling essential gameplay mechanics and scene interactions. </p>
+<p>This class acts as the central orchestrator for player input, card system functionality, and visual previews. It integrates various game systems, such as the construction logic and camera interactions, ensuring smooth and intuitive gameplay mechanics. Extends Node3D to leverage 3D scene management capabilities in Godot. </p>
 
-<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00027">27</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00034">34</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a7f88d218fa956db546a638faec45f197" name="a7f88d218fa956db546a638faec45f197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f88d218fa956db546a638faec45f197">&#9670;&#160;</a></span>_Input()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override void IronStrata.Scripts.Main._Input </td>
+          <td>(</td>
+          <td class="paramtype">InputEvent @</td>          <td class="paramname"><span class="paramname"><em>event</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Processes input events dispatched to the node during the game loop. </p>
+<p>Used to delegate input handling to relevant systems or perform game-specific logic.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>The input event to be processed, such as key presses, mouse motion, or other user interactions.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00268">268</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
+
+</div>
+</div>
 <a id="a19c7d8660606a54db5055bc9dd2292ef" name="a19c7d8660606a54db5055bc9dd2292ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a19c7d8660606a54db5055bc9dd2292ef">&#9670;&#160;</a></span>_Ready()</h2>
 
@@ -131,9 +164,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets up the initial game state, world, and <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems. </p>
+<p>Executes once the node has entered the scene tree. </p>
+<p>Used to perform any setup or initialization specific to this node, such as configuring properties, establishing connections, or preparing runtime behavior. </p>
 
-<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00041">41</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00087">87</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
 
 </div>
 </div>
@@ -152,18 +186,21 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00206">206</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
+<p>Hides the construction preview in the game, removing any visual or interactive elements associated with the player's current construction action. </p>
+<p>This method ensures that the preview state is cleared and no longer displayed to the user, effectively resetting the construction preview system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00318">318</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
 
 </div>
 </div>
-<a id="ad04cee1aa0e265178680b12948dca7cf" name="ad04cee1aa0e265178680b12948dca7cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad04cee1aa0e265178680b12948dca7cf">&#9670;&#160;</a></span>TryPlayCard()</h2>
+<a id="a10d9b3e69d749db30483ba530f11008b" name="a10d9b3e69d749db30483ba530f11008b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10d9b3e69d749db30483ba530f11008b">&#9670;&#160;</a></span>TryPlayCard()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool IronStrata.Scripts.Main.TryPlayCard </td>
+          <td class="memname"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html">Result</a>&lt; bool, string &gt; IronStrata.Scripts.Main.TryPlayCard </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a></td>          <td class="paramname"><span class="paramname"><em>cardType</em></span>, </td>
         </tr>
@@ -175,17 +212,28 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vector2</td>          <td class="paramname"><span class="paramname"><em>mousePos</em></span>&#160;)</td>
+          <td class="paramtype">Vector2</td>          <td class="paramname"><span class="paramname"><em>mousePosition</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00204">204</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
+<p>Attempts to play a wagon card by constructing the specified wagon type at a given position, provided that all conditions, such as resources and placement validity, are satisfied. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cardType</td><td>The type of wagon card to be played.</td></tr>
+    <tr><td class="paramname">cost</td><td>The resource cost required to play the card.</td></tr>
+    <tr><td class="paramname">mousePosition</td><td>The global mouse position where the wagon is to be constructed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A result object containing a boolean indicating whether the card was successfully played, and an optional string providing additional error information if the attempt fails. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00301">301</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
 
 </div>
 </div>
-<a id="a160eb222c34b71a93777ab6d23f28c66" name="a160eb222c34b71a93777ab6d23f28c66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a160eb222c34b71a93777ab6d23f28c66">&#9670;&#160;</a></span>UpdatePreview()</h2>
+<a id="a93d5c7ceb321beb4c4438dd823d57052" name="a93d5c7ceb321beb4c4438dd823d57052"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93d5c7ceb321beb4c4438dd823d57052">&#9670;&#160;</a></span>UpdatePreview()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,12 +246,21 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vector2</td>          <td class="paramname"><span class="paramname"><em>mousePos</em></span>&#160;)</td>
+          <td class="paramtype">Vector2</td>          <td class="paramname"><span class="paramname"><em>mousePosition</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00205">205</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
+<p>Updates the 3D preview of a wagon currently being placed during the construction phase. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cardType</td><td>The type of the wagon, representing its functionality or category, to be displayed in the preview.</td></tr>
+    <tr><td class="paramname">mousePosition</td><td>The current mouse position in screen coordinates, used to determine the location of the preview in the game world.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_main_8cs_source.html#l00309">309</a> of file <a class="el" href="_main_8cs_source.html">Main.cs</a>.</p>
 
 </div>
 </div>

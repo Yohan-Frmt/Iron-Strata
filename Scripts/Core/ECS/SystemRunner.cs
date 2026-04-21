@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Godot;
 
 namespace IronStrata.Scripts.Core.ECS;
 
@@ -7,8 +6,7 @@ namespace IronStrata.Scripts.Core.ECS;
 /// Manages the execution order and lifecycle of ECS systems.
 /// It delegates updates to registered frame and physics systems.
 /// </summary>
-public class SystemRunner(World world)
-{
+public class SystemRunner(World world) {
     private readonly List<ISystem> _systems = [];
     private readonly List<IFixedSystem> _fixedSystems = [];
 
@@ -17,8 +15,7 @@ public class SystemRunner(World world)
     /// </summary>
     /// <param name="system">The system instance to add.</param>
     /// <returns>The SystemRunner instance for method chaining.</returns>
-    public SystemRunner Add(ISystem system)
-    {
+    public SystemRunner Add(ISystem system) {
         _systems.Add(system);
         return this;
     }
@@ -28,33 +25,24 @@ public class SystemRunner(World world)
     /// </summary>
     /// <param name="system">The system instance to add.</param>
     /// <returns>The SystemRunner instance for method chaining.</returns>
-    public SystemRunner Add(IFixedSystem system)
-    {
+    public SystemRunner Add(IFixedSystem system) {
         _fixedSystems.Add(system);
         return this;
     }
 
     /// <summary>
-    /// Updates all registered frame systems.
+    /// Updates all registered frame systems with the specified time delta.
     /// </summary>
     /// <param name="delta">The time elapsed since the last frame in seconds.</param>
-    public void Update(double delta)
-    {
-        for (var i = 0; i < _systems.Count; i++)
-        {
-            _systems[i].Update(world, delta);
-        }
+    public void Update(double delta) {
+        for (int systemIndex = 0; systemIndex < _systems.Count; systemIndex++) { _systems[systemIndex].Update(world, delta); }
     }
 
     /// <summary>
-    /// Updates all registered physics systems.
+    /// Updates all registered fixed systems with the provided fixed time step.
     /// </summary>
     /// <param name="delta">The fixed time step in seconds.</param>
-    public void FixedUpdate(double delta)
-    {
-        for (var i = 0; i < _fixedSystems.Count; i++)
-        {
-            _fixedSystems[i].FixedUpdate(world, delta);
-        }
+    public void FixedUpdate(double delta) {
+        for (int systemIndex = 0; systemIndex < _fixedSystems.Count; systemIndex++) { _fixedSystems[systemIndex].FixedUpdate(world, delta); }
     }
 }

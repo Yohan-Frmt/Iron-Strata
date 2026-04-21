@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_systems_1_1_map_1_1_
 </div><!--header-->
 <div class="contents">
 
-<p>System responsible for generating the visual representation of the world map in the 3D scene.  
+<p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_map_1_1_map_render_system.html" title="The MapRenderSystem is responsible for rendering the map within the game world.">MapRenderSystem</a> is responsible for rendering the map within the game world.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Systems.Map.MapRenderSystem:</div>
@@ -101,20 +101,20 @@ Inheritance diagram for IronStrata.Scripts.Systems.Map.MapRenderSystem:</div>
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_map_1_1_map_render_system.png" usemap="#IronStrata_2EScripts_2ESystems_2EMap_2EMapRenderSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2EMap_2EMapRenderSystem_map" name="IronStrata_2EScripts_2ESystems_2EMap_2EMapRenderSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,299,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,299,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aaefef27b25e29811faf3dcf9156c3c77" id="r_aaefef27b25e29811faf3dcf9156c3c77"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aaefef27b25e29811faf3dcf9156c3c77">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:aaefef27b25e29811faf3dcf9156c3c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a map needs to be rendered and triggers the drawing logic.  <br /></td></tr>
+<tr class="memdesc:aaefef27b25e29811faf3dcf9156c3c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the map rendering system by checking the world state.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System responsible for generating the visual representation of the world map in the 3D scene. </p>
-<p>This includes nodes (city zones) and the rails connecting them. </p>
+<div class="textblock"><p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_map_1_1_map_render_system.html" title="The MapRenderSystem is responsible for rendering the map within the game world.">MapRenderSystem</a> is responsible for rendering the map within the game world. </p>
+<p>It relies on the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> (<a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_entity.html" title="Represents a structured, lightweight identifier for entities within an Entity Component System (ECS).">Entity</a> Component System) world to retrieve relevant components and update the map rendering state as required. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_render_system_8cs_source.html#l00013">13</a> of file <a class="el" href="_map_render_system_8cs_source.html">MapRenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_render_system_8cs_source.html#l00015">15</a> of file <a class="el" href="_map_render_system_8cs_source.html">MapRenderSystem.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="aaefef27b25e29811faf3dcf9156c3c77" name="aaefef27b25e29811faf3dcf9156c3c77"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaefef27b25e29811faf3dcf9156c3c77">&#9670;&#160;</a></span>Update()</h2>
@@ -135,11 +135,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Checks if a map needs to be rendered and triggers the drawing logic. </p>
+<p>Updates the map rendering system by checking the world state. </p>
+<p>If the map has not been generated, it queries for the <a class="el" href="struct_iron_strata_1_1_scripts_1_1_components_1_1_map_1_1_map_component.html" title="Represents a component responsible for storing and managing the structure of a map in the form of nod...">MapComponent</a> in the world, and upon successful retrieval, draws the map and marks it as generated.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world containing entities and components to interact with for querying and rendering.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time that has passed since the last update, used for frame-dependent behaviors if necessary.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_map_render_system_8cs_source.html#l00023">23</a> of file <a class="el" href="_map_render_system_8cs_source.html">MapRenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_render_system_8cs_source.html#l00028">28</a> of file <a class="el" href="_map_render_system_8cs_source.html">MapRenderSystem.cs</a>.</p>
 
 </div>
 </div>

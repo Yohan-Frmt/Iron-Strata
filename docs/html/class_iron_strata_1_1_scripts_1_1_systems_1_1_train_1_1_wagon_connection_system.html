@@ -101,14 +101,14 @@ Inheritance diagram for IronStrata.Scripts.Systems.Train.WagonConnectionSystem:<
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_wagon_connection_system.png" usemap="#IronStrata_2EScripts_2ESystems_2ETrain_2EWagonConnectionSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2ETrain_2EWagonConnectionSystem_map" name="IronStrata_2EScripts_2ESystems_2ETrain_2EWagonConnectionSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,340,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,340,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f37835ae6f6cd8e3125485085352d8a" id="r_a1f37835ae6f6cd8e3125485085352d8a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1f37835ae6f6cd8e3125485085352d8a">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:a1f37835ae6f6cd8e3125485085352d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes structural degradation of train connections.  <br /></td></tr>
+<tr class="memdesc:a1f37835ae6f6cd8e3125485085352d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the entities within the world based on connection integrity and health components.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>System that monitors the structural health of wagon couplings. </p>
@@ -135,11 +135,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Processes structural degradation of train connections. </p>
+<p>Updates the entities within the world based on connection integrity and health components. </p>
+<p>Reduces the health of an entity if its connection integrity falls below a threshold and it is not welded.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world instance containing all entities and components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time interval (in seconds) since the last update. Used for applying time-dependent calculations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_wagon_connection_system_8cs_source.html#l00017">17</a> of file <a class="el" href="_wagon_connection_system_8cs_source.html">WagonConnectionSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_wagon_connection_system_8cs_source.html#l00019">19</a> of file <a class="el" href="_wagon_connection_system_8cs_source.html">WagonConnectionSystem.cs</a>.</p>
 
 </div>
 </div>

@@ -93,24 +93,25 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_registry_1_1_resourc
 </div><!--header-->
 <div class="contents">
 
-<p>Static registry for balancing and economy constants.  
+<p>Represents a centralized registry for managing constant values related to resource management across systems.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a0453ee644bfacb73bb19e7f70a4900db" id="r_a0453ee644bfacb73bb19e7f70a4900db"><td class="memItemLeft">const int&#160;</td><td class="memItemRight"><a class="el" href="#a0453ee644bfacb73bb19e7f70a4900db">DefaultWagonCost</a> = 25</td></tr>
-<tr class="memdesc:a0453ee644bfacb73bb19e7f70a4900db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base cost in Scrap to build a new wagon or upgrade an existing one.  <br /></td></tr>
+<tr class="memdesc:a0453ee644bfacb73bb19e7f70a4900db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the default cost of a wagon in scrap currency.  <br /></td></tr>
 <tr class="memitem:ab1afdc039c3830f8572f97bd6228dea8" id="r_ab1afdc039c3830f8572f97bd6228dea8"><td class="memItemLeft">const int&#160;</td><td class="memItemRight"><a class="el" href="#ab1afdc039c3830f8572f97bd6228dea8">ScrapPerKill</a> = 5</td></tr>
-<tr class="memdesc:ab1afdc039c3830f8572f97bd6228dea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Amount of Scrap rewarded for destroying a silicon lifeform.  <br /></td></tr>
+<tr class="memdesc:ab1afdc039c3830f8572f97bd6228dea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the amount of scrap rewarded for defeating an enemy.  <br /></td></tr>
 <tr class="memitem:a406c038d01635e6bc8c8b7cbc492967e" id="r_a406c038d01635e6bc8c8b7cbc492967e"><td class="memItemLeft">const int&#160;</td><td class="memItemRight"><a class="el" href="#a406c038d01635e6bc8c8b7cbc492967e">CardDrawCost</a> = 10</td></tr>
-<tr class="memdesc:a406c038d01635e6bc8c8b7cbc492967e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cost in Scrap to draw a new wagon card from the deck.  <br /></td></tr>
+<tr class="memdesc:a406c038d01635e6bc8c8b7cbc492967e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the number of Scrap required to draw a single card.  <br /></td></tr>
 <tr class="memitem:a49fa6e911765bebde2d7bdb9a5750af2" id="r_a49fa6e911765bebde2d7bdb9a5750af2"><td class="memItemLeft">const int&#160;</td><td class="memItemRight"><a class="el" href="#a49fa6e911765bebde2d7bdb9a5750af2">StartingScrap</a> = 0</td></tr>
-<tr class="memdesc:a49fa6e911765bebde2d7bdb9a5750af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Amount of Scrap the player starts with at the beginning of a run.  <br /></td></tr>
+<tr class="memdesc:a49fa6e911765bebde2d7bdb9a5750af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the initial amount of scrap resources available in the system.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Static registry for balancing and economy constants. </p>
+<div class="textblock"><p>Represents a centralized registry for managing constant values related to resource management across systems. </p>
+<p>The constants defined in this class serve as reference points for implementing various gameplay mechanics such as costs, rewards, and starting conditions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00006">6</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00008">8</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a406c038d01635e6bc8c8b7cbc492967e" name="a406c038d01635e6bc8c8b7cbc492967e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a406c038d01635e6bc8c8b7cbc492967e">&#9670;&#160;</a></span>CardDrawCost</h2>
@@ -132,9 +133,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Cost in Scrap to draw a new wagon card from the deck. </p>
+<p>Represents the number of Scrap required to draw a single card. </p>
+<p>This value is used as the cost for reducing the player's Scrap currency when they attempt to draw a card in the game. The player must have at least this amount of Scrap to perform the card draw operation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00021">21</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00027">27</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -158,9 +160,9 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Base cost in Scrap to build a new wagon or upgrade an existing one. </p>
+<p>Represents the default cost of a wagon in scrap currency. </p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00011">11</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00012">12</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -184,9 +186,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Amount of Scrap rewarded for destroying a silicon lifeform. </p>
+<p>Represents the amount of scrap rewarded for defeating an enemy. </p>
+<p>This constant value is used to define how much scrap is added to the player's resources each time an enemy is defeated in the game. </p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00016">16</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00019">19</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -210,9 +213,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Amount of Scrap the player starts with at the beginning of a run. </p>
+<p>Represents the initial amount of scrap resources available in the system. </p>
+<p>This is used as the starting value for tracking scrap resource availability. </p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00026">26</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_registry_8cs_source.html#l00033">33</a> of file <a class="el" href="_resource_registry_8cs_source.html">ResourceRegistry.cs</a>.</p>
 
 </div>
 </div>

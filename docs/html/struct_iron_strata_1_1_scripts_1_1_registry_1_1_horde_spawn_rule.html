@@ -93,19 +93,31 @@ $(function(){initNavTree('struct_iron_strata_1_1_scripts_1_1_registry_1_1_horde_
 </div><!--header-->
 <div class="contents">
 
-<p>Rule for how many enemies of a certain type should spawn in a horde.  
+<p>Defines a spawn rule for enemy generation during a horde event.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aad126dcc96305f936420a2a77390300d" id="r_aad126dcc96305f936420a2a77390300d"><td class="memItemLeft">readonly <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_character.html#a347407d8bf97b60fa2d30628182e60db">EnemyType</a>&#160;</td><td class="memItemRight"><a class="el" href="#aad126dcc96305f936420a2a77390300d">Type</a> = type</td></tr>
+<tr class="memdesc:aad126dcc96305f936420a2a77390300d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the category or classification of an enemy.  <br /></td></tr>
 <tr class="memitem:a19754121258c54d597979310096d0041" id="r_a19754121258c54d597979310096d0041"><td class="memItemLeft">readonly int&#160;</td><td class="memItemRight"><a class="el" href="#a19754121258c54d597979310096d0041">Count</a> = count</td></tr>
+<tr class="memdesc:a19754121258c54d597979310096d0041"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the number of enemies to be generated based on the spawn rule.  <br /></td></tr>
 <tr class="memitem:a1921749823ef5be89ddf596145772012" id="r_a1921749823ef5be89ddf596145772012"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#a1921749823ef5be89ddf596145772012">Chance</a> = chance</td></tr>
+<tr class="memdesc:a1921749823ef5be89ddf596145772012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the probability of applying a specific spawn rule during a horde event.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Rule for how many enemies of a certain type should spawn in a horde. </p>
+<div class="textblock"><p>Defines a spawn rule for enemy generation during a horde event. </p>
+<p>Rules are used by the spawn system to determine the composition of an enemy wave. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The type of enemy to spawn.</td></tr>
+    <tr><td class="paramname">count</td><td>The number of individuals of this type to generate.</td></tr>
+    <tr><td class="paramname">chance</td><td>The probability (between 0 and 1) that this rule is applied.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00044">44</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00171">171</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a1921749823ef5be89ddf596145772012" name="a1921749823ef5be89ddf596145772012"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1921749823ef5be89ddf596145772012">&#9670;&#160;</a></span>Chance</h2>
@@ -119,7 +131,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00048">48</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the probability of applying a specific spawn rule during a horde event. </p>
+<p>The value ranges between 0.0 and 1.0, where 0.0 indicates the rule is never applied, and 1.0 signifies the rule is always applied. This is used to randomize enemy composition for a more dynamic horde generation system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00200">200</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -135,7 +150,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00047">47</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Specifies the number of enemies to be generated based on the spawn rule. </p>
+<p>This value determines how many individuals of the specified enemy type are spawned during a horde event. The count is directly used by the spawning system to populate the game world with enemies as per the defined rules. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00190">190</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -151,7 +169,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00046">46</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the category or classification of an enemy. </p>
+<p>This field is used to identify the specific type of enemy within the system. It is integral to spawning rules, enemy behavior, and interactions in the game world. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00179">179</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>

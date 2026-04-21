@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_systems_1_1_debug_1_
 </div><!--header-->
 <div class="contents">
 
-<p>Development-only system that renders visual debug information in the 3D scene.  
+<p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_debug_1_1_debug_render_system.html" title="The DebugRenderSystem class is responsible for rendering debug visuals within the scene.">DebugRenderSystem</a> class is responsible for rendering debug visuals within the scene.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Systems.Debug.DebugRenderSystem:</div>
@@ -101,22 +101,22 @@ Inheritance diagram for IronStrata.Scripts.Systems.Debug.DebugRenderSystem:</div
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_debug_1_1_debug_render_system.png" usemap="#IronStrata_2EScripts_2ESystems_2EDebug_2EDebugRenderSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2EDebug_2EDebugRenderSystem_map" name="IronStrata_2EScripts_2ESystems_2EDebug_2EDebugRenderSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,323,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,323,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8e4ddebcd12c61632dc498145d4550f" id="r_ac8e4ddebcd12c61632dc498145d4550f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac8e4ddebcd12c61632dc498145d4550f">DebugRenderSystem</a> (Node3D trainRoot)</td></tr>
-<tr class="memdesc:ac8e4ddebcd12c61632dc498145d4550f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the debug rendering infrastructure.  <br /></td></tr>
+<tr class="memdesc:ac8e4ddebcd12c61632dc498145d4550f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a system for rendering debug visual elements, such as shapes, in a 3D environment.  <br /></td></tr>
 <tr class="memitem:a9ac0132bcfcc99762857336a45cc7c22" id="r_a9ac0132bcfcc99762857336a45cc7c22"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9ac0132bcfcc99762857336a45cc7c22">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:a9ac0132bcfcc99762857336a45cc7c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears and redraws debug lines and shapes for the current frame.  <br /></td></tr>
+<tr class="memdesc:a9ac0132bcfcc99762857336a45cc7c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the debug rendering system by iterating through relevant entities and drawing visual debug representations such as circles in the 3D world.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Development-only system that renders visual debug information in the 3D scene. </p>
-<p>This includes attack ranges, target lines, and movement paths. </p>
+<div class="textblock"><p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_debug_1_1_debug_render_system.html" title="The DebugRenderSystem class is responsible for rendering debug visuals within the scene.">DebugRenderSystem</a> class is responsible for rendering debug visuals within the scene. </p>
+<p>This includes drawing meshes and lines that aid in visualizing entities, components, and relationships within the game world. </p>
 
-<p class="definition">Definition at line <a class="el" href="_debug_render_system_8cs_source.html#l00013">13</a> of file <a class="el" href="_debug_render_system_8cs_source.html">DebugRenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_debug_render_system_8cs_source.html#l00015">15</a> of file <a class="el" href="_debug_render_system_8cs_source.html">DebugRenderSystem.cs</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac8e4ddebcd12c61632dc498145d4550f" name="ac8e4ddebcd12c61632dc498145d4550f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac8e4ddebcd12c61632dc498145d4550f">&#9670;&#160;</a></span>DebugRenderSystem()</h2>
@@ -133,9 +133,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the debug rendering infrastructure. </p>
+<p>Represents a system for rendering debug visual elements, such as shapes, in a 3D environment. </p>
+<p>This system leverages ImmediateMesh for immediate mode rendering and configures the necessary materials and meshes for unshaded debug visualization.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">trainRoot</td><td>The root node of the train entity in the 3D scene. It is used as the parent node for adding the debug mesh instance to the current scene.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_debug_render_system_8cs_source.html#l00021">21</a> of file <a class="el" href="_debug_render_system_8cs_source.html">DebugRenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_debug_render_system_8cs_source.html#l00036">36</a> of file <a class="el" href="_debug_render_system_8cs_source.html">DebugRenderSystem.cs</a>.</p>
 
 </div>
 </div>
@@ -159,11 +166,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Clears and redraws debug lines and shapes for the current frame. </p>
+<p>Updates the debug rendering system by iterating through relevant entities and drawing visual debug representations such as circles in the 3D world. </p>
+<p>This method uses immediate mode rendering for debugging purposes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world instance containing entities and components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The elapsed time since the last frame, used for time-based calculations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_debug_render_system_8cs_source.html#l00046">46</a> of file <a class="el" href="_debug_render_system_8cs_source.html">DebugRenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_debug_render_system_8cs_source.html#l00062">62</a> of file <a class="el" href="_debug_render_system_8cs_source.html">DebugRenderSystem.cs</a>.</p>
 
 </div>
 </div>

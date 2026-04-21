@@ -1,20 +1,43 @@
 namespace IronStrata.Scripts.Enums;
 
 /// <summary>
-/// Defines the different types of nodes (locations) that can exist on the world map.
+/// Represents the various types of nodes that can exist within the map system.
+/// Each node type determines the functionality and behavior of the corresponding location.
 /// </summary>
-public enum NodeType
-{
-    /// <summary> Safe haven for trade and rest. </summary>
+public enum NodeType {
+    /// <summary>
+    /// Represents a city node on the map. This node type generally serves as a safe or hub location,
+    /// providing rest or opportunities for trade and interaction.
+    /// </summary>
     City,
-    /// <summary> Hostile zone with silicon lifeforms. </summary>
+
+    /// <summary>
+    /// Represents a combat encounter node on the map. This node type involves battles or challenges,
+    /// typically requiring the player to engage in strategic combat scenarios.
+    /// </summary>
     Combat,
-    /// <summary> Resource-rich area for gathering scrap. </summary>
+
+    /// <summary>
+    /// Represents a scavenging node on the map. This node type typically offers opportunities
+    /// to gather resources or loot from the environment, often involving an element of risk.
+    /// </summary>
     Scavenge,
-    /// <summary> Random narrative or systemic event. </summary>
+
+    /// <summary>
+    /// Represents an event node on the map. This node type typically triggers a unique or narrative-driven
+    /// encounter, often involving decision-making, story progression, or other dynamic interactions.
+    /// </summary>
     Event,
-    /// <summary> Isolated wandering merchant. </summary>
+
+    /// <summary>
+    /// Represents a trader node on the map. This node type typically offers opportunities
+    /// for resource exchange, purchasing, or selling goods.
+    /// </summary>
     Trader,
-    /// <summary> Entrance to the next zone/level. </summary>
+
+    /// <summary>
+    /// Represents a gate node, serving as a transitional point or boundary between areas.
+    /// Typically used to manage the progression or separation of different regions on the map.
+    /// </summary>
     Gate
 }

@@ -7,26 +7,23 @@ using IronStrata.Scripts.Registry;
 namespace IronStrata.Scripts.Systems.Shared;
 
 /// <summary>
-/// System that synchronizes resource data with the UI.
+/// Represents a system that manages resource-related logic within the game, including
+/// updating UI elements to reflect resource changes and controlling the state of resource-dependent actions.
 /// </summary>
-public class ResourceSystem(Label scrapLabel, Button drawButton) : ISystem
-{
+public class ResourceSystem(Label scrapLabel, Button drawButton) : ISystem {
     /// <summary>
-    /// Updates UI elements related to resources, such as the Scrap counter and draw button state.
+    /// Updates the state of the resource system by synchronizing resource data with the UI elements
+    /// and enabling or disabling certain UI interactions based on the current resource values.
     /// </summary>
-    public void Update(World world, double delta)
-    {
-        var resEntityOpt = world.QueryFirst<ResourceComponent>();
-        if (resEntityOpt.IsSome)
-        {
-            ref var resources = ref world.Get<ResourceComponent>(resEntityOpt.Unwrap());
-            // Update the scrap counter text.
-            if (scrapLabel != null) 
-                scrapLabel.Text = $"Scrap : {resources.Scrap}";
-            
-            // Disable the draw button if the player can't afford it.
-            if (drawButton != null) 
-                drawButton.Disabled = resources.Scrap < ResourceRegistry.CardDrawCost;
-        }
+    /// <param name="world">The world instance that contains all entities and components.</param>
+    /// <param name="delta">The time elapsed since the last update, typically used for time-based operations.</param>
+    public void Update(World world, double delta) {
+        Option<Entity> resEntityOpt = world.QueryFirst<ResourceComponent>();
+        if (resEntityOpt.IsNone) { return; }
+
+        ref ResourceComponent resources = ref world.Get<ResourceComponent>(resEntityOpt.Unwrap());
+        if (scrapLabel != null) { scrapLabel.Text = $"Scrap : {resources.Scrap}"; }
+
+        if (drawButton != null) { drawButton.Disabled = resources.Scrap < ResourceRegistry.CardDrawCost; }
     }
 }

@@ -1,6 +1,7 @@
 using Godot;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
+using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.UI;
@@ -9,8 +10,7 @@ namespace IronStrata.Scripts.UI;
 /// Controls the behavior and visual representation of a wagon card in the player's hand.
 /// Handles drag-and-drop interactions for construction.
 /// </summary>
-public partial class CardUi : Control
-{
+public partial class CardUi : Control {
     [Export] private Label _titleLabel;
     [Export] private Label _costLabel;
     [Export] private RichTextLabel _descriptionLabel;
@@ -31,20 +31,31 @@ public partial class CardUi : Control
     /// </summary>
     internal static bool IsAnyCardDragged;
 
+    /// <summary>
+    /// Indicates whether the card is currently being dragged by the player during a drag-and-drop interaction.
+    /// Used to modify visual properties and handle positional updates while the card is being manipulated.
+    /// </summary>
     private bool _isDragging;
-    private Vector2 _startPos;
 
     /// <summary>
-    /// Initializes the card's visual elements based on its wagon type.
+    /// Stores the initial global position of the card before a drag-and-drop interaction begins.
+    /// Used to restore the card's position if the interaction is canceled or unsuccessful.
     /// </summary>
-    public void Setup(WagonType type)
-    {
+    private Vector2 _startPosition;
+
+    /// <summary>
+    /// Configures the card's appearance and data based on the specified wagon type.
+    /// Sets the title, play cost, description, and associated artwork to reflect the wagon type.
+    /// </summary>
+    /// <param name="type">The type of wagon to configure this card for.</param>
+    public void Setup(WagonType type) {
         TypeToApply = type;
 
-        if (_titleLabel == null || _costLabel == null) return;
+        if (_titleLabel == null || _costLabel == null) {
+            return;
+        }
 
-        switch (type)
-        {
+        switch (type) {
             case WagonType.Combat:
                 _titleLabel.Text = "Turret MK-1";
                 PlayCost = 50;
@@ -82,59 +93,60 @@ public partial class CardUi : Control
     }
 
     /// <summary>
-    /// Updates the visual feedback (color) based on whether the player can afford the card.
+    /// Updates the visual state of the card based on the current scrap amount and play cost,
+    /// adjusting the color of the cost label and card to indicate affordability.
     /// </summary>
-    public override void _Process(double delta)
-    {
-        if (GetCurrentScrap() < PlayCost)
-        {
+    /// <param name="delta">The frame time elapsed, used for frame-based updates.</param>
+    public override void _Process(double delta) {
+        if (GetCurrentScrap() < PlayCost) {
             _costLabel.Modulate = new Color(1.0f, 0.3f, 0.3f);
-            if (!_isDragging) Modulate = new Color(1f, 0.3f, 0.3f, 0.8f);
+            if (!_isDragging) {
+                Modulate = new Color(1f, 0.3f, 0.3f, 0.8f);
+            }
         }
-        else
-        {
+        else {
             _costLabel.Modulate = new Color(1.0f, 1.0f, 1.0f);
-            if (!_isDragging) Modulate = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            if (!_isDragging) {
+                Modulate = new Color(1.0f, 1.0f, 1.0f);
+            }
         }
     }
 
     /// <summary>
-    /// Handles mouse input for dragging and dropping the card.
+    /// Handles user input specific to the card UI, including drag-and-drop interactions and card play attempts.
+    /// Processes mouse button clicks and movements to manage dragging state, visual feedback, and card placement logic.
     /// </summary>
-    public override void _GuiInput(InputEvent @event)
-    {
-        var main = GetTree().Root.GetNodeOrNull<Main>("Main");
+    /// <param name="event">The input event to process, typically mouse button or motion events.</param>
+    public override void _GuiInput(InputEvent @event) {
+        Main main = GetTree().Root.GetNodeOrNull<Main>("Main");
 
-        switch (@event)
-        {
+        switch (@event) {
             case InputEventMouseButton { ButtonIndex: MouseButton.Left } mouseButton:
-                if (mouseButton.Pressed)
-                {
-                    if (GetCurrentScrap() < PlayCost) return;
+                if (mouseButton.Pressed) {
+                    if (GetCurrentScrap() < PlayCost) {
+                        return;
+                    }
+
                     _isDragging = true;
                     IsAnyCardDragged = true;
-                    _startPos = GlobalPosition;
+                    _startPosition = GlobalPosition;
                     TopLevel = true;
                     ZIndex = 100;
                     Modulate = new Color(1f, 1f, 1f, 0.4f);
                 }
-                else if (_isDragging)
-                {
+                else if (_isDragging) {
                     _isDragging = false;
                     IsAnyCardDragged = false;
                     ZIndex = 0;
                     Modulate = new Color(1f, 1f, 1f);
                     main?.HidePreview();
 
-                    var success = main != null && main.TryPlayCard(TypeToApply, PlayCost, GetGlobalMousePosition()).IsOk;
-                    if (!success)
-                    {
-                        // Return to hand if play failed.
+                    bool success = main != null && main.TryPlayCard(TypeToApply, PlayCost, GetGlobalMousePosition()).IsOk;
+                    if (!success) {
                         TopLevel = false;
-                        GlobalPosition = _startPos;
+                        GlobalPosition = _startPosition;
                     }
-                    else
-                    {
+                    else {
                         QueueFree();
                     }
                 }
@@ -148,16 +160,14 @@ public partial class CardUi : Control
     }
 
     /// <summary>
-    /// Helper to get the current scrap amount from the ECS world.
+    /// Retrieves the current amount of scrap available from the game's resource system.
+    /// Queries the world for a resource entity containing the scrap information
+    /// and returns the retrieved value or 0 if no scrap data is available.
     /// </summary>
-    private static int GetCurrentScrap()
-    {
-        var world = Core.Autoloads.GameWorld.Instance.World;
-        var resEntityOpt = world.QueryFirst<ResourceComponent>();
-        if (resEntityOpt.IsSome)
-        {
-            return world.Get<ResourceComponent>(resEntityOpt.Unwrap()).Scrap;
-        }
-        return 0;
+    /// <returns>The current amount of scrap, or 0 if not found.</returns>
+    private static int GetCurrentScrap() {
+        World world = Core.Autoloads.GameWorld.Instance.World;
+        Option<Entity> resEntityOpt = world.QueryFirst<ResourceComponent>();
+        return resEntityOpt.IsSome ? world.Get<ResourceComponent>(resEntityOpt.Unwrap()).Scrap : 0;
     }
 }

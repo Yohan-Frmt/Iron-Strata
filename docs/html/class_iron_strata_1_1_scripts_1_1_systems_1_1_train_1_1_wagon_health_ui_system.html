@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_
 </div><!--header-->
 <div class="contents">
 
-<p>System that creates and updates floating health bars (Label3D) above train wagons.  
+<p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_wagon_health_ui_system.html" title="The WagonHealthUiSystem is responsible for managing and updating the UI elements that display the hea...">WagonHealthUiSystem</a> is responsible for managing and updating the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements that display the health status of wagon entities within the game.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Systems.Train.WagonHealthUiSystem:</div>
@@ -101,19 +101,20 @@ Inheritance diagram for IronStrata.Scripts.Systems.Train.WagonHealthUiSystem:</d
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_wagon_health_ui_system.png" usemap="#IronStrata_2EScripts_2ESystems_2ETrain_2EWagonHealthUiSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2ETrain_2EWagonHealthUiSystem_map" name="IronStrata_2EScripts_2ESystems_2ETrain_2EWagonHealthUiSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,323,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,323,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aad12d9478c5dcdfd638c630d2e3fa5c7" id="r_aad12d9478c5dcdfd638c630d2e3fa5c7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aad12d9478c5dcdfd638c630d2e3fa5c7">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:aad12d9478c5dcdfd638c630d2e3fa5c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes and updates the health labels for all wagons.  <br /></td></tr>
+<tr class="memdesc:aad12d9478c5dcdfd638c630d2e3fa5c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the health display of wagon entities in the game world.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System that creates and updates floating health bars (Label3D) above train wagons. </p>
+<div class="textblock"><p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_train_1_1_wagon_health_ui_system.html" title="The WagonHealthUiSystem is responsible for managing and updating the UI elements that display the hea...">WagonHealthUiSystem</a> is responsible for managing and updating the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements that display the health status of wagon entities within the game. </p>
+<p>It ensures that each wagon entity with a health component has a corresponding visual representation of its health in the world. </p>
 
-<p class="definition">Definition at line <a class="el" href="_wagon_health_u_i_system_8cs_source.html#l00012">12</a> of file <a class="el" href="_wagon_health_u_i_system_8cs_source.html">WagonHealthUISystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_wagon_health_u_i_system_8cs_source.html#l00015">15</a> of file <a class="el" href="_wagon_health_u_i_system_8cs_source.html">WagonHealthUISystem.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="aad12d9478c5dcdfd638c630d2e3fa5c7" name="aad12d9478c5dcdfd638c630d2e3fa5c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad12d9478c5dcdfd638c630d2e3fa5c7">&#9670;&#160;</a></span>Update()</h2>
@@ -134,11 +135,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Processes and updates the health labels for all wagons. </p>
+<p>Updates the health display of wagon entities in the game world. </p>
+<p>This method iterates through all entities that contain both a <a class="el" href="struct_iron_strata_1_1_scripts_1_1_components_1_1_shared_1_1_health_component.html" title="Represents the health state of an entity, allowing for monitoring and manipulation of both its maximu...">HealthComponent</a> and a <a class="el" href="struct_iron_strata_1_1_scripts_1_1_components_1_1_render_1_1_renderable_component.html" title="Represents a visual component that can be rendered within the scene.">RenderableComponent</a>, ensuring their associated <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> labels are updated to reflect their current health status. If a health label does not exist for an entity, one is created and configured. The text and color of the label are adjusted based on the entity's health.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world containing entities and components to process.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time elapsed since the last update, used for temporal calculations if needed.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_wagon_health_u_i_system_8cs_source.html#l00017">17</a> of file <a class="el" href="_wagon_health_u_i_system_8cs_source.html">WagonHealthUISystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_wagon_health_u_i_system_8cs_source.html#l00024">24</a> of file <a class="el" href="_wagon_health_u_i_system_8cs_source.html">WagonHealthUISystem.cs</a>.</p>
 
 </div>
 </div>

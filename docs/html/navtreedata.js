@@ -191,17 +191,21 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Typedefs", "globals_type.html", null ]
+      ] ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"_card_ui_8cs.html",
-"class_iron_strata_1_1_scripts_1_1_core_1_1_constants_1_1_train_layout.html#a1a2683f925c4142d06ce205f003aae88",
-"dir_abf4045a4470f2675ea3124fc843ea24.html",
-"struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result-2-g.html#a294bf9b5c4d0a8b62374360ed1636f75"
+"_camera_component_8cs.html",
+"class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html#afbf9d01221cdf166845a493e9a6d7211",
+"index.html#autotoc_md3",
+"struct_iron_strata_1_1_scripts_1_1_components_1_1_shared_1_1_movement_component.html#ad6f71af238db901e3139cc23919c665b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

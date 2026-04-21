@@ -93,7 +93,7 @@ $(function(){initNavTree('struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a> is a type that represents either success (Ok) or failure (Err).  
+<p>Represents the outcome of an operation, which can either be a success containing a value of type T, or a failure containing an error of type E.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Core.Types.Result&lt; T, E &gt;:</div>
@@ -105,23 +105,23 @@ Inheritance diagram for IronStrata.Scripts.Core.Types.Result&lt; T, E &gt;:</div
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9568b92eadad1b99888b3478e4481470" id="r_a9568b92eadad1b99888b3478e4481470"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a9568b92eadad1b99888b3478e4481470">Unwrap</a> ()</td></tr>
-<tr class="memdesc:a9568b92eadad1b99888b3478e4481470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Ok value, or throws an InvalidOperationException if the result is Err.  <br /></td></tr>
+<tr class="memdesc:a9568b92eadad1b99888b3478e4481470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts the value contained in a successful result.  <br /></td></tr>
 <tr class="memitem:af7866ceedf078cbfe74e2ee55829ba6a" id="r_af7866ceedf078cbfe74e2ee55829ba6a"><td class="memItemLeft">E&#160;</td><td class="memItemRight"><a class="el" href="#af7866ceedf078cbfe74e2ee55829ba6a">UnwrapErr</a> ()</td></tr>
-<tr class="memdesc:af7866ceedf078cbfe74e2ee55829ba6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Err value, or throws an InvalidOperationException if the result is Ok.  <br /></td></tr>
+<tr class="memdesc:af7866ceedf078cbfe74e2ee55829ba6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained error value if the result is an Err, or throws an InvalidOperationException if the result is Ok.  <br /></td></tr>
 <tr class="memitem:aaa1f27fafc6f4d09ba5f7a9d75a011e7" id="r_aaa1f27fafc6f4d09ba5f7a9d75a011e7"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#aaa1f27fafc6f4d09ba5f7a9d75a011e7">UnwrapOr</a> (T defaultValue)</td></tr>
-<tr class="memdesc:aaa1f27fafc6f4d09ba5f7a9d75a011e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Ok value or a provided default.  <br /></td></tr>
+<tr class="memdesc:aaa1f27fafc6f4d09ba5f7a9d75a011e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Ok value if the result is Ok; otherwise, returns the specified default value.  <br /></td></tr>
 <tr class="memitem:a91e608e8da43a3d3dc088b22d6153c93" id="r_a91e608e8da43a3d3dc088b22d6153c93"><td class="memItemLeft">Result&lt; U, E &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a91e608e8da43a3d3dc088b22d6153c93">Map&lt; U &gt;</a> (Func&lt; T, U &gt; mapper)</td></tr>
-<tr class="memdesc:a91e608e8da43a3d3dc088b22d6153c93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, E&gt; to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;U, E&gt; by applying a function to a contained Ok value.  <br /></td></tr>
+<tr class="memdesc:a91e608e8da43a3d3dc088b22d6153c93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the success value of the result using the provided mapping function, while preserving the error if present.  <br /></td></tr>
 <tr class="memitem:aca013df00e144a0cd2f7387108dc45a4" id="r_aca013df00e144a0cd2f7387108dc45a4"><td class="memItemLeft">Result&lt; T, F &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aca013df00e144a0cd2f7387108dc45a4">MapErr&lt; F &gt;</a> (Func&lt; E, F &gt; mapper)</td></tr>
-<tr class="memdesc:aca013df00e144a0cd2f7387108dc45a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, E&gt; to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, F&gt; by applying a function to a contained Err value.  <br /></td></tr>
+<tr class="memdesc:aca013df00e144a0cd2f7387108dc45a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the error value of a failed result into a new error using the provided mapping function, while preserving the success result unchanged.  <br /></td></tr>
 <tr class="memitem:a2187655a63280d869c4c9227b6566c66" id="r_a2187655a63280d869c4c9227b6566c66"><td class="memItemLeft">Result&lt; U, E &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2187655a63280d869c4c9227b6566c66">Bind&lt; U &gt;</a> (Func&lt; T, Result&lt; U, E &gt; &gt; binder)</td></tr>
-<tr class="memdesc:a2187655a63280d869c4c9227b6566c66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns Err if the result is Err, otherwise calls binder with the wrapped value and returns the result.  <br /></td></tr>
+<tr class="memdesc:a2187655a63280d869c4c9227b6566c66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the value contained in a successful result using the specified binder function, or propagates the error of a failed result without modification.  <br /></td></tr>
 <tr class="memitem:a7d8631cffa01c8c1f2ce47b1d489b631" id="r_a7d8631cffa01c8c1f2ce47b1d489b631"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7d8631cffa01c8c1f2ce47b1d489b631">Match</a> (Action&lt; T &gt; onOk, Action&lt; E &gt; onErr)</td></tr>
-<tr class="memdesc:a7d8631cffa01c8c1f2ce47b1d489b631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the appropriate action based on whether the result is Ok or Err.  <br /></td></tr>
+<tr class="memdesc:a7d8631cffa01c8c1f2ce47b1d489b631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the provided actions based on whether the result is a success or a failure.  <br /></td></tr>
 <tr class="memitem:aaf12f35cd519017487b427066a4c0d80" id="r_aaf12f35cd519017487b427066a4c0d80"><td class="memItemLeft">U&#160;</td><td class="memItemRight"><a class="el" href="#aaf12f35cd519017487b427066a4c0d80">Match&lt; U &gt;</a> (Func&lt; T, U &gt; onOk, Func&lt; E, U &gt; onErr)</td></tr>
-<tr class="memdesc:aaf12f35cd519017487b427066a4c0d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the appropriate function based on whether the result is Ok or Err.  <br /></td></tr>
-<tr class="memitem:a2232435470daf52ca415db6a7c6dc8a6" id="r_a2232435470daf52ca415db6a7c6dc8a6"><td class="memItemLeft"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">Option</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2232435470daf52ca415db6a7c6dc8a6">ToOption</a> ()</td></tr>
-<tr class="memdesc:a2232435470daf52ca415db6a7c6dc8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts from <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, E&gt; to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html" title="Helper class for creating Option instances.">Option</a>&lt;T&gt;.  <br /></td></tr>
+<tr class="memdesc:aaf12f35cd519017487b427066a4c0d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the outcome of a <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> by applying one of two provided functions, depending on whether the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> is a success or a failure.  <br /></td></tr>
+<tr class="memitem:a2232435470daf52ca415db6a7c6dc8a6" id="r_a2232435470daf52ca415db6a7c6dc8a6"><td class="memItemLeft">Option&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2232435470daf52ca415db6a7c6dc8a6">ToOption</a> ()</td></tr>
+<tr class="memdesc:a2232435470daf52ca415db6a7c6dc8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the current <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> into an Option containing the success value if the result is Ok, or a None if the result is Err.  <br /></td></tr>
 <tr class="memitem:a294bf9b5c4d0a8b62374360ed1636f75" id="r_a294bf9b5c4d0a8b62374360ed1636f75"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a294bf9b5c4d0a8b62374360ed1636f75">Equals</a> (Result&lt; T, E &gt; other)</td></tr>
 <tr class="memitem:ac8c00952025861536059852470360bf2" id="r_ac8c00952025861536059852470360bf2"><td class="memItemLeft">override bool&#160;</td><td class="memItemRight"><a class="el" href="#ac8c00952025861536059852470360bf2">Equals</a> (object obj)</td></tr>
 <tr class="memitem:abe2c7926137a3091969d9578a12907cd" id="r_abe2c7926137a3091969d9578a12907cd"><td class="memItemLeft">override int&#160;</td><td class="memItemRight"><a class="el" href="#abe2c7926137a3091969d9578a12907cd">GetHashCode</a> ()</td></tr>
@@ -129,30 +129,32 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f3e9cf297524bb07bbf31574ae1b89b" id="r_a1f3e9cf297524bb07bbf31574ae1b89b"><td class="memItemLeft">static Result&lt; T, E &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a1f3e9cf297524bb07bbf31574ae1b89b">Ok</a> (T value)</td></tr>
-<tr class="memdesc:a1f3e9cf297524bb07bbf31574ae1b89b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an Ok result.  <br /></td></tr>
+<tr class="memdesc:a1f3e9cf297524bb07bbf31574ae1b89b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an Ok result containing a success value.  <br /></td></tr>
 <tr class="memitem:aff2ffcc691c6e42cc5c9b84e9389670a" id="r_aff2ffcc691c6e42cc5c9b84e9389670a"><td class="memItemLeft">static Result&lt; T, E &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aff2ffcc691c6e42cc5c9b84e9389670a">Err</a> (E error)</td></tr>
-<tr class="memdesc:aff2ffcc691c6e42cc5c9b84e9389670a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an Err result.  <br /></td></tr>
+<tr class="memdesc:aff2ffcc691c6e42cc5c9b84e9389670a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a failed result containing the specified error value.  <br /></td></tr>
 <tr class="memitem:a19922c015099fec5fdc0a242c0039597" id="r_a19922c015099fec5fdc0a242c0039597"><td class="memItemLeft">static bool&#160;</td><td class="memItemRight"><a class="el" href="#a19922c015099fec5fdc0a242c0039597">operator==</a> (Result&lt; T, E &gt; left, Result&lt; T, E &gt; right)</td></tr>
+<tr class="memdesc:a19922c015099fec5fdc0a242c0039597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether two <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instances are equal by comparing their state and contained values or errors.  <br /></td></tr>
 <tr class="memitem:a75c3ab309bf5aee5ddce816e004329c9" id="r_a75c3ab309bf5aee5ddce816e004329c9"><td class="memItemLeft">static bool&#160;</td><td class="memItemRight"><a class="el" href="#a75c3ab309bf5aee5ddce816e004329c9">operator!=</a> (Result&lt; T, E &gt; left, Result&lt; T, E &gt; right)</td></tr>
+<tr class="memdesc:a75c3ab309bf5aee5ddce816e004329c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether two <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instances are not equal by comparing their state and contained values or errors.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a436698f3c04cce5afdb87fcd7f55650a" id="r_a436698f3c04cce5afdb87fcd7f55650a"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a436698f3c04cce5afdb87fcd7f55650a">IsOk</a><code> [get]</code></td></tr>
-<tr class="memdesc:a436698f3c04cce5afdb87fcd7f55650a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the result is Ok.  <br /></td></tr>
+<tr class="memdesc:a436698f3c04cce5afdb87fcd7f55650a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether the operation result is successful.  <br /></td></tr>
 <tr class="memitem:a4454495072ab3fa179c271fafc3f72b7" id="r_a4454495072ab3fa179c271fafc3f72b7"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a4454495072ab3fa179c271fafc3f72b7">IsErr</a><code> [get]</code></td></tr>
-<tr class="memdesc:a4454495072ab3fa179c271fafc3f72b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the result is Err.  <br /></td></tr>
+<tr class="memdesc:a4454495072ab3fa179c271fafc3f72b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether the result represents a failed operation.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a> is a type that represents either success (Ok) or failure (Err). </p>
+<div class="textblock"><p>Represents the outcome of an operation, which can either be a success containing a value of type T, or a failure containing an error of type E. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>The type of the success value.</td></tr>
-    <tr><td class="paramname">E</td><td>The type of the error value.</td></tr>
+    <tr><td class="paramname">T</td><td>The type of the value contained in a successful result.</td></tr>
+    <tr><td class="paramname">E</td><td>The type of the error contained in a failed result.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00011">11</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00012">12</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a2187655a63280d869c4c9227b6566c66" name="a2187655a63280d869c4c9227b6566c66"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2187655a63280d869c4c9227b6566c66">&#9670;&#160;</a></span>Bind&lt; U &gt;()</h2>
@@ -169,9 +171,22 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns Err if the result is Err, otherwise calls binder with the wrapped value and returns the result. </p>
+<p>Transforms the value contained in a successful result using the specified binder function, or propagates the error of a failed result without modification. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>The type of the value in the result returned by the binder function.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">binder</td><td>A function that takes the successful value of the current result and returns a new result.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new result containing the value returned by the binder function if the current result is successful, or the original error if the current result is a failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00079">79</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00148">148</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -190,7 +205,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00108">108</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p></p>
+
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00188">188</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -209,7 +226,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00100">100</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p></p>
+
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00179">179</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -236,9 +255,16 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates an Err result. </p>
+<p>Creates a failed result containing the specified error value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">error</td><td>The error value to include in the result.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> representing a failed operation with the provided error.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00049">49</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00094">94</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -257,7 +283,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00110">110</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p></p>
+
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00191">191</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -276,9 +304,22 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maps a <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, E&gt; to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;U, E&gt; by applying a function to a contained Ok value. </p>
+<p>Transforms the success value of the result using the provided mapping function, while preserving the error if present. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>The type of the value returned by the mapping function.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapper</td><td>The function to apply to the success value if the result is Ok.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> containing the transformed value if the result was Ok, or the original error if the result was Err.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00069">69</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00126">126</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -297,9 +338,22 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maps a <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, E&gt; to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, F&gt; by applying a function to a contained Err value. </p>
+<p>Transforms the error value of a failed result into a new error using the provided mapping function, while preserving the success result unchanged. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">F</td><td>The type of the new error after transformation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapper</td><td>A function that maps the current error value to a new error value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> containing either the unchanged success value or the transformed error value.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00074">74</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00135">135</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -322,9 +376,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Executes the appropriate action based on whether the result is Ok or Err. </p>
+<p>Executes the provided actions based on whether the result is a success or a failure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onOk</td><td>The action to execute if the result is a success.</td></tr>
+    <tr><td class="paramname">onErr</td><td>The action to execute if the result is a failure.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00084">84</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00155">155</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -347,9 +408,23 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Evaluates the appropriate function based on whether the result is Ok or Err. </p>
+<p>Transforms the outcome of a <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> by applying one of two provided functions, depending on whether the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> is a success or a failure. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>The type of the value returned by the provided functions.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onOk</td><td>The function to apply if the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> is a success.</td></tr>
+    <tr><td class="paramname">onErr</td><td>The function to apply if the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> is a failure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The result of applying the appropriate function to the contained value or error, depending on whether the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> is a success or a failure.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00093">93</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00169">169</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -376,9 +451,16 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates an Ok result. </p>
+<p>Creates an Ok result containing a success value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>The success value to include in the result.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> representing a successful operation with the provided value.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00044">44</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00087">87</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -409,7 +491,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00116">116</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p>Determines whether two <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instances are not equal by comparing their state and contained values or errors. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left</td><td>The first <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instance to compare.</td></tr>
+    <tr><td class="paramname">right</td><td>The second <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instance to compare.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the two instances represent different states or values/errors; otherwise, false.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00210">210</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -440,7 +532,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00114">114</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p>Determines whether two <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instances are equal by comparing their state and contained values or errors. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left</td><td>The first <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instance to compare.</td></tr>
+    <tr><td class="paramname">right</td><td>The second <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> instance to compare.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the two instances represent the same state and value or error; otherwise, false.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00202">202</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -451,7 +553,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">Option</a>&lt; T &gt; <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html">IronStrata.Scripts.Core.Types.Result</a>&lt; T, E &gt;.ToOption </td>
+          <td class="memname">Option&lt; T &gt; <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html">IronStrata.Scripts.Core.Types.Result</a>&lt; T, E &gt;.ToOption </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -459,9 +561,10 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Converts from <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Helper class for creating Result instances.">Result</a>&lt;T, E&gt; to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html" title="Helper class for creating Option instances.">Option</a>&lt;T&gt;. </p>
+<p>Converts the current <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result.html" title="Provides static methods for creating success or error results using the generic Result&lt;T,...">Result</a> into an Option containing the success value if the result is Ok, or a None if the result is Err. </p>
+<dl class="section return"><dt>Returns</dt><dd>An Option that contains the success value if the result is Ok, or None otherwise.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00098">98</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00176">176</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -480,9 +583,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the contained Ok value, or throws an InvalidOperationException if the result is Err. </p>
+<p>Extracts the value contained in a successful result. </p>
+<dl class="section return"><dt>Returns</dt><dd>The value of the result if it represents a successful operation.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">InvalidOperationException</td><td>Thrown when attempting to unwrap a result that contains an error. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00054">54</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00103">103</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -501,9 +611,10 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the contained Err value, or throws an InvalidOperationException if the result is Ok. </p>
+<p>Returns the contained error value if the result is an Err, or throws an InvalidOperationException if the result is Ok. </p>
+<dl class="section return"><dt>Returns</dt><dd>The error value contained in the Err result.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00059">59</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00110">110</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -522,9 +633,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the contained Ok value or a provided default. </p>
+<p>Returns the contained Ok value if the result is Ok; otherwise, returns the specified default value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">defaultValue</td><td>The value to return if the result is Err.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The Ok value if the result is Ok; otherwise, the specified default value.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00064">64</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00118">118</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -549,9 +667,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns true if the result is Err. </p>
+<p>Indicates whether the result represents a failed operation. </p>
+<p>This property is used to determine if the result contains an error of type <em>E</em> . It returns <code>true</code> when the result represents failure, and <code>false</code> when it represents success. </p>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00039">39</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00080">80</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>
@@ -575,9 +694,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns true if the result is Ok. </p>
+<p>Indicates whether the operation result is successful. </p>
+<p>This property returns <code>true</code> if the result represents a successful operation, and <code>false</code> if the result represents a failure. It is primarily used to check the status of the operation in the <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_result-2-g.html" title="Represents the outcome of an operation, which can either be a success containing a value of type T,...">Result&lt;T, E&gt;</a> type. </p>
 
-<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00034">34</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_result_8cs_source.html#l00071">71</a> of file <a class="el" href="_result_8cs_source.html">Result.cs</a>.</p>
 
 </div>
 </div>

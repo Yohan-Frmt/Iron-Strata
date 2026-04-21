@@ -101,20 +101,20 @@ Inheritance diagram for IronStrata.Scripts.Systems.Render.EnemyMultiMeshSystem:<
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_render_1_1_enemy_multi_mesh_system.png" usemap="#IronStrata_2EScripts_2ESystems_2ERender_2EEnemyMultiMeshSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2ERender_2EEnemyMultiMeshSystem_map" name="IronStrata_2EScripts_2ESystems_2ERender_2EEnemyMultiMeshSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,345,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,345,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa9eabe1498845345d0c8c4a38badb738" id="r_aa9eabe1498845345d0c8c4a38badb738"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa9eabe1498845345d0c8c4a38badb738">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:aa9eabe1498845345d0c8c4a38badb738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the transforms of all enemy instances in their respective MultiMeshes.  <br /></td></tr>
+<tr class="memdesc:aa9eabe1498845345d0c8c4a38badb738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the enemy MultiMesh rendering system by organizing entities into groups based on their enemy type and configuring MultiMesh instances for rendering.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Optimized rendering system for enemies using MultiMeshInstance3D. </p>
 <p>It batches entities of the same type to reduce draw calls. </p>
 
-<p class="definition">Definition at line <a class="el" href="_enemy_multi_mesh_system_8cs_source.html#l00015">15</a> of file <a class="el" href="_enemy_multi_mesh_system_8cs_source.html">EnemyMultiMeshSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_enemy_multi_mesh_system_8cs_source.html#l00014">14</a> of file <a class="el" href="_enemy_multi_mesh_system_8cs_source.html">EnemyMultiMeshSystem.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="aa9eabe1498845345d0c8c4a38badb738" name="aa9eabe1498845345d0c8c4a38badb738"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa9eabe1498845345d0c8c4a38badb738">&#9670;&#160;</a></span>Update()</h2>
@@ -135,11 +135,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the transforms of all enemy instances in their respective MultiMeshes. </p>
+<p>Updates the enemy MultiMesh rendering system by organizing entities into groups based on their enemy type and configuring MultiMesh instances for rendering. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world containing entities and components required for processing.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time elapsed since the last update, used for time-dependent calculations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_enemy_multi_mesh_system_8cs_source.html#l00025">25</a> of file <a class="el" href="_enemy_multi_mesh_system_8cs_source.html">EnemyMultiMeshSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_enemy_multi_mesh_system_8cs_source.html#l00031">31</a> of file <a class="el" href="_enemy_multi_mesh_system_8cs_source.html">EnemyMultiMeshSystem.cs</a>.</p>
 
 </div>
 </div>

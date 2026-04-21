@@ -93,32 +93,44 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_core_1_1_constants_1
 </div><!--header-->
 <div class="contents">
 
-<p>Static constants defining the physical dimensions and visual styles of the train.  
+<p>Contains constants and utility methods for defining the layout of a train.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1a2683f925c4142d06ce205f003aae88" id="r_a1a2683f925c4142d06ce205f003aae88"><td class="memItemLeft">static Vector3&#160;</td><td class="memItemRight"><a class="el" href="#a1a2683f925c4142d06ce205f003aae88">GetLocalPosition</a> (int slotIndex, int layer)</td></tr>
-<tr class="memdesc:a1a2683f925c4142d06ce205f003aae88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the local position of a wagon based on its slot and layer indices.  <br /></td></tr>
+<tr class="memdesc:a1a2683f925c4142d06ce205f003aae88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the local position of a wagon slot based on its slot index and layer.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a59f6be523a096e70ba6c1f397d89a7cc" id="r_a59f6be523a096e70ba6c1f397d89a7cc"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#a59f6be523a096e70ba6c1f397d89a7cc">WagonLength</a> = 4.0f</td></tr>
+<tr class="memdesc:a59f6be523a096e70ba6c1f397d89a7cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the longitudinal dimension of a single train wagon in the layout.  <br /></td></tr>
 <tr class="memitem:a9aa91a3f93e783b8f9967133f937471a" id="r_a9aa91a3f93e783b8f9967133f937471a"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#a9aa91a3f93e783b8f9967133f937471a">WagonWidth</a> = 6.0f</td></tr>
+<tr class="memdesc:a9aa91a3f93e783b8f9967133f937471a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the horizontal dimension of a single train wagon in the layout.  <br /></td></tr>
 <tr class="memitem:ae0ca0fb38ddb0e06b38d364e24960463" id="r_ae0ca0fb38ddb0e06b38d364e24960463"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#ae0ca0fb38ddb0e06b38d364e24960463">WagonHeight</a> = 3.2f</td></tr>
+<tr class="memdesc:ae0ca0fb38ddb0e06b38d364e24960463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the vertical dimension of a single train wagon in the layout.  <br /></td></tr>
 <tr class="memitem:ad1e34139b4e3e097fbf5e1be52cf2942" id="r_ad1e34139b4e3e097fbf5e1be52cf2942"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#ad1e34139b4e3e097fbf5e1be52cf2942">WagonGap</a> = 0.3f</td></tr>
+<tr class="memdesc:ad1e34139b4e3e097fbf5e1be52cf2942"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the horizontal gap or spacing between adjacent train wagons in the layout configuration.  <br /></td></tr>
 <tr class="memitem:af1f9e0e36696c8a27f2d888cb773b05b" id="r_af1f9e0e36696c8a27f2d888cb773b05b"><td class="memItemLeft">const float&#160;</td><td class="memItemRight"><a class="el" href="#af1f9e0e36696c8a27f2d888cb773b05b">LayerOffset</a> = 3.4f</td></tr>
+<tr class="memdesc:af1f9e0e36696c8a27f2d888cb773b05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the vertical offset applied between different layers in the train layout.  <br /></td></tr>
 <tr class="memitem:a8bd4ec9b7ad9f4cc6752178089dd063c" id="r_a8bd4ec9b7ad9f4cc6752178089dd063c"><td class="memItemLeft">static readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#a8bd4ec9b7ad9f4cc6752178089dd063c">ColorLoco</a> = new(0.18f, 0.18f, 0.22f)</td></tr>
+<tr class="memdesc:a8bd4ec9b7ad9f4cc6752178089dd063c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the default color applied to the locomotive wagons in the train layout.  <br /></td></tr>
 <tr class="memitem:a0efa7be6b8e47f93aef7d50309125ba2" id="r_a0efa7be6b8e47f93aef7d50309125ba2"><td class="memItemLeft">static readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#a0efa7be6b8e47f93aef7d50309125ba2">ColorCombat</a> = new(0.30f, 0.08f, 0.08f)</td></tr>
+<tr class="memdesc:a0efa7be6b8e47f93aef7d50309125ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the color associated with combat wagons in the train layout.  <br /></td></tr>
 <tr class="memitem:a6831d57afa7f4028d4a81f2820a5173a" id="r_a6831d57afa7f4028d4a81f2820a5173a"><td class="memItemLeft">static readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#a6831d57afa7f4028d4a81f2820a5173a">ColorLiving</a> = new(0.16f, 0.12f, 0.08f)</td></tr>
+<tr class="memdesc:a6831d57afa7f4028d4a81f2820a5173a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the color associated with living quarters in the train layout.  <br /></td></tr>
 <tr class="memitem:aa333b921de96d1a2aabe47487c5e5697" id="r_aa333b921de96d1a2aabe47487c5e5697"><td class="memItemLeft">static readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#aa333b921de96d1a2aabe47487c5e5697">ColorStorage</a> = new(0.08f, 0.14f, 0.22f)</td></tr>
+<tr class="memdesc:aa333b921de96d1a2aabe47487c5e5697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the designated color used for storage wagons within the train system.  <br /></td></tr>
 <tr class="memitem:a590295f0b1901db00fa22e5908cce409" id="r_a590295f0b1901db00fa22e5908cce409"><td class="memItemLeft">static readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#a590295f0b1901db00fa22e5908cce409">ColorResearch</a> = new(0.14f, 0.08f, 0.22f)</td></tr>
+<tr class="memdesc:a590295f0b1901db00fa22e5908cce409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the color associated with research wagons in the train layout.  <br /></td></tr>
 <tr class="memitem:a9136675767be15bb4fcbb9dd24c90879" id="r_a9136675767be15bb4fcbb9dd24c90879"><td class="memItemLeft">static readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#a9136675767be15bb4fcbb9dd24c90879">ColorMedical</a> = new(0.06f, 0.18f, 0.12f)</td></tr>
+<tr class="memdesc:a9136675767be15bb4fcbb9dd24c90879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the color used to visually represent medical facilities within the train layout.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Static constants defining the physical dimensions and visual styles of the train. </p>
+<div class="textblock"><p>Contains constants and utility methods for defining the layout of a train. </p>
+<p>This class provides dimensions for train wagons and gaps, color definitions for different wagon types, and a method for calculating the local position of a wagon slot within a train. </p>
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00008">8</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00012">12</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a1a2683f925c4142d06ce205f003aae88" name="a1a2683f925c4142d06ce205f003aae88"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a2683f925c4142d06ce205f003aae88">&#9670;&#160;</a></span>GetLocalPosition()</h2>
@@ -147,9 +159,17 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Calculates the local position of a wagon based on its slot and layer indices. </p>
+<p>Calculates the local position of a wagon slot based on its slot index and layer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slotIndex</td><td>The index of the wagon slot. This determines the horizontal offset.</td></tr>
+    <tr><td class="paramname">layer</td><td>The layer of the wagon slot. This determines the vertical offset.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A <code>Vector3</code> representing the local position of the specified wagon slot.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00028">28</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00097">97</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -174,7 +194,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00019">19</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Represents the color associated with combat wagons in the train layout. </p>
+<p>This color is used for visual differentiation of combat-related components and ensures a consistent visual theme for combat entities throughout the system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00060">60</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -198,7 +221,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00020">20</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Defines the color associated with living quarters in the train layout. </p>
+<p>This value is primarily used to provide a visual distinction for train wagons designated for habitation, enhancing clarity and consistency in the system's rendering and representation. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00068">68</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -222,7 +248,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00018">18</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Represents the default color applied to the locomotive wagons in the train layout. </p>
+<p>This color is used for visual differentiation of locomotive entities in the system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00053">53</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -246,7 +275,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00023">23</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Specifies the color used to visually represent medical facilities within the train layout. </p>
+<p>This color helps to identify wagons designated for medical purposes, ensuring clarity in visual organization and wagon categorization. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00089">89</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -270,7 +302,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00022">22</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Defines the color associated with research wagons in the train layout. </p>
+<p>This color is used for rendering and visual identification of research wagons within the system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00082">82</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -294,7 +329,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00021">21</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Represents the designated color used for storage wagons within the train system. </p>
+<p>This color is applied to visual components to distinguish storage wagons from other types, ensuring clarity in both appearance and functionality across the system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00075">75</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -318,7 +356,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00015">15</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Defines the vertical offset applied between different layers in the train layout. </p>
+<p>This value is used to calculate the relative positioning of elements on separate layers within the layout, ensuring proper spacing along the vertical axis. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00046">46</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -342,7 +383,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00014">14</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Specifies the horizontal gap or spacing between adjacent train wagons in the layout configuration. </p>
+<p>This value influences the overall length of the train and the spatial separation between wagons. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00039">39</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -366,7 +410,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00013">13</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Represents the vertical dimension of a single train wagon in the layout. </p>
+<p>This value defines the height used for rendering and collision calculations in the system, ensuring visual and functional consistency across wagons. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00033">33</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -390,7 +437,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00011">11</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Represents the longitudinal dimension of a single train wagon in the layout. </p>
+<p>This value is used for positioning wagons along the train, defining their size, and calculating spacing between components in the system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00018">18</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>
@@ -414,7 +464,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00012">12</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
+<p>Represents the horizontal dimension of a single train wagon in the layout. </p>
+<p>This value determines the width used for rendering visual components and calculating collision shapes, ensuring accurate representation and interaction in the system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_train_layout_8cs_source.html#l00026">26</a> of file <a class="el" href="_train_layout_8cs_source.html">TrainLayout.cs</a>.</p>
 
 </div>
 </div>

@@ -93,28 +93,58 @@ $(function(){initNavTree('struct_iron_strata_1_1_scripts_1_1_registry_1_1_enemy_
 </div><!--header-->
 <div class="contents">
 
-<p>Data structure defining the base stats and visual properties of an enemy type.  
+<p>Data structure defining base statistics and visual properties for an enemy type.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aea66d41ed754ca4a50f4c391e55e4d48" id="r_aea66d41ed754ca4a50f4c391e55e4d48"><td class="memItemLeft">readonly <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_character.html#a347407d8bf97b60fa2d30628182e60db">EnemyType</a>&#160;</td><td class="memItemRight"><a class="el" href="#aea66d41ed754ca4a50f4c391e55e4d48">Type</a> = type</td></tr>
+<tr class="memdesc:aea66d41ed754ca4a50f4c391e55e4d48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the type of enemy.  <br /></td></tr>
 <tr class="memitem:a42fcab78cdb3b2753c8cbc2adcda8bc3" id="r_a42fcab78cdb3b2753c8cbc2adcda8bc3"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#a42fcab78cdb3b2753c8cbc2adcda8bc3">Damage</a> = damage</td></tr>
+<tr class="memdesc:a42fcab78cdb3b2753c8cbc2adcda8bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the amount of damage inflicted by an enemy during an attack.  <br /></td></tr>
 <tr class="memitem:a3c91295c86d81b14f1ca0207addbda32" id="r_a3c91295c86d81b14f1ca0207addbda32"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#a3c91295c86d81b14f1ca0207addbda32">AttackRange</a> = attackRange</td></tr>
+<tr class="memdesc:a3c91295c86d81b14f1ca0207addbda32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the distance within which an enemy can effectively engage in an attack.  <br /></td></tr>
 <tr class="memitem:a6ec3b9d63066eaab8cf17e4b9cdfc040" id="r_a6ec3b9d63066eaab8cf17e4b9cdfc040"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#a6ec3b9d63066eaab8cf17e4b9cdfc040">AttackSpeed</a> = attackSpeed</td></tr>
+<tr class="memdesc:a6ec3b9d63066eaab8cf17e4b9cdfc040"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the rate at which an enemy can perform consecutive attacks.  <br /></td></tr>
 <tr class="memitem:a5251df67e4841796f948845b94e79103" id="r_a5251df67e4841796f948845b94e79103"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#a5251df67e4841796f948845b94e79103">Speed</a> = speed</td></tr>
+<tr class="memdesc:a5251df67e4841796f948845b94e79103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the movement speed of an enemy.  <br /></td></tr>
 <tr class="memitem:ab7d3ec54651f750e128e2a3aadbcef6b" id="r_ab7d3ec54651f750e128e2a3aadbcef6b"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#ab7d3ec54651f750e128e2a3aadbcef6b">Health</a> = health</td></tr>
+<tr class="memdesc:ab7d3ec54651f750e128e2a3aadbcef6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the total health points of the enemy.  <br /></td></tr>
 <tr class="memitem:aaa7b44b2542eef2dae6ac85a2c459f6b" id="r_aaa7b44b2542eef2dae6ac85a2c459f6b"><td class="memItemLeft">readonly float&#160;</td><td class="memItemRight"><a class="el" href="#aaa7b44b2542eef2dae6ac85a2c459f6b">DispersionRadius</a> = dispersionRadius</td></tr>
+<tr class="memdesc:aaa7b44b2542eef2dae6ac85a2c459f6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the radius within which enemies are randomly dispersed from their spawn point.  <br /></td></tr>
 <tr class="memitem:ab05e30edd3cdcde3eb2112e7b74a3ea4" id="r_ab05e30edd3cdcde3eb2112e7b74a3ea4"><td class="memItemLeft">readonly Mesh&#160;</td><td class="memItemRight"><a class="el" href="#ab05e30edd3cdcde3eb2112e7b74a3ea4">ModelMesh</a> = GD.Load&lt;Mesh&gt;(modelPath)</td></tr>
+<tr class="memdesc:ab05e30edd3cdcde3eb2112e7b74a3ea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the 3D model mesh associated with an enemy definition.  <br /></td></tr>
 <tr class="memitem:a9392e128f3c2f95c924d511c3ddf0308" id="r_a9392e128f3c2f95c924d511c3ddf0308"><td class="memItemLeft">readonly bool&#160;</td><td class="memItemRight"><a class="el" href="#a9392e128f3c2f95c924d511c3ddf0308">IsFlying</a> = isFlying</td></tr>
+<tr class="memdesc:a9392e128f3c2f95c924d511c3ddf0308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether the enemy is capable of flight.  <br /></td></tr>
 <tr class="memitem:ad69b0d47c5060ae48956aaada7428128" id="r_ad69b0d47c5060ae48956aaada7428128"><td class="memItemLeft">readonly Vector3&#160;</td><td class="memItemRight"><a class="el" href="#ad69b0d47c5060ae48956aaada7428128">Scale</a> = scale</td></tr>
+<tr class="memdesc:ad69b0d47c5060ae48956aaada7428128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the scale of the enemy in 3D space.  <br /></td></tr>
 <tr class="memitem:a121ce016f32c89bb14f02d53608eeda0" id="r_a121ce016f32c89bb14f02d53608eeda0"><td class="memItemLeft">readonly Color&#160;</td><td class="memItemRight"><a class="el" href="#a121ce016f32c89bb14f02d53608eeda0">Tint</a> = tint</td></tr>
+<tr class="memdesc:a121ce016f32c89bb14f02d53608eeda0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the color tint applied to an enemy's appearance.  <br /></td></tr>
 <tr class="memitem:a31c8f975b514562cc06f4edae0e1a192" id="r_a31c8f975b514562cc06f4edae0e1a192"><td class="memItemLeft">readonly string&#160;</td><td class="memItemRight"><a class="el" href="#a31c8f975b514562cc06f4edae0e1a192">Label</a> = label</td></tr>
+<tr class="memdesc:a31c8f975b514562cc06f4edae0e1a192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a unique identifier or descriptive name assigned to an enemy.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Data structure defining the base stats and visual properties of an enemy type. </p>
+<div class="textblock"><p>Data structure defining base statistics and visual properties for an enemy type. </p>
+<p>This structure groups all information necessary for creating and defining the behavior of an enemy, including its combat characteristics, movement, and visual appearance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The unique identifier for the enemy type defined by the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_character.html#a347407d8bf97b60fa2d30628182e60db" title="Defines the classification of enemies in the game.">EnemyType</a> enum.</td></tr>
+    <tr><td class="paramname">damage</td><td>The amount of damage dealt by each successful attack.</td></tr>
+    <tr><td class="paramname">attackRange</td><td>The maximum distance (in Godot units) at which the enemy can attack.</td></tr>
+    <tr><td class="paramname">attackSpeed</td><td>The attack rate expressed in attacks per second.</td></tr>
+    <tr><td class="paramname">speed</td><td>The movement speed of the enemy in units per second.</td></tr>
+    <tr><td class="paramname">health</td><td>The maximum health points the enemy has when spawned.</td></tr>
+    <tr><td class="paramname">scale</td><td>The scale factor applied to the enemy's 3D model.</td></tr>
+    <tr><td class="paramname">tint</td><td>The color tint applied to the model's material.</td></tr>
+    <tr><td class="paramname">label</td><td>The display name of the enemy, used for <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> or debugging.</td></tr>
+    <tr><td class="paramname">modelPath</td><td>The path to the 3D mesh resource to load.</td></tr>
+    <tr><td class="paramname">dispersionRadius</td><td>The dispersion radius used during group spawning to prevent overlap.</td></tr>
+    <tr><td class="paramname">isFlying</td><td>Indicates whether the enemy can fly, affecting navigation and interactions.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00012">12</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00028">28</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
 <a id="a3c91295c86d81b14f1ca0207addbda32" name="a3c91295c86d81b14f1ca0207addbda32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c91295c86d81b14f1ca0207addbda32">&#9670;&#160;</a></span>AttackRange</h2>
@@ -128,7 +158,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00029">29</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Defines the distance within which an enemy can effectively engage in an attack. </p>
+<p>This value is crucial in determining the attack initiation threshold for enemies in the system. An enemy must be positioned within this range relative to its target to initiate an attack sequence. It is used across multiple components, such as attack behaviors and engagement mechanics, to enforce this logic. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00068">68</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -144,7 +177,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00030">30</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Determines the rate at which an enemy can perform consecutive attacks. </p>
+<p>This value represents the speed of attack actions, where higher values signify faster attack rates. It is typically expressed as the number of attacks per second and used to control timing in combat systems. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00077">77</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -160,7 +196,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00028">28</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the amount of damage inflicted by an enemy during an attack. </p>
+<p>This value is primarily used by the combat system to determine the reduction in health of a target upon a successful attack. It defines the raw damage output of the enemy unit. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00058">58</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -176,7 +215,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00033">33</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Specifies the radius within which enemies are randomly dispersed from their spawn point. </p>
+<p>This value introduces variation in positioning by applying a random offset, allowing for less structured and more natural-looking enemy group formations. It is particularly useful when spawning clusters of enemies to create dynamic and unpredictable patterns in their arrangement. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00108">108</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -192,7 +234,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00032">32</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the total health points of the enemy. </p>
+<p>This value determines the enemy's durability and life span in the system. When reduced to zero, the enemy is defeated and removed from the environment. It is used in conjunction with combat logic to adjust the state of the enemy based on interactions such as receiving damage or healing. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00098">98</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -208,7 +253,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00035">35</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Indicates whether the enemy is capable of flight. </p>
+<p>This property is used to determine the movement behavior of an enemy. If set to <code>true</code>, the enemy will be treated as a flying unit, allowing for specialized movement patterns and positioning in the world. Flying enemies operate differently in terms of navigation and combat, impacting their interactions with the environment and player entities. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00130">130</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -224,7 +272,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00038">38</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents a unique identifier or descriptive name assigned to an enemy. </p>
+<p>This value is used to distinguish different enemies in the system by providing a human-readable name or label. It aids in debugging, configuration, and management of enemy definitions. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00159">159</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -240,7 +291,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00034">34</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the 3D model mesh associated with an enemy definition. </p>
+<p>This mesh is loaded synchronously from the specified <span class="tt">modelPath</span> when an enemy definition is instantiated. It is primarily used to visually represent enemies within the game world by assigning it to rendering components, such as a MultiMesh or mesh instance. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00118">118</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -256,7 +310,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00036">36</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Defines the scale of the enemy in 3D space. </p>
+<p>This value determines the size of the enemy's model when rendered within the game environment. It is used to adjust the enemy's visual proportions and appearance during initialization or updates by systems such as the rendering system. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00140">140</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -272,7 +329,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00031">31</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the movement speed of an enemy. </p>
+<p>Determines how quickly the enemy can traverse the environment. This value is applied during the runtime movement calculations to dictate the velocity of the enemy when approaching targets or navigating the scene. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00087">87</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -288,7 +348,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00037">37</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Represents the color tint applied to an enemy's appearance. </p>
+<p>This value defines the primary color used to visually distinguish enemies. It is utilized in rendering systems, such as the material override for enemy models, to provide unique visual characteristics for different enemy types. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00150">150</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>
@@ -304,7 +367,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00027">27</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
+<p>Specifies the type of enemy. </p>
+<p>This value is used to categorize and identify different kinds of enemies within the system. It serves as a primary identifier for enemy definitions used across the registry and system components. </p>
+
+<p class="definition">Definition at line <a class="el" href="_enemy_registry_8cs_source.html#l00049">49</a> of file <a class="el" href="_enemy_registry_8cs_source.html">EnemyRegistry.cs</a>.</p>
 
 </div>
 </div>

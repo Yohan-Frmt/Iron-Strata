@@ -93,42 +93,46 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_map_1_1_map_node.htm
 </div><!--header-->
 <div class="contents">
 
-<p>Represents a single location (node) on the procedural world map.  
+<p>Represents a node in a map structure.  
  <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a16f375ff08fec230ae1d4f9ac09684da" id="r_a16f375ff08fec230ae1d4f9ac09684da"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a16f375ff08fec230ae1d4f9ac09684da">Id</a> = id</td></tr>
-<tr class="memdesc:a16f375ff08fec230ae1d4f9ac09684da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier for this node.  <br /></td></tr>
+<tr class="memitem:aab67f912c7c45d7fb2721a1fdde92eb1" id="r_aab67f912c7c45d7fb2721a1fdde92eb1"><td class="memItemLeft">readonly int&#160;</td><td class="memItemRight"><a class="el" href="#aab67f912c7c45d7fb2721a1fdde92eb1">Id</a> = id</td></tr>
+<tr class="memdesc:aab67f912c7c45d7fb2721a1fdde92eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier for the map node.  <br /></td></tr>
 <tr class="memitem:abaed25f616a0cee96c54efc178f890e6" id="r_abaed25f616a0cee96c54efc178f890e6"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#abaed25f616a0cee96c54efc178f890e6">Layer</a> = layer</td></tr>
-<tr class="memdesc:abaed25f616a0cee96c54efc178f890e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The horizontal layer index in the procedural generation grid.  <br /></td></tr>
+<tr class="memdesc:abaed25f616a0cee96c54efc178f890e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the layer or depth level of a map node within the map structure.  <br /></td></tr>
 <tr class="memitem:a813b498424c1951a395521ba34e64db0" id="r_a813b498424c1951a395521ba34e64db0"><td class="memItemLeft"><a class="el" href="namespace_iron_strata_1_1_scripts_1_1_enums.html#a69b8663fe1a66bc5afccba54871886e1">NodeType</a>&#160;</td><td class="memItemRight"><a class="el" href="#a813b498424c1951a395521ba34e64db0">Type</a> = type</td></tr>
-<tr class="memdesc:a813b498424c1951a395521ba34e64db0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of encounter or location this node represents.  <br /></td></tr>
+<tr class="memdesc:a813b498424c1951a395521ba34e64db0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the classification or purpose of the map node.  <br /></td></tr>
 <tr class="memitem:ae13932bec30c2462c663496c21737f9d" id="r_ae13932bec30c2462c663496c21737f9d"><td class="memItemLeft">Vector2&#160;</td><td class="memItemRight"><a class="el" href="#ae13932bec30c2462c663496c21737f9d">Position</a> = position</td></tr>
-<tr class="memdesc:ae13932bec30c2462c663496c21737f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 2D coordinates of the node on the map.  <br /></td></tr>
+<tr class="memdesc:ae13932bec30c2462c663496c21737f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the 2D position of a map node in the coordinate system.  <br /></td></tr>
 <tr class="memitem:abf8799b5c78a87829015f3dbbc204beb" id="r_abf8799b5c78a87829015f3dbbc204beb"><td class="memItemLeft">List&lt; int &gt;&#160;</td><td class="memItemRight"><a class="el" href="#abf8799b5c78a87829015f3dbbc204beb">NextNodes</a> = []</td></tr>
-<tr class="memdesc:abf8799b5c78a87829015f3dbbc204beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of IDs of nodes that can be reached from this node.  <br /></td></tr>
+<tr class="memdesc:abf8799b5c78a87829015f3dbbc204beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of identifiers representing the later nodes connected to the current map node.  <br /></td></tr>
+<tr class="memitem:a43130c678e29ead6ae722edd15fcbe94" id="r_a43130c678e29ead6ae722edd15fcbe94"><td class="memItemLeft">float&#160;</td><td class="memItemRight"><a class="el" href="#a43130c678e29ead6ae722edd15fcbe94">Radius</a></td></tr>
+<tr class="memdesc:a43130c678e29ead6ae722edd15fcbe94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the radius of the map node.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents a single location (node) on the procedural world map. </p>
+<div class="textblock"><p>Represents a node in a map structure. </p>
+<p>Each <code><a class="el" href="class_iron_strata_1_1_scripts_1_1_map_1_1_map_node.html" title="Represents a node in a map structure.">MapNode</a></code> corresponds to a specific point within the map and includes attributes such as its unique identifier, spatial layer, type designation, position, and list of connected nodes. Additional properties like radius can be used to define the node's influence or interaction range. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00010">10</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00015">15</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
 </div><a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a16f375ff08fec230ae1d4f9ac09684da" name="a16f375ff08fec230ae1d4f9ac09684da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16f375ff08fec230ae1d4f9ac09684da">&#9670;&#160;</a></span>Id</h2>
+<a id="aab67f912c7c45d7fb2721a1fdde92eb1" name="aab67f912c7c45d7fb2721a1fdde92eb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab67f912c7c45d7fb2721a1fdde92eb1">&#9670;&#160;</a></span>Id</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int IronStrata.Scripts.Map.MapNode.Id = id</td>
+          <td class="memname">readonly int IronStrata.Scripts.Map.MapNode.Id = id</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Unique identifier for this node. </p>
+<p>Unique identifier for the map node. </p>
+<p>Serves as a reference to distinguish and access specific nodes in systems such as rendering, pathfinding, and other map-related operations. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00015">15</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00023">23</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
 
 </div>
 </div>
@@ -144,9 +148,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The horizontal layer index in the procedural generation grid. </p>
+<p>Represents the layer or depth level of a map node within the map structure. </p>
+<p>Used to categorize nodes based on their vertical or conceptual positions, enabling operations like rendering and traversal that require differentiation between layers. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00020">20</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00033">33</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
 
 </div>
 </div>
@@ -162,9 +167,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>List of IDs of nodes that can be reached from this node. </p>
+<p>List of identifiers representing the later nodes connected to the current map node. </p>
+<p>Used to establish directional connections between nodes for functionalities such as navigation, pathfinding, and system interactions within the map structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00035">35</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00062">62</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
 
 </div>
 </div>
@@ -180,9 +186,29 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The 2D coordinates of the node on the map. </p>
+<p>Represents the 2D position of a map node in the coordinate system. </p>
+<p>Used for spatial placement, movement calculations across the map, rendering map node locations, and ensuring accurate alignment in systems such as pathfinding and node linking. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00030">30</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00053">53</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+
+</div>
+</div>
+<a id="a43130c678e29ead6ae722edd15fcbe94" name="a43130c678e29ead6ae722edd15fcbe94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43130c678e29ead6ae722edd15fcbe94">&#9670;&#160;</a></span>Radius</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float IronStrata.Scripts.Map.MapNode.Radius</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Represents the radius of the map node. </p>
+<p>The radius is utilized to define the spatial influence zone of the map node, which can include aspects such as interaction boundaries, rendering dimensions, or zones of effect within various systems. </p>
+
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00071">71</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
 
 </div>
 </div>
@@ -198,9 +224,10 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The type of encounter or location this node represents. </p>
+<p>Represents the classification or purpose of the map node. </p>
+<p>Determines the functional behavior or role associated with the map node, such as designating it as a City, Combat zone, Scavenge point, Event trigger, Trader hub, or Gate for transitions between areas. </p>
 
-<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00025">25</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_node_8cs_source.html#l00043">43</a> of file <a class="el" href="_map_node_8cs_source.html">MapNode.cs</a>.</p>
 
 </div>
 </div>

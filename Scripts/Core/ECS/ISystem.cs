@@ -1,11 +1,11 @@
 namespace IronStrata.Scripts.Core.ECS;
 
 /// <summary>
-/// Interface for systems that run on every frame update.
-/// Systems contain logic that operates on entities with specific components.
+/// Interface for defining systems within an Entity Component System (ECS) architecture.
+/// Systems implementing this interface are responsible for processing game logic by
+/// interacting with the game world and its entities during each frame update.
 /// </summary>
-public interface ISystem
-{
+public interface ISystem {
     /// <summary>
     /// Processes the game logic for the current frame.
     /// </summary>
@@ -15,10 +15,11 @@ public interface ISystem
 }
 
 /// <summary>
-/// Interface for systems that run on every physics update.
+/// Interface for systems that execute physics logic at fixed intervals.
+/// Fixed systems operate independently of the frame rate and are synchronized
+/// with the fixed time step defined by the game engine.
 /// </summary>
-public interface IFixedSystem
-{
+public interface IFixedSystem {
     /// <summary>
     /// Processes physics-related logic at a fixed interval.
     /// </summary>

@@ -101,14 +101,14 @@ Inheritance diagram for IronStrata.Scripts.Systems.Map.MapSystem:</div>
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_map_1_1_map_system.png" usemap="#IronStrata_2EScripts_2ESystems_2EMap_2EMapSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2EMap_2EMapSystem_map" name="IronStrata_2EScripts_2ESystems_2EMap_2EMapSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,258,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,258,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a36d291463809d7f7715c914d4979e44f" id="r_a36d291463809d7f7715c914d4979e44f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a36d291463809d7f7715c914d4979e44f">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:a36d291463809d7f7715c914d4979e44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the train's position along the rail network and updates location state.  <br /></td></tr>
+<tr class="memdesc:a36d291463809d7f7715c914d4979e44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the map and train movement within the game world at each frame.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>System that handles the train's movement between nodes on the world map. </p>
@@ -135,11 +135,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the train's position along the rail network and updates location state. </p>
+<p>Updates the map and train movement within the game world at each frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world containing all entities and components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time elapsed since the last frame in seconds.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_map_system_8cs_source.html#l00020">20</a> of file <a class="el" href="_map_system_8cs_source.html">MapSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_map_system_8cs_source.html#l00021">21</a> of file <a class="el" href="_map_system_8cs_source.html">MapSystem.cs</a>.</p>
 
 </div>
 </div>

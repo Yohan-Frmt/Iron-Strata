@@ -105,11 +105,11 @@ Inheritance diagram for IronStrata.Scripts.UI.CardUi:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a52d3607267ea2d4065dd1101ca6c5213" id="r_a52d3607267ea2d4065dd1101ca6c5213"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a52d3607267ea2d4065dd1101ca6c5213">Setup</a> (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a">WagonType</a> type)</td></tr>
-<tr class="memdesc:a52d3607267ea2d4065dd1101ca6c5213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the card's visual elements based on its wagon type.  <br /></td></tr>
+<tr class="memdesc:a52d3607267ea2d4065dd1101ca6c5213"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the card's appearance and data based on the specified wagon type.  <br /></td></tr>
 <tr class="memitem:a313e5fc254c2ad1f1eb88ac3a3736d6c" id="r_a313e5fc254c2ad1f1eb88ac3a3736d6c"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a313e5fc254c2ad1f1eb88ac3a3736d6c">_Process</a> (double delta)</td></tr>
-<tr class="memdesc:a313e5fc254c2ad1f1eb88ac3a3736d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the visual feedback (color) based on whether the player can afford the card.  <br /></td></tr>
+<tr class="memdesc:a313e5fc254c2ad1f1eb88ac3a3736d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the visual state of the card based on the current scrap amount and play cost, adjusting the color of the cost label and card to indicate affordability.  <br /></td></tr>
 <tr class="memitem:a1c1f79fc04ed06dc6c455376edbb4a63" id="r_a1c1f79fc04ed06dc6c455376edbb4a63"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a1c1f79fc04ed06dc6c455376edbb4a63">_GuiInput</a> (InputEvent @event)</td></tr>
-<tr class="memdesc:a1c1f79fc04ed06dc6c455376edbb4a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles mouse input for dragging and dropping the card.  <br /></td></tr>
+<tr class="memdesc:a1c1f79fc04ed06dc6c455376edbb4a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles user input specific to the card <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a>, including drag-and-drop interactions and card play attempts.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -122,7 +122,7 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Controls the behavior and visual representation of a wagon card in the player's hand. </p>
 <p>Handles drag-and-drop interactions for construction. </p>
 
-<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00015">15</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00013">13</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a1c1f79fc04ed06dc6c455376edbb4a63" name="a1c1f79fc04ed06dc6c455376edbb4a63"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c1f79fc04ed06dc6c455376edbb4a63">&#9670;&#160;</a></span>_GuiInput()</h2>
@@ -139,9 +139,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Handles mouse input for dragging and dropping the card. </p>
+<p>Handles user input specific to the card <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a>, including drag-and-drop interactions and card play attempts. </p>
+<p>Processes mouse button clicks and movements to manage dragging state, visual feedback, and card placement logic.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>The input event to process, typically mouse button or motion events.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00105">105</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00120">120</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
 
 </div>
 </div>
@@ -160,9 +167,15 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the visual feedback (color) based on whether the player can afford the card. </p>
+<p>Updates the visual state of the card based on the current scrap amount and play cost, adjusting the color of the cost label and card to indicate affordability. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delta</td><td>The frame time elapsed, used for frame-based updates.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00088">88</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00100">100</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
 
 </div>
 </div>
@@ -181,9 +194,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the card's visual elements based on its wagon type. </p>
+<p>Configures the card's appearance and data based on the specified wagon type. </p>
+<p>Sets the title, play cost, description, and associated artwork to reflect the wagon type.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The type of wagon to configure this card for.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00043">43</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00051">51</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
 
 </div>
 </div>
@@ -210,7 +230,7 @@ Properties</h2></td></tr>
 
 <p>The cost in Scrap required to play this card. </p>
 
-<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00025">25</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00022">22</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
 
 </div>
 </div>
@@ -236,7 +256,7 @@ Properties</h2></td></tr>
 
 <p>The type of wagon this card will create or upgrade. </p>
 
-<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00030">30</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_card_ui_8cs_source.html#l00027">27</a> of file <a class="el" href="_card_ui_8cs_source.html">CardUi.cs</a>.</p>
 
 </div>
 </div>

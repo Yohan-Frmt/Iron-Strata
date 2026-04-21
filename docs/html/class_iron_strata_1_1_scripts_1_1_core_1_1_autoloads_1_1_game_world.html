@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1
 </div><!--header-->
 <div class="contents">
 
-<p>A Godot Autoload (singleton) that hosts the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world and system runner.  
+<p>Represents the core game world, serving as the main entry point for key game systems and resources.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Core.Autoloads.GameWorld:</div>
@@ -105,26 +105,26 @@ Inheritance diagram for IronStrata.Scripts.Core.Autoloads.GameWorld:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2eb6a569175914eb3350d50f16072ac9" id="r_a2eb6a569175914eb3350d50f16072ac9"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a2eb6a569175914eb3350d50f16072ac9">_Ready</a> ()</td></tr>
-<tr class="memdesc:a2eb6a569175914eb3350d50f16072ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the singleton and the system runner.  <br /></td></tr>
+<tr class="memdesc:a2eb6a569175914eb3350d50f16072ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the node is added to the scene tree for initialization purposes.  <br /></td></tr>
 <tr class="memitem:a8badfbe36dcad090adc1a704e4580e33" id="r_a8badfbe36dcad090adc1a704e4580e33"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a8badfbe36dcad090adc1a704e4580e33">_Process</a> (double delta)</td></tr>
-<tr class="memdesc:a8badfbe36dcad090adc1a704e4580e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forwards every frame update to the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems.  <br /></td></tr>
+<tr class="memdesc:a8badfbe36dcad090adc1a704e4580e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called every frame to handle general game logic updates.  <br /></td></tr>
 <tr class="memitem:a96d4d3610e6b40ed83911e03e7e5471a" id="r_a96d4d3610e6b40ed83911e03e7e5471a"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a96d4d3610e6b40ed83911e03e7e5471a">_PhysicsProcess</a> (double delta)</td></tr>
-<tr class="memdesc:a96d4d3610e6b40ed83911e03e7e5471a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forwards every physics update to the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems.  <br /></td></tr>
+<tr class="memdesc:a96d4d3610e6b40ed83911e03e7e5471a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called every physics frame with a fixed time step to handle physics-related updates.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a5d913cd1bc234604aba56681e051414a" id="r_a5d913cd1bc234604aba56681e051414a"><td class="memItemLeft">static <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html">GameWorld</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5d913cd1bc234604aba56681e051414a">Instance</a> = null!<code> [get]</code></td></tr>
-<tr class="memdesc:a5d913cd1bc234604aba56681e051414a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Singleton instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="A Godot Autoload (singleton) that hosts the ECS world and system runner.">GameWorld</a> node.  <br /></td></tr>
+<tr class="memdesc:a5d913cd1bc234604aba56681e051414a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the singleton instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="Represents the core game world, serving as the main entry point for key game systems and resources.">GameWorld</a> class, providing centralized access to key game systems and resources.  <br /></td></tr>
 <tr class="memitem:aedba2471554dbaa0acdfd2a150888a5d" id="r_aedba2471554dbaa0acdfd2a150888a5d"><td class="memItemLeft">World&#160;</td><td class="memItemRight"><a class="el" href="#aedba2471554dbaa0acdfd2a150888a5d">World</a> = new()<code> [get]</code></td></tr>
-<tr class="memdesc:aedba2471554dbaa0acdfd2a150888a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world containing all entities and components.  <br /></td></tr>
+<tr class="memdesc:aedba2471554dbaa0acdfd2a150888a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the <a class="el" href="#aedba2471554dbaa0acdfd2a150888a5d" title="Gets the instance of the World used for managing and maintaining the entity-component-system (ECS) st...">World</a> used for managing and maintaining the entity-component-system (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a>) structure within the game.  <br /></td></tr>
 <tr class="memitem:a2a6a9cd5467f65ecd209ef31b04f326e" id="r_a2a6a9cd5467f65ecd209ef31b04f326e"><td class="memItemLeft"><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html">SystemRunner</a>&#160;</td><td class="memItemRight"><a class="el" href="#a2a6a9cd5467f65ecd209ef31b04f326e">Runner</a> = null!<code> [get]</code></td></tr>
-<tr class="memdesc:a2a6a9cd5467f65ecd209ef31b04f326e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The system runner that manages frame and physics updates.  <br /></td></tr>
+<tr class="memdesc:a2a6a9cd5467f65ecd209ef31b04f326e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a> used for managing and executing systems within the game world's <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> framework.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A Godot Autoload (singleton) that hosts the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world and system runner. </p>
-<p>It provides a central access point for the game logic from anywhere in the scene tree. </p>
+<div class="textblock"><p>Represents the core game world, serving as the main entry point for key game systems and resources. </p>
+<p>This class provides centralized management of the game state, using an <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> architecture via its <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a>. It is responsible for initializing and running game logic systems and ensuring communication between them. </p>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00010">10</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00014">14</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a96d4d3610e6b40ed83911e03e7e5471a" name="a96d4d3610e6b40ed83911e03e7e5471a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96d4d3610e6b40ed83911e03e7e5471a">&#9670;&#160;</a></span>_PhysicsProcess()</h2>
@@ -141,9 +141,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Forwards every physics update to the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems. </p>
+<p>Called every physics frame with a fixed time step to handle physics-related updates. </p>
+<p>Delegates the fixed time step to the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a> for processing registered physics systems.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delta</td><td>The fixed time step in seconds.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00044">44</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00075">75</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 
 </div>
 </div>
@@ -162,9 +169,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Forwards every frame update to the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems. </p>
+<p>Called every frame to handle general game logic updates. </p>
+<p>Delegates the frame update to the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a> for processing registered frame systems.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delta</td><td>The time elapsed since the last frame in seconds.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00039">39</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00068">68</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 
 </div>
 </div>
@@ -183,9 +197,10 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the singleton and the system runner. </p>
+<p>Called when the node is added to the scene tree for initialization purposes. </p>
+<p>Sets up the singleton instance of <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="Represents the core game world, serving as the main entry point for key game systems and resources.">GameWorld</a> and prepares the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a> instance for managing <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> systems. </p>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00030">30</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00058">58</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 
 </div>
 </div>
@@ -210,9 +225,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Singleton instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="A Godot Autoload (singleton) that hosts the ECS world and system runner.">GameWorld</a> node. </p>
+<p>Gets the singleton instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="Represents the core game world, serving as the main entry point for key game systems and resources.">GameWorld</a> class, providing centralized access to key game systems and resources. </p>
+<p>The <code>Instance</code> property serves as the globally accessible entry point to the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="Represents the core game world, serving as the main entry point for key game systems and resources.">GameWorld</a> class, ensuring that all components and systems requiring a reference to the game world can access it reliably. It is assigned during the <code>_Ready</code> method execution and remains constant throughout the application's lifecycle. Proper initialization of this property is critical to ensure functionality in dependent classes such as Minimap, CardUi, and MapOverlay. </p>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00015">15</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00028">28</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 
 </div>
 </div>
@@ -236,9 +252,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The system runner that manages frame and physics updates. </p>
+<p>Gets the instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_system_runner.html" title="Manages the execution order and lifecycle of ECS systems.">SystemRunner</a> used for managing and executing systems within the game world's <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> framework. </p>
+<p>The <code>Runner</code> property is a core component of the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> infrastructure, responsible for updating and managing the lifecycle of systems. It is initialized during the <code>_Ready</code> method of the <code><a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="Represents the core game world, serving as the main entry point for key game systems and resources.">GameWorld</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00025">25</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00051">51</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 
 </div>
 </div>
@@ -262,9 +279,10 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world containing all entities and components. </p>
+<p>Gets the instance of the <a class="el" href="#aedba2471554dbaa0acdfd2a150888a5d" title="Gets the instance of the World used for managing and maintaining the entity-component-system (ECS) st...">World</a> used for managing and maintaining the entity-component-system (<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a>) structure within the game. </p>
+<p>The <code>World</code> property serves as the core data structure for the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> framework, providing functionalities for creating, managing, and interacting with entities and their associated components. It is initialized during the <code>_Ready</code> method of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_autoloads_1_1_game_world.html" title="Represents the core game world, serving as the main entry point for key game systems and resources.">GameWorld</a> and is accessed by various game systems and <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> components. </p>
 
-<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00020">20</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_game_world_8cs_source.html#l00040">40</a> of file <a class="el" href="_game_world_8cs_source.html">GameWorld.cs</a>.</p>
 
 </div>
 </div>

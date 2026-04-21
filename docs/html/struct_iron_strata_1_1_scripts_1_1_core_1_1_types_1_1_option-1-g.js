@@ -5,7 +5,7 @@ var struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option_1_g =
     [ "Equals", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#aea8aa4d07302463cadb7bbe6d392bdd1", null ],
     [ "GetHashCode", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#a8e512eb236c8ad0df1447386afd56368", null ],
     [ "Map< U >", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#a5f141462e8505b42490e3cb88baa1421", null ],
-    [ "Match", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#ab8d78c98ec7df4bbbd0b6f8e5db84bcc", null ],
+    [ "Match", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#a03fca10c9f55c04b1ef9c879057c2d7a", null ],
     [ "Match< U >", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#a9bbcb7073d848f52bd7ed61dc4252b7b", null ],
     [ "operator Option< T >", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#ac7ef5fbfe0f1023a872a76245b295a0a", null ],
     [ "operator!=", "struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html#a597feb91e222fd32405518ca5f825598", null ],

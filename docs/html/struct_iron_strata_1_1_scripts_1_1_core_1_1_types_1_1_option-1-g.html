@@ -93,7 +93,7 @@ $(function(){initNavTree('struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_
 </div><!--header-->
 <div class="contents">
 
-<p>Represents an optional value: every <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html" title="Helper class for creating Option instances.">Option</a> is either Some and contains a value, or None, and does not.  
+<p>Represents an optional value: every Option is either Some and contains a value, or None, and does not.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Core.Types.Option&lt; T &gt;:</div>
@@ -105,19 +105,19 @@ Inheritance diagram for IronStrata.Scripts.Core.Types.Option&lt; T &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a62c40511941b64f04341e95ef63c67f3" id="r_a62c40511941b64f04341e95ef63c67f3"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a62c40511941b64f04341e95ef63c67f3">Unwrap</a> ()</td></tr>
-<tr class="memdesc:a62c40511941b64f04341e95ef63c67f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Some value, or throws an InvalidOperationException if the value is None.  <br /></td></tr>
+<tr class="memdesc:a62c40511941b64f04341e95ef63c67f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained value if the option is in the Some state; otherwise, throws an InvalidOperationException.  <br /></td></tr>
 <tr class="memitem:ab05fff1079e30274616a530403ee9504" id="r_ab05fff1079e30274616a530403ee9504"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#ab05fff1079e30274616a530403ee9504">UnwrapOr</a> (T defaultValue)</td></tr>
-<tr class="memdesc:ab05fff1079e30274616a530403ee9504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Some value or a provided default.  <br /></td></tr>
+<tr class="memdesc:ab05fff1079e30274616a530403ee9504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents an optional value: every Option is either Some and contains a value, or None and does not.  <br /></td></tr>
 <tr class="memitem:a7b3ca9f7da60abfb092b01d80f240aab" id="r_a7b3ca9f7da60abfb092b01d80f240aab"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a7b3ca9f7da60abfb092b01d80f240aab">UnwrapOrElse</a> (Func&lt; T &gt; orElse)</td></tr>
-<tr class="memdesc:a7b3ca9f7da60abfb092b01d80f240aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained Some value or computes it from a closure.  <br /></td></tr>
+<tr class="memdesc:a7b3ca9f7da60abfb092b01d80f240aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the contained value if the Option is Some, otherwise invokes the specified delegate and returns its result.  <br /></td></tr>
 <tr class="memitem:a5f141462e8505b42490e3cb88baa1421" id="r_a5f141462e8505b42490e3cb88baa1421"><td class="memItemLeft">Option&lt; U &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a5f141462e8505b42490e3cb88baa1421">Map&lt; U &gt;</a> (Func&lt; T, U &gt; mapper)</td></tr>
-<tr class="memdesc:a5f141462e8505b42490e3cb88baa1421"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html" title="Helper class for creating Option instances.">Option</a><u> by applying a function to a contained value. </u> <br /></td></tr>
+<tr class="memdesc:a5f141462e8505b42490e3cb88baa1421"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the contained value in the Option if it is a Some, using the provided mapping function.  <br /></td></tr>
 <tr class="memitem:a7a79120ca0f23a870ff197c752c4013b" id="r_a7a79120ca0f23a870ff197c752c4013b"><td class="memItemLeft">Option&lt; U &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a7a79120ca0f23a870ff197c752c4013b">Bind&lt; U &gt;</a> (Func&lt; T, Option&lt; U &gt; &gt; binder)</td></tr>
-<tr class="memdesc:a7a79120ca0f23a870ff197c752c4013b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns None if the option is None, otherwise calls binder with the wrapped value and returns the result.  <br /></td></tr>
-<tr class="memitem:ab8d78c98ec7df4bbbd0b6f8e5db84bcc" id="r_ab8d78c98ec7df4bbbd0b6f8e5db84bcc"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab8d78c98ec7df4bbbd0b6f8e5db84bcc">Match</a> (Action&lt; T &gt; onSome, Action onNone)</td></tr>
-<tr class="memdesc:ab8d78c98ec7df4bbbd0b6f8e5db84bcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the appropriate action based on whether the option is Some or None.  <br /></td></tr>
+<tr class="memdesc:a7a79120ca0f23a870ff197c752c4013b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the current Option value by applying a provided binder function if the value is in the Some state, or returns None if the Option is in the None state.  <br /></td></tr>
+<tr class="memitem:a03fca10c9f55c04b1ef9c879057c2d7a" id="r_a03fca10c9f55c04b1ef9c879057c2d7a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a03fca10c9f55c04b1ef9c879057c2d7a">Match</a> (Action&lt; T &gt; onSome, Action onNone=null)</td></tr>
+<tr class="memdesc:a03fca10c9f55c04b1ef9c879057c2d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes the specified actions depending on whether the Option contains a value or not.  <br /></td></tr>
 <tr class="memitem:a9bbcb7073d848f52bd7ed61dc4252b7b" id="r_a9bbcb7073d848f52bd7ed61dc4252b7b"><td class="memItemLeft">U&#160;</td><td class="memItemRight"><a class="el" href="#a9bbcb7073d848f52bd7ed61dc4252b7b">Match&lt; U &gt;</a> (Func&lt; T, U &gt; onSome, Func&lt; U &gt; onNone)</td></tr>
-<tr class="memdesc:a9bbcb7073d848f52bd7ed61dc4252b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the appropriate function based on whether the option is Some or None.  <br /></td></tr>
+<tr class="memdesc:a9bbcb7073d848f52bd7ed61dc4252b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one of the two provided functions based on the Option's state, returning the result of the executed function.  <br /></td></tr>
 <tr class="memitem:aea8aa4d07302463cadb7bbe6d392bdd1" id="r_aea8aa4d07302463cadb7bbe6d392bdd1"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aea8aa4d07302463cadb7bbe6d392bdd1">Equals</a> (Option&lt; T &gt; other)</td></tr>
 <tr class="memitem:a21c9a1edb6fbbdeb4ca7338790cc0cb8" id="r_a21c9a1edb6fbbdeb4ca7338790cc0cb8"><td class="memItemLeft">override bool&#160;</td><td class="memItemRight"><a class="el" href="#a21c9a1edb6fbbdeb4ca7338790cc0cb8">Equals</a> (object obj)</td></tr>
 <tr class="memitem:a8e512eb236c8ad0df1447386afd56368" id="r_a8e512eb236c8ad0df1447386afd56368"><td class="memItemLeft">override int&#160;</td><td class="memItemRight"><a class="el" href="#a8e512eb236c8ad0df1447386afd56368">GetHashCode</a> ()</td></tr>
@@ -125,10 +125,13 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b4052642681b4a3701000607cece15f" id="r_a5b4052642681b4a3701000607cece15f"><td class="memItemLeft">static Option&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a5b4052642681b4a3701000607cece15f">Some</a> (T value)</td></tr>
-<tr class="memdesc:a5b4052642681b4a3701000607cece15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a Some value.  <br /></td></tr>
+<tr class="memdesc:a5b4052642681b4a3701000607cece15f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an Option instance that represents a value that exists.  <br /></td></tr>
 <tr class="memitem:a3bef2f7232cff6239a35982ea9444b2d" id="r_a3bef2f7232cff6239a35982ea9444b2d"><td class="memItemLeft">static bool&#160;</td><td class="memItemRight"><a class="el" href="#a3bef2f7232cff6239a35982ea9444b2d">operator==</a> (Option&lt; T &gt; left, Option&lt; T &gt; right)</td></tr>
+<tr class="memdesc:a3bef2f7232cff6239a35982ea9444b2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether two <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instances are equal.  <br /></td></tr>
 <tr class="memitem:a597feb91e222fd32405518ca5f825598" id="r_a597feb91e222fd32405518ca5f825598"><td class="memItemLeft">static bool&#160;</td><td class="memItemRight"><a class="el" href="#a597feb91e222fd32405518ca5f825598">operator!=</a> (Option&lt; T &gt; left, Option&lt; T &gt; right)</td></tr>
+<tr class="memdesc:a597feb91e222fd32405518ca5f825598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether two <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instances are not equal.  <br /></td></tr>
 <tr class="memitem:ac7ef5fbfe0f1023a872a76245b295a0a" id="r_ac7ef5fbfe0f1023a872a76245b295a0a"><td class="memItemLeft">static implicit&#160;</td><td class="memItemRight"><a class="el" href="#ac7ef5fbfe0f1023a872a76245b295a0a">operator Option&lt; T &gt;</a> (T value)</td></tr>
+<tr class="memdesc:ac7ef5fbfe0f1023a872a76245b295a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a value of type <em>T</em>  implicitly to an <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a>.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-properties" class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -137,10 +140,10 @@ Properties</h2></td></tr>
 <tr class="memitem:aa362a51ac8135e171b3a982a916f9083" id="r_aa362a51ac8135e171b3a982a916f9083"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aa362a51ac8135e171b3a982a916f9083">IsNone</a><code> [get]</code></td></tr>
 <tr class="memdesc:aa362a51ac8135e171b3a982a916f9083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the option is a None value.  <br /></td></tr>
 <tr class="memitem:a0cac7c54babb00af239b77062114dd18" id="r_a0cac7c54babb00af239b77062114dd18"><td class="memItemLeft">static Option&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a0cac7c54babb00af239b77062114dd18">None</a><code> [get]</code></td></tr>
-<tr class="memdesc:a0cac7c54babb00af239b77062114dd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a None value.  <br /></td></tr>
+<tr class="memdesc:a0cac7c54babb00af239b77062114dd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents the absence of a value in the context of an Option type.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Represents an optional value: every <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html" title="Helper class for creating Option instances.">Option</a> is either Some and contains a value, or None, and does not. </p>
+<div class="textblock"><p>Represents an optional value: every Option is either Some and contains a value, or None, and does not. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>The type of the value.</td></tr>
@@ -157,7 +160,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Option&lt; U &gt; <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.Bind&lt; U &gt; </td>
+          <td class="memname">Option&lt; U &gt; IronStrata.Scripts.Core.Types.Option&lt; T &gt;.Bind&lt; U &gt; </td>
           <td>(</td>
           <td class="paramtype">Func&lt; T, Option&lt; U &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>binder</em></span></td><td>)</td>
           <td></td>
@@ -165,9 +168,22 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns None if the option is None, otherwise calls binder with the wrapped value and returns the result. </p>
+<p>Transforms the current Option value by applying a provided binder function if the value is in the Some state, or returns None if the Option is in the None state. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>The type of the Option result after applying the binder function.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">binder</td><td>A function to transform the value contained within the Some state to another Option of type U.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new Option of type U resulting from the binder function if the Option is in the Some state, or None if the Option is in the None state. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00064">64</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00095">95</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -178,7 +194,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">override bool <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.Equals </td>
+          <td class="memname">override bool IronStrata.Scripts.Core.Types.Option&lt; T &gt;.Equals </td>
           <td>(</td>
           <td class="paramtype">object</td>          <td class="paramname"><span class="paramname"><em>obj</em></span></td><td>)</td>
           <td></td>
@@ -186,7 +202,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00087">87</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p></p>
+
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00129">129</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -197,7 +215,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.Equals </td>
+          <td class="memname">bool IronStrata.Scripts.Core.Types.Option&lt; T &gt;.Equals </td>
           <td>(</td>
           <td class="paramtype">Option&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
           <td></td>
@@ -205,7 +223,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00080">80</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p></p>
+
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00121">121</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -216,7 +236,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">override int <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.GetHashCode </td>
+          <td class="memname">override int IronStrata.Scripts.Core.Types.Option&lt; T &gt;.GetHashCode </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -224,7 +244,9 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00089">89</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p></p>
+
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00132">132</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -235,7 +257,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Option&lt; U &gt; <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_map.html">Map</a>&lt; U &gt; </td>
+          <td class="memname">Option&lt; U &gt; IronStrata.Scripts.Core.Types.Option&lt; T &gt;.<a class="el" href="namespace_iron_strata_1_1_scripts_1_1_map.html">Map</a>&lt; U &gt; </td>
           <td>(</td>
           <td class="paramtype">Func&lt; T, U &gt;</td>          <td class="paramname"><span class="paramname"><em>mapper</em></span></td><td>)</td>
           <td></td>
@@ -243,34 +265,55 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maps an <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> to <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html" title="Helper class for creating Option instances.">Option</a><u> by applying a function to a contained value. </u></p>
+<p>Transforms the contained value in the Option if it is a Some, using the provided mapping function. </p>
+<p>Returns a new Option containing the result of the transformation, or None if the original Option is None.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>The type of the value after the transformation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mapper</td><td>A function to transform the contained value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A new Option containing the result of applying the mapping function to the contained value if Some, or None if the original Option is None. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00059">59</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00083">83</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
-<a id="ab8d78c98ec7df4bbbd0b6f8e5db84bcc" name="ab8d78c98ec7df4bbbd0b6f8e5db84bcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8d78c98ec7df4bbbd0b6f8e5db84bcc">&#9670;&#160;</a></span>Match()</h2>
+<a id="a03fca10c9f55c04b1ef9c879057c2d7a" name="a03fca10c9f55c04b1ef9c879057c2d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03fca10c9f55c04b1ef9c879057c2d7a">&#9670;&#160;</a></span>Match()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.Match </td>
+          <td class="memname">void IronStrata.Scripts.Core.Types.Option&lt; T &gt;.Match </td>
           <td>(</td>
           <td class="paramtype">Action&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>onSome</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Action</td>          <td class="paramname"><span class="paramname"><em>onNone</em></span>&#160;)</td>
+          <td class="paramtype">Action</td>          <td class="paramname"><span class="paramname"><em>onNone</em></span><span class="paramdefsep"> = </span><span class="paramdefval">null</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Executes the appropriate action based on whether the option is Some or None. </p>
+<p>Invokes the specified actions depending on whether the Option contains a value or not. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onSome</td><td>The action to invoke if the Option contains a value.</td></tr>
+    <tr><td class="paramname">onNone</td><td>The action to invoke if the Option does not contain a value. This parameter is optional.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00069">69</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00102">102</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -281,7 +324,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">U <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.<a class="el" href="#ab8d78c98ec7df4bbbd0b6f8e5db84bcc">Match</a>&lt; U &gt; </td>
+          <td class="memname">U IronStrata.Scripts.Core.Types.Option&lt; T &gt;.<a class="el" href="#a03fca10c9f55c04b1ef9c879057c2d7a">Match</a>&lt; U &gt; </td>
           <td>(</td>
           <td class="paramtype">Func&lt; T, U &gt;</td>          <td class="paramname"><span class="paramname"><em>onSome</em></span>, </td>
         </tr>
@@ -293,9 +336,23 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Evaluates the appropriate function based on whether the option is Some or None. </p>
+<p>Executes one of the two provided functions based on the Option's state, returning the result of the executed function. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">U</td><td>The return type of the functions.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">onSome</td><td>The function to be executed if the Option is in the "Some" state, receiving the stored value.</td></tr>
+    <tr><td class="paramname">onNone</td><td>The function to be executed if the Option is in the "None" state.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The result of the executed function.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00078">78</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00118">118</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -309,7 +366,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">implicit <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.operator Option&lt; T &gt; </td>
+          <td class="memname">implicit IronStrata.Scripts.Core.Types.Option&lt; T &gt;.operator Option&lt; T &gt; </td>
           <td>(</td>
           <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
           <td></td>
@@ -322,7 +379,16 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00095">95</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p>Converts a value of type <em>T</em>  implicitly to an <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>The value to convert. If the value is null, it will return None; otherwise, it will return Some with the value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> representing the provided value.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00155">155</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -336,7 +402,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.operator!= </td>
+          <td class="memname">bool IronStrata.Scripts.Core.Types.Option&lt; T &gt;.operator!= </td>
           <td>(</td>
           <td class="paramtype">Option&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
         </tr>
@@ -353,7 +419,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00093">93</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p>Determines whether two <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instances are not equal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left</td><td>The first <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instance to compare.</td></tr>
+    <tr><td class="paramname">right</td><td>The second <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instance to compare.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instances are not equal; otherwise, false.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00148">148</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -367,7 +443,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.operator== </td>
+          <td class="memname">bool IronStrata.Scripts.Core.Types.Option&lt; T &gt;.operator== </td>
           <td>(</td>
           <td class="paramtype">Option&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
         </tr>
@@ -384,7 +460,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00091">91</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p>Determines whether two <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instances are equal. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left</td><td>The first <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instance to compare.</td></tr>
+    <tr><td class="paramname">right</td><td>The second <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instance to compare.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if both <a class="el" href="struct_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option-1-g.html" title="Represents an optional value: every Option is either Some and contains a value, or None,...">Option&lt;T&gt;</a> instances are equal; otherwise, false.</dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00140">140</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -398,7 +484,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Option&lt; T &gt; <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.Some </td>
+          <td class="memname">Option&lt; T &gt; IronStrata.Scripts.Core.Types.Option&lt; T &gt;.Some </td>
           <td>(</td>
           <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
           <td></td>
@@ -411,9 +497,16 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a Some value. </p>
+<p>Creates an Option instance that represents a value that exists. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>The value to be wrapped in an Option.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>An Option containing the provided value.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00034">34</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00045">45</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -424,7 +517,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.Unwrap </td>
+          <td class="memname">T IronStrata.Scripts.Core.Types.Option&lt; T &gt;.Unwrap </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -432,9 +525,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the contained Some value, or throws an InvalidOperationException if the value is None. </p>
+<p>Returns the contained value if the option is in the Some state; otherwise, throws an InvalidOperationException. </p>
+<dl class="section return"><dt>Returns</dt><dd>The contained value of type T.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">InvalidOperationException</td><td>Thrown when the option is in the None state.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00044">44</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00057">57</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -445,7 +545,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.UnwrapOr </td>
+          <td class="memname">T IronStrata.Scripts.Core.Types.Option&lt; T &gt;.UnwrapOr </td>
           <td>(</td>
           <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>defaultValue</em></span></td><td>)</td>
           <td></td>
@@ -453,9 +553,15 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the contained Some value or a provided default. </p>
+<p>Represents an optional value: every Option is either Some and contains a value, or None and does not. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The type of the value.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00049">49</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00064">64</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -466,7 +572,7 @@ Properties</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.UnwrapOrElse </td>
+          <td class="memname">T IronStrata.Scripts.Core.Types.Option&lt; T &gt;.UnwrapOrElse </td>
           <td>(</td>
           <td class="paramtype">Func&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>orElse</em></span></td><td>)</td>
           <td></td>
@@ -474,9 +580,16 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the contained Some value or computes it from a closure. </p>
+<p>Returns the contained value if the Option is Some, otherwise invokes the specified delegate and returns its result. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">orElse</td><td>A delegate that produces a value to return if the Option is None.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The contained value if the Option is Some; otherwise, the result of invoking the specified delegate.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00054">54</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00071">71</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -491,7 +604,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.IsNone</td>
+          <td class="memname">bool IronStrata.Scripts.Core.Types.Option&lt; T &gt;.IsNone</td>
         </tr>
       </table>
   </td>
@@ -503,7 +616,7 @@ Properties</h2></td></tr>
 
 <p>Returns true if the option is a None value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00029">29</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00038">38</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -517,7 +630,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.IsSome</td>
+          <td class="memname">bool IronStrata.Scripts.Core.Types.Option&lt; T &gt;.IsSome</td>
         </tr>
       </table>
   </td>
@@ -529,7 +642,7 @@ Properties</h2></td></tr>
 
 <p>Returns true if the option is a Some value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00024">24</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00033">33</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>
@@ -543,7 +656,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Option&lt;T&gt; <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_types_1_1_option.html">IronStrata.Scripts.Core.Types.Option</a>&lt; T &gt;.None</td>
+          <td class="memname">Option&lt;T&gt; IronStrata.Scripts.Core.Types.Option&lt; T &gt;.None</td>
         </tr>
       </table>
   </td>
@@ -553,9 +666,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a None value. </p>
+<p>Represents the absence of a value in the context of an Option type. </p>
 
-<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00039">39</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_option_8cs_source.html#l00050">50</a> of file <a class="el" href="_option_8cs_source.html">Option.cs</a>.</p>
 
 </div>
 </div>

@@ -12,10 +12,10 @@ var searchData=
   ['wagonheight_9',['WagonHeight',['../class_iron_strata_1_1_scripts_1_1_core_1_1_constants_1_1_train_layout.html#ae0ca0fb38ddb0e06b38d364e24960463',1,'IronStrata::Scripts::Core::Constants::TrainLayout']]],
   ['wagonlength_10',['WagonLength',['../class_iron_strata_1_1_scripts_1_1_core_1_1_constants_1_1_train_layout.html#a59f6be523a096e70ba6c1f397d89a7cc',1,'IronStrata::Scripts::Core::Constants::TrainLayout']]],
   ['wagons_11',['The Strata &amp;amp; Wagons',['../index.html#autotoc_md7',1,'']]],
-  ['wagonslotcomponent_12',['WagonSlotComponent',['../class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_slot_component.html',1,'IronStrata::Scripts::Components::Train']]],
+  ['wagonslotcomponent_12',['WagonSlotComponent',['../struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_slot_component.html',1,'IronStrata::Scripts::Components::Train']]],
   ['wagonslotcomponent_2ecs_13',['WagonSlotComponent.cs',['../_wagon_slot_component_8cs.html',1,'']]],
   ['wagontype_14',['WagonType',['../namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a',1,'IronStrata::Scripts::Components::Train']]],
-  ['wagontypecomponent_15',['WagonTypeComponent',['../class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component.html',1,'IronStrata::Scripts::Components::Train']]],
+  ['wagontypecomponent_15',['WagonTypeComponent',['../struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component.html',1,'IronStrata::Scripts::Components::Train']]],
   ['wagontypecomponent_2ecs_16',['WagonTypeComponent.cs',['../_wagon_type_component_8cs.html',1,'']]],
   ['wagonwidth_17',['WagonWidth',['../class_iron_strata_1_1_scripts_1_1_core_1_1_constants_1_1_train_layout.html#a9aa91a3f93e783b8f9967133f937471a',1,'IronStrata::Scripts::Core::Constants::TrainLayout']]],
   ['wasp_18',['Wasp',['../namespace_iron_strata_1_1_scripts_1_1_components_1_1_character.html#a347407d8bf97b60fa2d30628182e60dba5a2121f3548dc88faf3db43db327f7c7',1,'IronStrata::Scripts::Components::Character']]],
@@ -27,5 +27,6 @@ var searchData=
   ['world_20building_20lore_24',['3. WORLD-BUILDING &amp;amp; LORE',['../md_project.html#autotoc_md31',1,'']]],
   ['world_20map_25',['14. NODE SYSTEM &amp;amp; WORLD MAP',['../md_project.html#autotoc_md97',1,'']]],
   ['world_20systems_26',['PART FIVE — ECONOMY &amp;amp; WORLD SYSTEMS',['../md_project.html#autotoc_md86',1,'']]],
-  ['world_2ecs_27',['World.cs',['../_world_8cs.html',1,'']]]
+  ['world_2ecs_27',['World.cs',['../_world_8cs.html',1,'']]],
+  ['worldenvironment_28',['WorldEnvironment',['../_main_8cs.html#aaa9f74588cac3d9dee6c64d21db46ca2',1,'Main.cs']]]
 ];

@@ -1,14 +1,14 @@
-using IronStrata.Scripts.Core.ECS;
-
 namespace IronStrata.Scripts.Components.Shared;
 
 /// <summary>
-/// Component that tracks the various resources held by an entity (like the player train).
+/// Represents a resource component within the game, tracking resource-specific data.
+/// Used by systems such as `ResourceSystem` and `TurretSystem` to manage and update resource-related game state.
 /// </summary>
-public struct ResourceComponent
-{
+public struct ResourceComponent {
     /// <summary>
-    /// The amount of Scrap (primary currency/material) available.
+    /// Represents the current amount of scrap, a resource used within the game's economy.
+    /// Scrap is consumed or modified by various systems such as <c>ResourceSystem</c>,
+    /// <c>TurretSystem</c>, and <c>ConstructionSystem</c>.
     /// </summary>
     public int Scrap;
 }

@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_systems_1_1_shared_1
 </div><!--header-->
 <div class="contents">
 
-<p>System that synchronizes resource data with the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a>.  
+<p>Represents a system that manages resource-related logic within the game, including updating <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements to reflect resource changes and controlling the state of resource-dependent actions.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Systems.Shared.ResourceSystem:</div>
@@ -101,17 +101,17 @@ Inheritance diagram for IronStrata.Scripts.Systems.Shared.ResourceSystem:</div>
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_shared_1_1_resource_system.png" usemap="#IronStrata_2EScripts_2ESystems_2EShared_2EResourceSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2EShared_2EResourceSystem_map" name="IronStrata_2EScripts_2ESystems_2EShared_2EResourceSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,303,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,303,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ade24984c0b2cd46e915e2b42c0c4db93" id="r_ade24984c0b2cd46e915e2b42c0c4db93"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ade24984c0b2cd46e915e2b42c0c4db93">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:ade24984c0b2cd46e915e2b42c0c4db93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements related to resources, such as the Scrap counter and draw button state.  <br /></td></tr>
+<tr class="memdesc:ade24984c0b2cd46e915e2b42c0c4db93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the state of the resource system by synchronizing resource data with the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements and enabling or disabling certain <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> interactions based on the current resource values.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System that synchronizes resource data with the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a>. </p>
+<div class="textblock"><p>Represents a system that manages resource-related logic within the game, including updating <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements to reflect resource changes and controlling the state of resource-dependent actions. </p>
 
 <p class="definition">Definition at line <a class="el" href="_resource_system_8cs_source.html#l00013">13</a> of file <a class="el" href="_resource_system_8cs_source.html">ResourceSystem.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -134,11 +134,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements related to resources, such as the Scrap counter and draw button state. </p>
+<p>Updates the state of the resource system by synchronizing resource data with the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements and enabling or disabling certain <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> interactions based on the current resource values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The world instance that contains all entities and components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The time elapsed since the last update, typically used for time-based operations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_resource_system_8cs_source.html#l00018">18</a> of file <a class="el" href="_resource_system_8cs_source.html">ResourceSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_resource_system_8cs_source.html#l00020">20</a> of file <a class="el" href="_resource_system_8cs_source.html">ResourceSystem.cs</a>.</p>
 
 </div>
 </div>

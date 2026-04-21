@@ -1,6 +1,6 @@
 var _wagon_type_component_8cs =
 [
-    [ "IronStrata.Scripts.Components.Train.WagonTypeComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component" ],
+    [ "IronStrata.Scripts.Components.Train.WagonTypeComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component" ],
     [ "IronStrata.Scripts.Components.Train.WagonType", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a", [
       [ "IronStrata.Scripts.Components.Train.WagonType.Locomotive", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9aaed24a4645227d44d5e3355720aafc10e", null ],
       [ "IronStrata.Scripts.Components.Train.WagonType.Living", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9aa73ba7cfe3119d4664483d59f10a19d30", null ],

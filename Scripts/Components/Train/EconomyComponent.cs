@@ -1,19 +1,19 @@
-using IronStrata.Scripts.Core.ECS;
-
 namespace IronStrata.Scripts.Components.Train;
 
 /// <summary>
-/// Manages the survival-critical economic resources of the train.
+/// Represents the economic aspects of a system, providing functionality to manage resources
+/// and their consumption rates in a simulation or gameplay environment.
 /// </summary>
-public struct EconomyComponent()
-{
+public struct EconomyComponent() {
     /// <summary>
-    /// Current stock of food and life support supplies.
+    /// Represents the current amount of available rations, used to sustain operations
+    /// or entities requiring maintenance within the economic system.
     /// </summary>
     public float Rations = 1000f;
 
     /// <summary>
-    /// The rate at which rations are consumed per second per passenger.
+    /// Represents the baseline rate of resource consumption, influencing the minimum
+    /// operational requirements within the economic system.
     /// </summary>
     public float BaseConsumption = 2.0f;
 }

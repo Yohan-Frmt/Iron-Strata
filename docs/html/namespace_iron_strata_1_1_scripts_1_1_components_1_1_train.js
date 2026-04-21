@@ -1,11 +1,11 @@
 var namespace_iron_strata_1_1_scripts_1_1_components_1_1_train =
 [
-    [ "ConnectionComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_connection_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_connection_component" ],
-    [ "EconomyComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_economy_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_economy_component" ],
-    [ "TrainMovementComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_train_movement_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_train_movement_component" ],
-    [ "TurretComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_turret_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_turret_component" ],
-    [ "WagonSlotComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_slot_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_slot_component" ],
-    [ "WagonTypeComponent", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component.html", "class_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component" ],
+    [ "ConnectionComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_connection_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_connection_component" ],
+    [ "EconomyComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_economy_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_economy_component" ],
+    [ "TrainMovementComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_train_movement_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_train_movement_component" ],
+    [ "TurretComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_turret_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_turret_component" ],
+    [ "WagonSlotComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_slot_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_slot_component" ],
+    [ "WagonTypeComponent", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component.html", "struct_iron_strata_1_1_scripts_1_1_components_1_1_train_1_1_wagon_type_component" ],
     [ "WagonType", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9a", [
       [ "Locomotive", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9aaed24a4645227d44d5e3355720aafc10e", null ],
       [ "Living", "namespace_iron_strata_1_1_scripts_1_1_components_1_1_train.html#afef3efa55dda4afdeab6cff29cf7cb9aa73ba7cfe3119d4664483d59f10a19d30", null ],

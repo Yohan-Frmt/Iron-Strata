@@ -16,257 +16,224 @@ namespace IronStrata.Scripts.Systems.Combat;
 /// System responsible for enemy AI behavior, including movement, targeting, and combat.
 /// It also handles the spawning of enemy hordes when in certain zones.
 /// </summary>
-public class EnemySystem(Node3D trainRoot) : ISystem
-{
+public class EnemySystem(Node3D trainRoot) : ISystem {
     private float _hordeTimer;
-    private const float HordeSpawnInterval = 1f;
+    private const float _hordeSpawnInterval = 1f;
 
     /// <summary>
-    /// Updates all enemies in the world, handling their AI and interactions with the train.
+    /// Updates the state of the enemy system on each frame, executing enemy behavior,
+    /// managing horde spawn timers, and resolving interactions between enemies and their targets.
     /// </summary>
-    public void Update(World world, double delta)
-    {
-        var locEntityOpt = world.QueryFirst<LocationComponent>();
-        var isInCity = false;
-        if (locEntityOpt.IsSome)
-        {
-            isInCity = world.Get<LocationComponent>(locEntityOpt.Unwrap()).IsInCityZone;
-        }
+    /// <param name="world">The global game world that manages entities and components.</param>
+    /// <param name="delta">The time elapsed since the last update, used to calculate time-dependent changes.</param>
+    public void Update(World world, double delta) {
+        Option<Entity> locationEntityOption = world.QueryFirst<LocationComponent>();
+        bool isInCity = false;
+        if (locationEntityOption.IsSome) { isInCity = world.Get<LocationComponent>(locationEntityOption.Unwrap()).IsInCityZone; }
 
-        if (isInCity)
-        {
+        if (isInCity) {
             _hordeTimer += (float)delta;
-            if (_hordeTimer >= HordeSpawnInterval)
-            {
+            if (_hordeTimer >= _hordeSpawnInterval) {
                 _hordeTimer = 0f;
-                foreach (var rule in EnemyRegistry.SpawnRules)
-                {
-                    if (GD.Randf() <= rule.Chance) SpawnHorde(world, rule.Count, rule.Type);
+                foreach (HordeSpawnRule rule in EnemyRegistry.SpawnRules) {
+                    if (GD.Randf() <= rule.Chance) { SpawnHorde(world, rule.Count, rule.Type); }
                 }
             }
         }
-        else
-        {
-            _hordeTimer = 0f;
-        }
+        else { _hordeTimer = 0f; }
 
-        var wagons = new List<Entity>();
-        foreach (var e in world.Query<WagonSlotComponent, WagonTypeComponent, HealthComponent>()) wagons.Add(e);
-        if (wagons.Count == 0) return;
+        List<Entity> wagons = [.. world.Query<WagonSlotComponent, WagonTypeComponent, HealthComponent>()];
+        if (wagons.Count == 0) { return; }
 
-        var allEnemies = new List<Entity>();
-        foreach (var e in world.Query<EnemyComponent, PositionComponent>()) allEnemies.Add(e);
-        
-        foreach (var entity in world.Query<EnemyComponent, PositionComponent, MovementComponent>())
-        {
-            ref var enemy = ref world.Get<EnemyComponent>(entity);
-            ref var pos = ref world.Get<PositionComponent>(entity);
-            ref var loco = ref world.Get<MovementComponent>(entity);
+        List<Entity> allEnemies = [.. world.Query<EnemyComponent, PositionComponent>()];
 
-            // Target acquisition.
-            var needsNewTarget = enemy.CurrentTarget.Match(target => !world.IsAlive(target), () => true);
-            if (needsNewTarget)
-                enemy.CurrentTarget = FindBestTarget(enemy.Type, wagons, world);
+        foreach (Entity entity in world.Query<EnemyComponent, PositionComponent, MovementComponent>()) {
+            ref EnemyComponent enemy = ref world.Get<EnemyComponent>(entity);
+            ref PositionComponent positionComponent = ref world.Get<PositionComponent>(entity);
+            ref MovementComponent movementComponent = ref world.Get<MovementComponent>(entity);
+            bool needsNewTarget = enemy.CurrentTarget.Match(target => !world.IsAlive(target), () => true);
+            if (needsNewTarget) { enemy.CurrentTarget = FindBestTarget(enemy.Type, wagons, world); }
 
-            if (enemy.CurrentTarget.IsSome)
-            {
-                var target = enemy.CurrentTarget.Unwrap();
-                ref var slotComp = ref world.Get<WagonSlotComponent>(target);
-                const float wagonSize = 5f;
-                const float wagonPhysicalRadius = 4.0f; // Collision radius of the wagon
-                
-                // Calculate target position in global space.
-                var targetGlobalPos = trainRoot.GlobalPosition + new Vector3(-slotComp.SlotIndex * wagonSize, 2.0f, 0);
-                var distanceToCenter = pos.Value.DistanceTo(targetGlobalPos);
+            if (enemy.CurrentTarget.IsNone) { continue; }
 
-                // Combat logic.
-                if (distanceToCenter <= enemy.AttackRange + wagonPhysicalRadius)
-                {
-                    enemy.AttackTimer -= (float)delta;
-                    if (enemy.AttackTimer <= 0)
-                    {
-                        enemy.AttackTimer = 1f / enemy.AttackSpeed;
-                        ref var health = ref world.Get<HealthComponent>(target);
-                        health.Current -= enemy.Damage;
+            Entity target = enemy.CurrentTarget.Unwrap();
+            ref WagonSlotComponent wagonSlotComponent = ref world.Get<WagonSlotComponent>(target);
+            const float wagonSize = 5f;
+            const float wagonPhysicalRadius = 4.0f;
+            Vector3 targetGlobalPosition = trainRoot.GlobalPosition + new Vector3(-wagonSlotComponent.SlotIndex * wagonSize, 2.0f, 0);
+            float distanceToTargetCenter = positionComponent.Value.DistanceTo(targetGlobalPosition);
+            if (distanceToTargetCenter <= enemy.AttackRange + wagonPhysicalRadius) {
+                enemy.AttackTimer -= (float)delta;
+                if (!(enemy.AttackTimer <= 0)) { continue; }
 
-                        if (health.Current <= 0) HandleWagonDestruction(world, target);
-                    }
+                enemy.AttackTimer = 1f / enemy.AttackSpeed;
+                ref HealthComponent health = ref world.Get<HealthComponent>(target);
+                health.Current -= enemy.Damage;
+                if (health.Current <= 0) { HandleWagonDestruction(world, target); }
+            }
+            else {
+                Vector3 moveDirection = (targetGlobalPosition - positionComponent.Value).Normalized();
+                Vector3 repulsionForce = Vector3.Zero;
+                int neighbors = 0;
+                foreach (Entity otherEntity in allEnemies) {
+                    if (entity.Equals(otherEntity)) { continue; }
+
+                    Vector3 otherPosition = world.Get<PositionComponent>(otherEntity).Value;
+                    float distanceToOtherEnemy = positionComponent.Value.DistanceTo(otherPosition);
+                    const float separationRadius = 10.0f;
+                    if (!(distanceToOtherEnemy < separationRadius) || !(distanceToOtherEnemy > 0.01f)) { continue; }
+
+                    Vector3 pushDirection = (positionComponent.Value - otherPosition).Normalized();
+                    repulsionForce += pushDirection * (separationRadius - distanceToOtherEnemy);
+                    neighbors++;
                 }
-                else
-                {
-                    // Movement and Boids-like behavior (separation).
-                    var moveDir = (targetGlobalPos - pos.Value).Normalized();
-                    var repulsionForce = Vector3.Zero;
-                    var neighbors = 0;
 
-                    // Repulsion from other enemies.
-                    foreach (var otherEntity in allEnemies)
-                    {
-                        if (entity.Equals(otherEntity)) continue;
+                foreach (Entity wagon in wagons) {
+                    ref WagonSlotComponent wagonSlot = ref world.Get<WagonSlotComponent>(wagon);
+                    Vector3 wagonPosition = trainRoot.GlobalPosition + new Vector3(-wagonSlot.SlotIndex * wagonSize, 2.0f, 0);
+                    float distanceToWagon = positionComponent.Value.DistanceTo(wagonPosition);
+                    if (!(distanceToWagon < wagonPhysicalRadius + 0.5f)) { continue; }
 
-                        var otherPos = world.Get<PositionComponent>(otherEntity).Value;
-                        var distToOther = pos.Value.DistanceTo(otherPos);
-                        const float separationRadius = 10.0f;
+                    Vector3 pushDirection = (positionComponent.Value - wagonPosition).Normalized();
+                    repulsionForce += pushDirection * (wagonPhysicalRadius + 0.5f - distanceToWagon) * 5.0f;
+                    neighbors++;
+                }
 
-                        if (!(distToOther < separationRadius) || !(distToOther > 0.01f)) continue;
+                if (neighbors > 0) {
+                    repulsionForce /= neighbors;
+                    moveDirection = (moveDirection + repulsionForce * 1.5f).Normalized();
+                }
 
-                        var pushDir = (pos.Value - otherPos).Normalized();
-                        repulsionForce += pushDir * (separationRadius - distToOther);
-                        neighbors++;
-                    }
+                positionComponent.Value += moveDirection * movementComponent.Speed * (float)delta;
+                if (movementComponent.IsFlying) { continue; }
 
-                    // Repulsion from wagons to avoid clipping.
-                    foreach (var wagon in wagons)
-                    {
-                        ref var wSlot = ref world.Get<WagonSlotComponent>(wagon);
-                        var wPos = trainRoot.GlobalPosition + new Vector3(-wSlot.SlotIndex * wagonSize, 2.0f, 0);
-                        var distToWagon = pos.Value.DistanceTo(wPos);
-
-                        if (!(distToWagon < wagonPhysicalRadius + 0.5f)) continue;
-
-                        var pushDir = (pos.Value - wPos).Normalized();
-                        repulsionForce += pushDir * ((wagonPhysicalRadius + 0.5f) - distToWagon) * 5.0f;
-                        neighbors++;
-                    }
-
-                    if (neighbors > 0)
-                    {
-                        repulsionForce /= neighbors;
-                        moveDir = (moveDir + repulsionForce * 1.5f).Normalized();
-                    }
-
-                    // Apply movement.
-                    pos.Value += moveDir * loco.Speed * (float)delta;
-
-                    // Simple gravity for non-flying enemies.
-                    if (!loco.IsFlying)
-                    {
-                        pos.Value.Y -= 9.81f * (float)delta;
-                        if (pos.Value.Y < 0) pos.Value.Y = 0; // Ground level
-                    }
+                positionComponent.Value.Y -= 9.81f * (float)delta;
+                if (positionComponent.Value.Y < 0) {
+                    positionComponent.Value.Y = 0;
                 }
             }
         }
     }
 
     /// <summary>
-    /// Handles the chain reaction when a wagon is destroyed.
-    /// This includes destroying wagons above it and abandoning those behind it.
+    /// Handles the destruction of a wagon in the train, resolving its removal, the detachment
+    /// of connected wagons further back, and the abandonment of these detached wagons.
+    /// Additionally, terminates the game if the locomotive (frontmost wagon) is destroyed.
     /// </summary>
-    private void HandleWagonDestruction(World world, Entity target)
-    {
-        ref var hitSlot = ref world.Get<WagonSlotComponent>(target);
+    /// <param name="world">The global game world that manages entities and components.</param>
+    /// <param name="target">The entity representing the wagon that was hit and triggered the destruction process.</param>
+    private void HandleWagonDestruction(World world, Entity target) {
+        ref WagonSlotComponent hitSlot = ref world.Get<WagonSlotComponent>(target);
         GD.Print($"Wagon at index {hitSlot.SlotIndex} (layer {hitSlot.Layer}) destroyed!");
 
-        if (hitSlot.SlotIndex == 0) GD.PrintErr("!!! GAME OVER - LOCOMOTIVE DESTROYED !!!");
+        if (hitSlot.SlotIndex == 0) { GD.PrintErr("!!! GAME OVER - LOCOMOTIVE DESTROYED !!!"); }
 
-        var allWagons = new List<Entity>();
-        foreach (var e in world.Query<WagonSlotComponent>()) allWagons.Add(e);
-        foreach (var w in allWagons)
-        {
-            if (!world.IsAlive(w)) continue;
-            ref var wSlot = ref world.Get<WagonSlotComponent>(w);
+        List<Entity> allWagonEntities = [.. world.Query<WagonSlotComponent>()];
+        foreach (Entity wagonEntity in allWagonEntities) {
+            if (!world.IsAlive(wagonEntity)) { continue; }
 
-            // Destroy this wagon if it's the one hit OR if it's stacked on top of it.
-            if (wSlot.SlotIndex == hitSlot.SlotIndex && wSlot.Layer >= hitSlot.Layer) 
-            {
-                DestroyWagon(world, w);
-            }
-            // If it's further back in the train, it becomes detached and abandoned.
-            else if (wSlot.SlotIndex > hitSlot.SlotIndex) 
-            {
-                AbandonWagon(world, w, trainRoot);
-            }
+            ref WagonSlotComponent wagonSlot = ref world.Get<WagonSlotComponent>(wagonEntity);
+            if (wagonSlot.SlotIndex == hitSlot.SlotIndex && wagonSlot.Layer >= hitSlot.Layer) { DestroyWagon(world, wagonEntity); }
+            else if (wagonSlot.SlotIndex > hitSlot.SlotIndex) { AbandonWagon(world, wagonEntity, trainRoot); }
         }
     }
 
     /// <summary>
-    /// Instantly removes a wagon from the world and its corresponding visual node.
+    /// Removes the specified wagon entity from the game world, releasing any associated resources
+    /// and destroying the entity.
     /// </summary>
-    private static void DestroyWagon(World world, Entity e)
-    {
-        if (world.Has<RenderableComponent>(e)) 
-            world.Get<RenderableComponent>(e).Node?.QueueFree();
-        
-        world.DestroyEntity(e);
+    /// <param name="world">The game world containing the entity and its associated components.</param>
+    /// <param name="wagonEntity">The wagon entity to be destroyed.</param>
+    private static void DestroyWagon(World world, Entity wagonEntity) {
+        if (world.Has<RenderableComponent>(wagonEntity)) { world.Get<RenderableComponent>(wagonEntity).Node?.QueueFree(); }
+        world.DestroyEntity(wagonEntity);
     }
 
     /// <summary>
-    /// Detaches a wagon from the train, making it a static object in the world for a short time.
-    /// Used when a connection ahead of the wagon is destroyed.
+    /// Detaches a specified entity's associated node from its parent, reattaches it to the main scene,
+    /// and schedules it for cleanup after a delay. The method also ensures that the entity is properly
+    /// removed from the world.
     /// </summary>
-    private static void AbandonWagon(World world, Entity e, Node3D nodeRoot)
-    {
-        if (world.Has<RenderableComponent>(e))
-        {
-            var node = world.Get<RenderableComponent>(e).Node;
-            if (node != null)
-            {
-                var globalTrans = node.GlobalTransform;
-                // Detach from train and add to the main scene.
+    /// <param name="world">The global game world that manages entities and their components.</param>
+    /// <param name="entity">The entity to be detached and cleaned up.</param>
+    /// <param name="nodeRoot">The root node of the train, used for reattaching the entity's node.</param>
+    private static void AbandonWagon(World world, Entity entity, Node3D nodeRoot) {
+        if (world.Has<RenderableComponent>(entity)) {
+            Node3D node = world.Get<RenderableComponent>(entity).Node;
+            if (node != null) {
+                Transform3D globalTransform = node.GlobalTransform;
                 node.GetParent()?.RemoveChild(node);
                 nodeRoot.GetTree().CurrentScene.AddChild(node);
-                node.GlobalTransform = globalTrans;
-
-                // Cleanup after a few seconds to avoid clutter.
-                var timer = node.GetTree().CreateTimer(6.0f);
-                timer.Timeout += () =>
-                {
-                    if (GodotObject.IsInstanceValid(node)) node.QueueFree();
+                node.GlobalTransform = globalTransform;
+                SceneTreeTimer timer = node.GetTree().CreateTimer(6.0f);
+                timer.Timeout += () => {
+                    if (GodotObject.IsInstanceValid(node)) { node.QueueFree(); }
                 };
             }
         }
 
-        world.DestroyEntity(e);
+        world.DestroyEntity(entity);
     }
 
     /// <summary>
-    /// Determines which wagon an enemy should target based on its type-specific logic and wagon priorities.
+    /// Evaluates the available wagons and selects the most suitable target for the given enemy type.
     /// </summary>
-    private static Option<Entity> FindBestTarget(EnemyType enemyType, List<Entity> wagons, World world)
-    {
-        var bestTarget = Option<Entity>.None;
-        var bestScore = -99999f;
+    /// <param name="enemyType">The type of the enemy, used to determine targeting preferences and scoring.</param>
+    /// <param name="wagons">A list of wagons available for target evaluation.</param>
+    /// <param name="world">The global game world containing the entities and components necessary for processing wagons.</param>
+    /// <returns>An optional entity representing the best target for the enemy, or none if no suitable target is found.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the enemy type is not recognized.</exception>
+    private static Option<Entity> FindBestTarget(EnemyType enemyType, List<Entity> wagons, World world) {
+        Option<Entity> bestTarget = Option<Entity>.None;
+        float bestScore = -99999f;
 
-        foreach (var wagon in wagons)
-        {
-            ref var typeComp = ref world.Get<WagonTypeComponent>(wagon);
-            ref var slotComp = ref world.Get<WagonSlotComponent>(wagon);
-            
-            // Base score favors higher wagons and certain types.
-            var score = GetDefaultTypePriority(typeComp.Type) + (slotComp.Layer * 50);
-
-            // Type-specific targeting biases.
-            switch (enemyType)
-            {
+        foreach (Entity wagon in wagons) {
+            ref WagonTypeComponent wagonTypeComponent = ref world.Get<WagonTypeComponent>(wagon);
+            ref WagonSlotComponent wagonSlotComponent = ref world.Get<WagonSlotComponent>(wagon);
+            float score = GetDefaultTypePriority(wagonTypeComponent.Type) + wagonSlotComponent.Layer * 50;
+            switch (enemyType) {
                 case EnemyType.Safeguard:
-                    // Safeguards focus heavily on vertical structures.
-                    score += slotComp.Layer * 10000;
+                    score += wagonSlotComponent.Layer * 10000;
                     break;
                 case EnemyType.Wasp:
-                    // Wasps prioritize combat wagons to disable defenses.
-                    switch (typeComp.Type)
-                    {
+                    switch (wagonTypeComponent.Type) {
                         case WagonType.Combat:
                             score += 5000;
                             break;
+                        case WagonType.Locomotive:
+                        case WagonType.Living:
+                        case WagonType.Storage:
+                        case WagonType.Research:
+                        case WagonType.Medical:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(enemyType));
                     }
+
                     break;
                 case EnemyType.Crawler:
-                    // Crawlers focus on living and research wagons.
-                    switch (typeComp.Type)
-                    {
+                    switch (wagonTypeComponent.Type) {
                         case WagonType.Living:
                             score += 5000;
                             break;
                         case WagonType.Research:
                             score += 4000;
                             break;
+                        case WagonType.Locomotive:
+                        case WagonType.Combat:
+                        case WagonType.Storage:
+                        case WagonType.Medical:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(enemyType));
                     }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(enemyType), enemyType, null);
             }
 
-            if (!(score > bestScore)) continue;
+            if (!(score > bestScore)) { continue; }
+
             bestScore = score;
             bestTarget = Option<Entity>.Some(wagon);
         }
@@ -275,11 +242,13 @@ public class EnemySystem(Node3D trainRoot) : ISystem
     }
 
     /// <summary>
-    /// Returns the default priority score for a wagon type.
+    /// Determines the default priority score for a given wagon type, used in enemy targeting
+    /// and decision-making processes.
     /// </summary>
+    /// <param name="type">The type of the wagon whose default priority is being calculated.</param>
+    /// <returns>A float representing the base priority score of the specified wagon type.</returns>
     private static float GetDefaultTypePriority(WagonType type) =>
-        type switch
-        {
+        type switch {
             WagonType.Combat => 400,
             WagonType.Living => 300,
             WagonType.Research => 200,
@@ -287,40 +256,40 @@ public class EnemySystem(Node3D trainRoot) : ISystem
         };
 
     /// <summary>
-    /// Spawns a cluster of enemies at a random location near the train.
+    /// Spawns a horde of enemies in the game world, creating entities with appropriate components such as
+    /// position, movement, health, and enemy-specific attributes.
     /// </summary>
-    private void SpawnHorde(World world, int count, EnemyType type)
-    {
-        var def = EnemyRegistry.EnemyDefs[type];
-        var angle = GD.Randf() * Mathf.Tau;
+    /// <param name="world">The global game world that manages entities and components.</param>
+    /// <param name="count">The number of enemies to spawn in the horde.</param>
+    /// <param name="type">The type of enemy to spawn, determining their behavior and attributes.</param>
+    private void SpawnHorde(World world, int count, EnemyType type) {
+        EnemyDefinition enemyDefinition = EnemyRegistry.EnemyDefs[type];
+        float angle = GD.Randf() * Mathf.Tau;
         const float distance = 80f;
-        
-        // Pick a point on a circle around the train.
-        var hordeEpicenter = trainRoot.GlobalPosition +
-                             new Vector3(Mathf.Cos(angle) * distance, 0, Mathf.Sin(angle) * distance);
+        Vector3 hordeEpicenter = trainRoot.GlobalPosition +
+                                 new Vector3(Mathf.Cos(angle) * distance, 0, Mathf.Sin(angle) * distance);
 
-        for (var i = 0; i < count; i++)
-        {
-            var e = world.CreateEntity();
-            
-            // Apply dispersion so they don't spawn on top of each other.
-            var randomOffset = new Vector3(
-                (GD.Randf() - 0.5f) * def.DispersionRadius * 2f, 
-                def.IsFlying ? 5.0f : 0f,
-                (GD.Randf() - 0.5f) * def.DispersionRadius * 2f
+        for (int enemyIndex = 0; enemyIndex < count; enemyIndex++) {
+            Entity enemyEntity = world.CreateEntity();
+
+            Vector3 randomOffset = new(
+                (GD.Randf() - 0.5f) * enemyDefinition.DispersionRadius * 2f,
+                enemyDefinition.IsFlying ? 5.0f : 0f,
+                (GD.Randf() - 0.5f) * enemyDefinition.DispersionRadius * 2f
             );
-            
-            world.Add(e, new PositionComponent { Value = hordeEpicenter + randomOffset });
-            world.Add(e, new MovementComponent { Speed = def.Speed + (GD.Randf() * 2f), IsFlying = def.IsFlying });
-            world.Add(e, new HealthComponent { Max = def.Health, Current = def.Health });
-            world.Add(e,
-                new EnemyComponent
-                {
-                    Type = def.Type, 
-                    Damage = def.Damage, 
-                    AttackRange = def.AttackRange, 
-                    AttackSpeed = def.AttackSpeed
-                });
+
+            world.Add(enemyEntity, new PositionComponent { Value = hordeEpicenter + randomOffset });
+            world.Add(enemyEntity, new MovementComponent { Speed = enemyDefinition.Speed + GD.Randf() * 2f, IsFlying = enemyDefinition.IsFlying });
+            world.Add(enemyEntity, new HealthComponent { Max = enemyDefinition.Health, Current = enemyDefinition.Health });
+            world.Add(
+                enemyEntity,
+                new EnemyComponent {
+                    Type = enemyDefinition.Type,
+                    Damage = enemyDefinition.Damage,
+                    AttackRange = enemyDefinition.AttackRange,
+                    AttackSpeed = enemyDefinition.AttackSpeed
+                }
+            );
         }
     }
 }

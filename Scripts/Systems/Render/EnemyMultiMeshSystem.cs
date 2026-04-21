@@ -11,94 +11,79 @@ namespace IronStrata.Scripts.Systems.Render;
 /// Optimized rendering system for enemies using MultiMeshInstance3D.
 /// It batches entities of the same type to reduce draw calls.
 /// </summary>
-public class EnemyMultiMeshSystem(Node3D parent) : ISystem
-{
+public class EnemyMultiMeshSystem(Node3D parent) : ISystem {
     /// <summary>
     /// Cache of MultiMeshInstance3D nodes indexed by enemy type.
     /// </summary>
-    private readonly Dictionary<EnemyType, MultiMeshInstance3D> _renderers = new();
+    private readonly Dictionary<EnemyType, MultiMeshInstance3D> _renderers = [];
 
     /// <summary>
     /// Cache of entities grouped by enemy type to avoid allocations during Update.
     /// </summary>
-    private readonly Dictionary<EnemyType, List<Entity>> _enemyGroups = new();
+    private readonly Dictionary<EnemyType, List<Entity>> _enemyGroups = [];
 
     /// <summary>
-    /// Updates the transforms of all enemy instances in their respective MultiMeshes.
+    /// Updates the enemy MultiMesh rendering system by organizing entities into groups based on their enemy type
+    /// and configuring MultiMesh instances for rendering.
     /// </summary>
-    public void Update(World world, double delta)
-    {
-        // Clear previous groups
-        foreach (var list in _enemyGroups.Values) list.Clear();
+    /// <param name="world">The game world containing entities and components required for processing.</param>
+    /// <param name="delta">The time elapsed since the last update, used for time-dependent calculations.</param>
+    public void Update(World world, double delta) {
+        foreach (List<Entity> list in _enemyGroups.Values) { list.Clear(); }
 
-        // Categorize enemies by type
-        foreach (var entity in world.Query<EnemyComponent, PositionComponent>())
-        {
-            var type = world.Get<EnemyComponent>(entity).Type;
-            if (!_enemyGroups.TryGetValue(type, out var list))
-            {
-                list = new List<Entity>();
-                _enemyGroups[type] = list;
+        foreach (Entity entity in world.Query<EnemyComponent, PositionComponent>()) {
+            EnemyType type = world.Get<EnemyComponent>(entity).Type;
+            if (!_enemyGroups.TryGetValue(type, out List<Entity> enemyList)) {
+                enemyList = [];
+                _enemyGroups[type] = enemyList;
             }
-            list.Add(entity);
+            enemyList.Add(entity);
         }
 
-        foreach (var pair in _enemyGroups)
-        {
-            var type = pair.Key;
-            var entities = pair.Value;
-            
-            if (entities.Count == 0)
-            {
-                if (_renderers.TryGetValue(type, out var r)) 
-                    r.Multimesh.VisibleInstanceCount = 0;
+        foreach ((EnemyType type, List<Entity> entities) in _enemyGroups) {
+            if (entities.Count == 0) {
+                if (_renderers.TryGetValue(type, out MultiMeshInstance3D renderer)) { renderer.Multimesh.VisibleInstanceCount = 0; }
                 continue;
             }
 
-            // Lazy initialization of the MultiMesh for this type.
-            if (!_renderers.ContainsKey(type)) 
-                _renderers[type] = SetupMultiMesh(type);
-            
-            var mm = _renderers[type].Multimesh;
-            
-            // Resize the buffer if needed.
-            if (mm.InstanceCount < entities.Count) 
-                mm.InstanceCount = entities.Count + 100;
-            
-            var def = EnemyRegistry.EnemyDefs[type];
-            for (var i = 0; i < entities.Count; i++)
-            {
-                var pos = world.Get<PositionComponent>(entities[i]).Value;
-                
-                // Construct the transform matrix with scale and position.
-                var basis = Basis.Identity.Scaled(def.Scale);
-                var transform = new Transform3D(basis, pos);
-                
-                mm.SetInstanceTransform(i, transform);
+            if (!_renderers.TryGetValue(type, out MultiMeshInstance3D rendererInstance)) { rendererInstance = SetupMultiMesh(type); _renderers[type] = rendererInstance; }
+
+            MultiMesh multimesh = rendererInstance.Multimesh;
+
+            if (multimesh.InstanceCount < entities.Count) { multimesh.InstanceCount = entities.Count + 100; }
+
+            EnemyDefinition enemyDefinition = EnemyRegistry.EnemyDefs[type];
+            for (int entityIndex = 0; entityIndex < entities.Count; entityIndex++) {
+                Vector3 position = world.Get<PositionComponent>(entities[entityIndex]).Value;
+                Basis basis = Basis.Identity.Scaled(enemyDefinition.Scale);
+                Transform3D transform = new(basis, position);
+                multimesh.SetInstanceTransform(entityIndex, transform);
             }
-            
-            // Only draw as many instances as we have entities.
-            mm.VisibleInstanceCount = entities.Count;
+            multimesh.VisibleInstanceCount = entities.Count;
         }
     }
 
     /// <summary>
-    /// Configures a new MultiMeshInstance3D for a specific enemy type.
+    /// Configures and initializes a MultiMeshInstance3D for the specified enemy type.
     /// </summary>
-    private MultiMeshInstance3D SetupMultiMesh(EnemyType type)
-    {
-        var def = EnemyRegistry.EnemyDefs[type];
-        var mmInstance = new MultiMeshInstance3D();
-        var mm = new MultiMesh();
-        
-        mmInstance.Multimesh = mm;
-        mm.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
-        mm.Mesh = def.ModelMesh;
-        
-        var mat = new StandardMaterial3D { AlbedoColor = def.Tint };
-        mmInstance.MaterialOverride = mat;
+    /// <param name="type">The type of enemy for which the MultiMeshInstance3D is set up.</param>
+    /// <returns>
+    /// A new MultiMeshInstance3D instance configured with the appropriate model, material,
+    /// and transformation settings for the given enemy type.
+    /// </returns>
+    private MultiMeshInstance3D SetupMultiMesh(EnemyType type) {
+        EnemyDefinition definition = EnemyRegistry.EnemyDefs[type];
+        MultiMeshInstance3D multiMeshInstance = new();
+        MultiMesh multiMesh = new();
 
-        parent.AddChild(mmInstance);
-        return mmInstance;
+        multiMeshInstance.Multimesh = multiMesh;
+        multiMesh.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
+        multiMesh.Mesh = definition.ModelMesh;
+
+        StandardMaterial3D material = new() { AlbedoColor = definition.Tint };
+        multiMeshInstance.MaterialOverride = material;
+
+        parent.AddChild(multiMeshInstance);
+        return multiMeshInstance;
     }
 }

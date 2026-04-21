@@ -1,24 +1,26 @@
-using IronStrata.Scripts.Core.ECS;
-
 namespace IronStrata.Scripts.Components.Shared;
 
 /// <summary>
-/// Component that defines how an entity moves through the world.
+/// Represents movement properties for an entity, including both linear and rotational movement.
+/// This struct is used to define how an entity moves and interacts with its environment.
 /// </summary>
-public struct MovementComponent
-{
+public struct MovementComponent {
     /// <summary>
-    /// The movement speed of the entity.
+    /// Specifies the linear movement speed of the entity.
+    /// This value determines how quickly the entity traverses the environment,
+    /// impacting the rate at which it covers distances over time.
     /// </summary>
     public float Speed;
 
     /// <summary>
-    /// How fast the entity can change direction.
+    /// Defines the rotational speed at which the entity can turn.
+    /// This value influences how quickly the entity adjusts its orientation during movement.
     /// </summary>
     public float TurnSpeed;
 
     /// <summary>
-    /// Whether this entity is capable of airborne movement.
+    /// Indicates whether the entity is capable of flight.
+    /// When true, the entity moves without being affected by gravity and can navigate through the air.
     /// </summary>
     public bool IsFlying;
 }

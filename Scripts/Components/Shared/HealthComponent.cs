@@ -1,24 +1,27 @@
-using IronStrata.Scripts.Core.ECS;
-
 namespace IronStrata.Scripts.Components.Shared;
 
 /// <summary>
-/// Component that tracks the health or durability of an entity.
+/// Represents the health state of an entity, allowing for monitoring and manipulation
+/// of both its maximum potential health and current remaining health.
 /// </summary>
-public struct HealthComponent
-{
+public struct HealthComponent {
     /// <summary>
-    /// The maximum possible health for this entity.
+    /// Represents the maximum health value of an entity.
+    /// This value defines the upper limit to which the entity's health can be restored.
+    /// Modifications to this value can occur during gameplay, such as through upgrades or status effects.
     /// </summary>
     public float Max;
 
     /// <summary>
-    /// The current health remaining.
+    /// Represents the current health value of an entity.
+    /// This value decreases when the entity takes damage and can be restored through healing.
+    /// A value of 0 or below signifies that the entity is destroyed.
     /// </summary>
     public float Current;
 
     /// <summary>
-    /// Returns true if the entity's health has dropped to zero or below.
+    /// Indicates whether the entity associated with this health component is considered destroyed.
+    /// Returns true if the current health is zero or below; otherwise, false.
     /// </summary>
-    public bool IsDestroyed => Current <= 0f;
+    public readonly bool IsDestroyed => Current <= 0f;
 }

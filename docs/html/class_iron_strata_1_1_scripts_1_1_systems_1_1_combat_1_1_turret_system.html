@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_systems_1_1_combat_1
 </div><!--header-->
 <div class="contents">
 
-<p>System that handles turret automation, including target acquisition, firing, and visual effects.  
+<p>Represents a system for managing turret entities in a combat context.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Systems.Combat.TurretSystem:</div>
@@ -101,17 +101,18 @@ Inheritance diagram for IronStrata.Scripts.Systems.Combat.TurretSystem:</div>
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_combat_1_1_turret_system.png" usemap="#IronStrata_2EScripts_2ESystems_2ECombat_2ETurretSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2ECombat_2ETurretSystem_map" name="IronStrata_2EScripts_2ESystems_2ECombat_2ETurretSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,284,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,284,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af475c4f564303f983c8ba649d68e1887" id="r_af475c4f564303f983c8ba649d68e1887"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af475c4f564303f983c8ba649d68e1887">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:af475c4f564303f983c8ba649d68e1887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates all turrets, finds nearby enemies, and handles combat logic.  <br /></td></tr>
+<tr class="memdesc:af475c4f564303f983c8ba649d68e1887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the turret system by managing turrets' cooldowns, calculating their positions, and scanning for potential targets.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>System that handles turret automation, including target acquisition, firing, and visual effects. </p>
+<div class="textblock"><p>Represents a system for managing turret entities in a combat context. </p>
+<p>Handles turret behavior such as target acquisition, cooldowns, and attack execution. </p>
 
 <p class="definition">Definition at line <a class="el" href="_turret_system_8cs_source.html#l00017">17</a> of file <a class="el" href="_turret_system_8cs_source.html">TurretSystem.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
@@ -134,11 +135,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates all turrets, finds nearby enemies, and handles combat logic. </p>
+<p>Updates the turret system by managing turrets' cooldowns, calculating their positions, and scanning for potential targets. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world containing all entities and components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The elapsed time since the last frame, used for time-dependent calculations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_turret_system_8cs_source.html#l00022">22</a> of file <a class="el" href="_turret_system_8cs_source.html">TurretSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_turret_system_8cs_source.html#l00023">23</a> of file <a class="el" href="_turret_system_8cs_source.html">TurretSystem.cs</a>.</p>
 
 </div>
 </div>

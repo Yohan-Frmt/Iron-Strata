@@ -1,29 +1,31 @@
-using IronStrata.Scripts.Core.ECS;
-
 namespace IronStrata.Scripts.Components.Train;
 
 /// <summary>
-/// Component that defines the coupling between two wagons in the train.
+/// Represents a component used to handle connections between entities in a train structure.
+/// It enables sequential linkage and tracks the physical state of the connection.
 /// </summary>
-public struct ConnectionComponent
-{
+public struct ConnectionComponent {
     /// <summary>
-    /// The ID of the wagon ahead of this one.
+    /// Represents the ID of the preceding entity in the train connection sequence,
+    /// allowing for sequential linkage of entities within a train structure.
     /// </summary>
     public int PreviousEntityId;
 
     /// <summary>
-    /// The ID of the wagon behind this one.
+    /// Represents the ID of the next entity in the train connection sequence,
+    /// facilitating the linkage and traversal between consecutive entities in a train structure.
     /// </summary>
     public int NextEntityId;
 
     /// <summary>
-    /// The structural integrity of the coupling.
+    /// Denotes the structural soundness of a train connection component, ranging from 0 (completely broken) to 1 (fully intact),
+    /// and used to determine whether the connection requires maintenance or affects system behavior.
     /// </summary>
     public float Integrity;
 
     /// <summary>
-    /// True if the connection is permanently welded, providing more stability.
+    /// Indicates whether the connection between train entities is secured via welding,
+    /// ensuring a stronger and more permanent linkage compared to other connection methods.
     /// </summary>
     public bool IsWelded;
 }

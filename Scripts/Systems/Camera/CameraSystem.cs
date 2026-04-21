@@ -1,15 +1,20 @@
 using Godot;
-using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Components.Camera;
+using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 
 namespace IronStrata.Scripts.Systems.Camera;
 
 /// <summary>
-/// The CameraSystem class implements the ISystem interface and is responsible for handling camera input and updating camera transformations within the game world.
+/// Represents a system responsible for managing camera behavior and updates within the framework.
+/// This system processes user input events, updates the camera component, and applies necessary transformations.
 /// </summary>
-public class CameraSystem : ISystem
-{
+public class CameraSystem : ISystem {
+    /// <summary>
+    /// Stores the relative motion of the mouse between frames.
+    /// This variable is updated during mouse motion events when the left mouse button is pressed
+    /// and is used to determine camera rotation adjustments in the <c>CameraSystem</c>.
+    /// </summary>
     private Vector2 _mouseDelta;
 
     /// <summary>
@@ -18,10 +23,10 @@ public class CameraSystem : ISystem
     /// and records the relative motion of the mouse.
     /// </summary>
     /// <param name="event">The input event to process, such as mouse motion or button press events.</param>
-    public void OnInput(InputEvent @event)
-    {
-        if (@event is InputEventMouseMotion mouseMotion && Input.IsMouseButtonPressed(MouseButton.Left))
+    public void OnInput(InputEvent @event) {
+        if (@event is InputEventMouseMotion mouseMotion && Input.IsMouseButtonPressed(MouseButton.Left)) {
             _mouseDelta = mouseMotion.Relative;
+        }
     }
 
     /// <summary>
@@ -30,12 +35,14 @@ public class CameraSystem : ISystem
     /// </summary>
     /// <param name="world">The current game world, providing access to entities and their components.</param>
     /// <param name="delta">The time delta since the last update, used to calculate frame-dependent transformations.</param>
-    public void Update(World world, double delta)
-    {
-        var entity = world.QueryFirst<CameraComponent>();
-        if (entity.IsNone) return;
-        ref var camera = ref world.Get<CameraComponent>(entity.Unwrap());
-            
+    public void Update(World world, double delta) {
+        Option<Entity> entity = world.QueryFirst<CameraComponent>();
+        if (entity.IsNone) {
+            return;
+        }
+
+        ref CameraComponent camera = ref world.Get<CameraComponent>(entity.Unwrap());
+
         HandleInputs(ref camera);
         ApplyTransform(ref camera, (float)delta);
     }
@@ -46,18 +53,22 @@ public class CameraSystem : ISystem
     /// Adjusts the camera's zoom level based on specific input actions.
     /// </summary>
     /// <param name="camera">The CameraComponent containing the current camera state, including rotation, zoom settings, and sensitivity values.</param>
-    private void HandleInputs(ref CameraComponent camera)
-    {
-        if (Input.IsMouseButtonPressed(MouseButton.Left))
-        {
+    private void HandleInputs(ref CameraComponent camera) {
+        if (Input.IsMouseButtonPressed(MouseButton.Left)) {
             camera.TargetRotation.Y -= _mouseDelta.X * camera.LookSensitivity;
             camera.TargetRotation.X -= _mouseDelta.Y * camera.LookSensitivity;
             camera.TargetRotation.X = Mathf.Clamp(camera.TargetRotation.X, -1.2f, 0.2f);
             _mouseDelta = Vector2.Zero;
         }
 
-        if (Input.IsActionJustReleased("zoom_in")) camera.TargetZoom -= camera.ZoomSpeed;
-        if (Input.IsActionJustReleased("zoom_out")) camera.TargetZoom += camera.ZoomSpeed;
+        if (Input.IsActionJustReleased("zoom_in")) {
+            camera.TargetZoom -= camera.ZoomSpeed;
+        }
+
+        if (Input.IsActionJustReleased("zoom_out")) {
+            camera.TargetZoom += camera.ZoomSpeed;
+        }
+
         camera.TargetZoom = Mathf.Clamp(camera.TargetZoom, 10f, 100f);
     }
 
@@ -67,9 +78,11 @@ public class CameraSystem : ISystem
     /// </summary>
     /// <param name="camera">The camera component containing the current and target state for rotation and zoom.</param>
     /// <param name="delta">The frame time in seconds, used to calculate the interpolation rate.</param>
-    private static void ApplyTransform(ref CameraComponent camera, float delta)
-    {
-        if (camera.SpringArm == null) return;
+    private static void ApplyTransform(ref CameraComponent camera, float delta) {
+        if (camera.SpringArm == null) {
+            return;
+        }
+
         camera.SpringArm.Rotation = camera.SpringArm.Rotation.Lerp(camera.TargetRotation, delta * 10f);
         camera.SpringArm.SpringLength = Mathf.Lerp(camera.SpringArm.SpringLength, camera.TargetZoom, delta * 5f);
     }

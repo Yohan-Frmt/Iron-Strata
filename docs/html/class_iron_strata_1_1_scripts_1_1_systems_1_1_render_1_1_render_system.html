@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_systems_1_1_render_1
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="class_iron_strata_1_1_scripts_1_1_main.html" title="The main entry point and controller for the game scene.">Main</a> rendering system for the train wagons.  
+<p><a class="el" href="class_iron_strata_1_1_scripts_1_1_main.html" title="Serves as the core manager of the game scene, handling essential gameplay mechanics and scene interac...">Main</a> rendering system for the train wagons.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.Systems.Render.RenderSystem:</div>
@@ -101,22 +101,22 @@ Inheritance diagram for IronStrata.Scripts.Systems.Render.RenderSystem:</div>
  <div class="center">
   <img src="class_iron_strata_1_1_scripts_1_1_systems_1_1_render_1_1_render_system.png" usemap="#IronStrata_2EScripts_2ESystems_2ERender_2ERenderSystem_map" alt=""/>
   <map id="IronStrata_2EScripts_2ESystems_2ERender_2ERenderSystem_map" name="IronStrata_2EScripts_2ESystems_2ERender_2ERenderSystem_map">
-<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for systems that run on every frame update." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,290,24"/>
+<area href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html" title="Interface for defining systems within an Entity Component System (ECS) architecture." alt="IronStrata.Scripts.Core.ECS.ISystem" shape="rect" coords="0,0,290,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7c11de1416ad9cac47f7a0b13a738cb4" id="r_a7c11de1416ad9cac47f7a0b13a738cb4"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a7c11de1416ad9cac47f7a0b13a738cb4">RenderSystem</a> (Node3D trainRoot, <a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world)</td></tr>
-<tr class="memdesc:a7c11de1416ad9cac47f7a0b13a738cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a new instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_render_1_1_render_system.html" title="Main rendering system for the train wagons.">RenderSystem</a> and hooks into entity destruction events.  <br /></td></tr>
+<tr class="memdesc:a7c11de1416ad9cac47f7a0b13a738cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a system responsible for managing the rendering logic of entities within the context of a 3D scene.  <br /></td></tr>
 <tr class="memitem:a23b23e475c36c4a5577d2be63a9741a6" id="r_a23b23e475c36c4a5577d2be63a9741a6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a23b23e475c36c4a5577d2be63a9741a6">Update</a> (<a class="el" href="class_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_world.html">World</a> world, double delta)</td></tr>
-<tr class="memdesc:a23b23e475c36c4a5577d2be63a9741a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the position and visual state of all renderable wagons.  <br /></td></tr>
+<tr class="memdesc:a23b23e475c36c4a5577d2be63a9741a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the rendering state of all entities within the system by applying necessary transformations and visual effects based on the current world state and elapsed time.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="class_iron_strata_1_1_scripts_1_1_main.html" title="The main entry point and controller for the game scene.">Main</a> rendering system for the train wagons. </p>
+<div class="textblock"><p><a class="el" href="class_iron_strata_1_1_scripts_1_1_main.html" title="Serves as the core manager of the game scene, handling essential gameplay mechanics and scene interac...">Main</a> rendering system for the train wagons. </p>
 <p>It handles the creation of physical Godot nodes for entities and applies visual effects like bobbing. </p>
 
-<p class="definition">Definition at line <a class="el" href="_render_system_8cs_source.html#l00015">15</a> of file <a class="el" href="_render_system_8cs_source.html">RenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_render_system_8cs_source.html#l00014">14</a> of file <a class="el" href="_render_system_8cs_source.html">RenderSystem.cs</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7c11de1416ad9cac47f7a0b13a738cb4" name="a7c11de1416ad9cac47f7a0b13a738cb4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7c11de1416ad9cac47f7a0b13a738cb4">&#9670;&#160;</a></span>RenderSystem()</h2>
@@ -137,9 +137,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes a new instance of the <a class="el" href="class_iron_strata_1_1_scripts_1_1_systems_1_1_render_1_1_render_system.html" title="Main rendering system for the train wagons.">RenderSystem</a> and hooks into entity destruction events. </p>
+<p>Represents a system responsible for managing the rendering logic of entities within the context of a 3D scene. </p>
 
-<p class="definition">Definition at line <a class="el" href="_render_system_8cs_source.html#l00022">22</a> of file <a class="el" href="_render_system_8cs_source.html">RenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_render_system_8cs_source.html#l00027">27</a> of file <a class="el" href="_render_system_8cs_source.html">RenderSystem.cs</a>.</p>
 
 </div>
 </div>
@@ -163,11 +163,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Updates the position and visual state of all renderable wagons. </p>
+<p>Updates the rendering state of all entities within the system by applying necessary transformations and visual effects based on the current world state and elapsed time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">world</td><td>The game world containing the entities and their respective components.</td></tr>
+    <tr><td class="paramname">delta</td><td>The amount of time elapsed since the last update, typically used for animations or movement calculations.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implements <a class="el" href="interface_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s_1_1_i_system.html#a78044a16f7a7b8575c4251a0cd9d80b9">IronStrata.Scripts.Core.ECS.ISystem</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_render_system_8cs_source.html#l00031">31</a> of file <a class="el" href="_render_system_8cs_source.html">RenderSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_render_system_8cs_source.html#l00038">38</a> of file <a class="el" href="_render_system_8cs_source.html">RenderSystem.cs</a>.</p>
 
 </div>
 </div>

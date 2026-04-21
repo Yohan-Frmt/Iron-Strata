@@ -93,7 +93,7 @@ $(function(){initNavTree('class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html
 </div><!--header-->
 <div class="contents">
 
-<p>A 2D <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> component that renders a simplified view of the rail network and the train's current position.  
+<p><a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a> control displaying a dynamic representation of the game world.  
  <a href="#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for IronStrata.Scripts.UI.Minimap:</div>
@@ -105,16 +105,17 @@ Inheritance diagram for IronStrata.Scripts.UI.Minimap:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a34e1ae5ec5e9298e159be23b864bef47" id="r_a34e1ae5ec5e9298e159be23b864bef47"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a34e1ae5ec5e9298e159be23b864bef47">_Ready</a> ()</td></tr>
-<tr class="memdesc:a34e1ae5ec5e9298e159be23b864bef47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the minimap and connects it to the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world.  <br /></td></tr>
+<tr class="memdesc:a34e1ae5ec5e9298e159be23b864bef47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures and prepares the <a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a> control upon initialization.  <br /></td></tr>
 <tr class="memitem:a9cd1cb6f3abe6907262788ac8a660201" id="r_a9cd1cb6f3abe6907262788ac8a660201"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a9cd1cb6f3abe6907262788ac8a660201">_Process</a> (double delta)</td></tr>
-<tr class="memdesc:a9cd1cb6f3abe6907262788ac8a660201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Requests a redraw of the minimap every frame.  <br /></td></tr>
+<tr class="memdesc:a9cd1cb6f3abe6907262788ac8a660201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes frame updates for the <a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a>.  <br /></td></tr>
 <tr class="memitem:a72992238a9a14ed46711a1442403baf2" id="r_a72992238a9a14ed46711a1442403baf2"><td class="memItemLeft">override void&#160;</td><td class="memItemRight"><a class="el" href="#a72992238a9a14ed46711a1442403baf2">_Draw</a> ()</td></tr>
-<tr class="memdesc:a72992238a9a14ed46711a1442403baf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the custom 2D drawing logic for the minimap.  <br /></td></tr>
+<tr class="memdesc:a72992238a9a14ed46711a1442403baf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the custom rendering logic for the minimap display.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A 2D <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> component that renders a simplified view of the rail network and the train's current position. </p>
+<div class="textblock"><p><a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a> control displaying a dynamic representation of the game world. </p>
+<p>The <a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a> class provides a visual overview of key world elements such as infrastructure and player activity, refreshing in real-time based on updates from game state components. </p>
 
-<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00015">15</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00019">19</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="a72992238a9a14ed46711a1442403baf2" name="a72992238a9a14ed46711a1442403baf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72992238a9a14ed46711a1442403baf2">&#9670;&#160;</a></span>_Draw()</h2>
@@ -131,9 +132,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Handles the custom 2D drawing logic for the minimap. </p>
+<p>Executes the custom rendering logic for the minimap display. </p>
+<p>This method is responsible for drawing key elements of the minimap, including the map nodes, connections, train indicators, and additional <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_u_i.html">UI</a> elements. Handles both a full map view and a scaled view centered around the train's location, applying appropriate transformations and visual styles based on the current state of the minimap. </p>
 
-<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00047">47</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00148">148</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
 
 </div>
 </div>
@@ -152,9 +154,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Requests a redraw of the minimap every frame. </p>
+<p>Processes frame updates for the <a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delta</td><td>Time elapsed since the last frame.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Tracks changes in the <span class="tt"><a class="el" href="struct_iron_strata_1_1_scripts_1_1_components_1_1_shared_1_1_game_state_component.html" title="Represents a component that defines the current state of the game, including properties for pausing t...">GameStateComponent</a></span> to detect view mode transitions and updates the minimap layout accordingly. Ensures a redraw is queued after any state modification. </p>
 
-<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00039">39</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00106">106</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
 
 </div>
 </div>
@@ -173,9 +182,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the minimap and connects it to the <a class="el" href="namespace_iron_strata_1_1_scripts_1_1_core_1_1_e_c_s.html">ECS</a> world. </p>
+<p>Configures and prepares the <a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a> control upon initialization. </p>
+<p>This method sets up the <a class="el" href="class_iron_strata_1_1_scripts_1_1_u_i_1_1_minimap.html" title="Minimap control displaying a dynamic representation of the game world.">Minimap</a> by initializing dependencies, setting its size, and establishing connections to the game world context. </p>
 
-<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00030">30</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_minimap_8cs_source.html#l00093">93</a> of file <a class="el" href="_minimap_8cs_source.html">Minimap.cs</a>.</p>
 
 </div>
 </div>
