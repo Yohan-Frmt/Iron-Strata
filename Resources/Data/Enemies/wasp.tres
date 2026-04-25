@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Core/Data/EnemyData.cs" id="1_script"]
+[ext_resource type="Mesh" path="res://Resources/Assets/Models/Wasp.obj" id="2_mesh"]
+
+[resource]
+script = ExtResource("1_script")
+Type = 2
+Damage = 5.0
+AttackRange = 10.0
+AttackSpeed = 2.0
+Speed = 10.0
+Health = 10.0
+Scale = Vector3(0.02, 0.02, 0.02)
+Tint = Color(0.2, 0.05, 0.05, 1)
+Label = "Wasp"
+ModelMesh = ExtResource("2_mesh")
+DispersionRadius = 30.0
+IsFlying = true

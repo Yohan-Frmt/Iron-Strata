@@ -155,7 +155,7 @@ public class World {
     /// <typeparam name="T">The type of the component to be retrieved.</typeparam>
     /// <param name="entity">The entity from which the component is to be retrieved.</param>
     /// <returns>A reference to the requested component.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the entity does not have the specified component.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown if the entity does not have the specified component.</exception>
     public ref T Get<T>(Entity entity) where T : struct => ref GetStore<T>().Get(entity.Id);
 
     /// <summary>
@@ -782,7 +782,12 @@ public class ComponentStore<T> : IComponentStore where T : struct {
     /// <exception cref="KeyNotFoundException">
     /// Thrown if the entity does not have a component of the specified type.
     /// </exception>
-    public ref T Get(int entityId) => ref _instances[_sparse[entityId]];
+    public ref T Get(int entityId) {
+        if (!Has(entityId)) {
+            throw new KeyNotFoundException($"Entity {entityId} does not have component of type {typeof(T).Name}");
+        }
+        return ref _instances[_sparse[entityId]];
+    }
 
     /// <summary>
     /// Determines whether the specified entity has a component of the specified type.

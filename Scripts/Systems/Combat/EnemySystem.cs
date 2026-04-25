@@ -13,6 +13,8 @@ using IronStrata.Scripts.Registry;
 using IronStrata.Scripts.Enums;
 using IronStrata.Scripts.Map;
 
+using IronStrata.Scripts.Core.Data;
+
 namespace IronStrata.Scripts.Systems.Combat;
 
 /// <summary>
@@ -108,6 +110,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
                 Vector3 repulsionForce = Vector3.Zero;
                 int neighbors = 0;
                 foreach (Entity otherEntity in allEnemies) {
+                    if (!world.IsAlive(otherEntity)) { continue; }
                     if (entity.Equals(otherEntity)) { continue; }
 
                     Vector3 otherPosition = world.Get<PositionComponent>(otherEntity).Value;
@@ -121,6 +124,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
                 }
 
                 foreach (Entity wagon in wagons) {
+                    if (!world.IsAlive(wagon)) { continue; }
                     ref WagonSlotComponent wagonSlot = ref world.Get<WagonSlotComponent>(wagon);
                     Vector3 wagonPosition = trainRoot.ToGlobal(
                         TrainLayout.GetLocalPosition(wagonSlot.SlotIndex, wagonSlot.Layer)
@@ -225,6 +229,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
         float bestScore = -99999f;
 
         foreach (Entity wagon in wagons) {
+            if (!world.IsAlive(wagon)) { continue; }
             ref WagonTypeComponent wagonTypeComponent = ref world.Get<WagonTypeComponent>(wagon);
             ref WagonSlotComponent wagonSlotComponent = ref world.Get<WagonSlotComponent>(wagon);
             float score = GetDefaultTypePriority(wagonTypeComponent.Type) + wagonSlotComponent.Layer * 50;
@@ -301,7 +306,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
     /// <param name="count">The number of enemies to spawn in the horde.</param>
     /// <param name="type">The type of enemy to spawn, determining their behavior and attributes.</param>
     private void SpawnHorde(World world, int count, EnemyType type) {
-        EnemyDefinition enemyDefinition = EnemyRegistry.EnemyDefs[type];
+        EnemyData enemyData = EnemyRegistry.EnemyDefs[type];
         float angle = GD.Randf() * Mathf.Tau;
         const float distance = 80f;
         Vector3 hordeEpicenter = trainRoot.GlobalPosition +
@@ -311,29 +316,29 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
             Entity enemyEntity = world.CreateEntity();
 
             Vector3 randomOffset = new(
-                (GD.Randf() - 0.5f) * enemyDefinition.DispersionRadius * 2f,
-                enemyDefinition.IsFlying ? 5.0f : 0f,
-                (GD.Randf() - 0.5f) * enemyDefinition.DispersionRadius * 2f
+                (GD.Randf() - 0.5f) * enemyData.DispersionRadius * 2f,
+                enemyData.IsFlying ? 5.0f : 0f,
+                (GD.Randf() - 0.5f) * enemyData.DispersionRadius * 2f
             );
 
             world.Add(enemyEntity, new PositionComponent { Value = hordeEpicenter + randomOffset });
             world.Add(
                 enemyEntity,
                 new MovementComponent {
-                    Speed = enemyDefinition.Speed + GD.Randf() * 2f,
-                    IsFlying = enemyDefinition.IsFlying
+                    Speed = enemyData.Speed + GD.Randf() * 2f,
+                    IsFlying = enemyData.IsFlying
                 }
             );
             world.Add(
-                enemyEntity, new HealthComponent { Max = enemyDefinition.Health, Current = enemyDefinition.Health }
+                enemyEntity, new HealthComponent { Max = enemyData.Health, Current = enemyData.Health }
             );
             world.Add(
                 enemyEntity,
                 new EnemyComponent {
-                    Type = enemyDefinition.Type,
-                    Damage = enemyDefinition.Damage,
-                    AttackRange = enemyDefinition.AttackRange,
-                    AttackSpeed = enemyDefinition.AttackSpeed
+                    Type = enemyData.Type,
+                    Damage = enemyData.Damage,
+                    AttackRange = enemyData.AttackRange,
+                    AttackSpeed = enemyData.AttackSpeed
                 }
             );
         }

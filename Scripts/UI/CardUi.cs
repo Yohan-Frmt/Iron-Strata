@@ -1,6 +1,7 @@
 using Godot;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
+using IronStrata.Scripts.Core.Data;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 
@@ -22,9 +23,9 @@ public partial class CardUi : Control {
     public int PlayCost { get; private set; }
 
     /// <summary>
-    /// The type of wagon this card will create or upgrade.
+    /// The data resource defining this card.
     /// </summary>
-    public WagonType TypeToApply { get; private set; }
+    public CardData Data { get; private set; }
 
     /// <summary>
     /// Static flag to track if any card is currently being dragged.
@@ -44,52 +45,21 @@ public partial class CardUi : Control {
     private Vector2 _startPosition;
 
     /// <summary>
-    /// Configures the card's appearance and data based on the specified wagon type.
-    /// Sets the title, play cost, description, and associated artwork to reflect the wagon type.
+    /// Configures the card's appearance and data based on the specified card resource.
     /// </summary>
-    /// <param name="type">The type of wagon to configure this card for.</param>
-    public void Setup(WagonType type) {
-        TypeToApply = type;
+    /// <param name="data">The card data resource to configure this card for.</param>
+    public void Setup(CardData data) {
+        Data = data;
 
         if (_titleLabel == null || _costLabel == null) {
             return;
         }
 
-        switch (type) {
-            case WagonType.Combat:
-                _titleLabel.Text = "Turret MK-1";
-                PlayCost = 50;
-                _costLabel.Text = PlayCost.ToString();
-                _descriptionLabel.Text =
-                    "Building / Defense. An automated turret designed to [b]protect[/b] the train.";
-                _artTexture.Texture = GD.Load<Texture2D>("res://Resources/Assets/Images/Cards/Wagons/Turret-MK1.png");
-                break;
-            case WagonType.Storage:
-                _titleLabel.Text = "Storage";
-                PlayCost = 25;
-                _costLabel.Text = PlayCost.ToString();
-                _descriptionLabel.Text = "Increases resource capacity.";
-                _artTexture.Texture = GD.Load<Texture2D>("res://Resources/Assets/Images/Cards/Wagons/Storage.png");
-                break;
-            case WagonType.Living:
-                _titleLabel.Text = "Living Quarters";
-                PlayCost = 10;
-                _costLabel.Text = PlayCost.ToString();
-                _descriptionLabel.Text = "Provides space for more passengers.";
-                _artTexture.Texture = GD.Load<Texture2D>("res://Resources/Assets/Images/Cards/Wagons/Living.png");
-                break;
-            case WagonType.Research:
-                _titleLabel.Text = "Research Labs";
-                PlayCost = 100;
-                _costLabel.Text = PlayCost.ToString();
-                _descriptionLabel.Text = "Generates knowledge over time.";
-                _artTexture.Texture = GD.Load<Texture2D>("res://Resources/Assets/Images/Cards/Wagons/Research.png");
-                break;
-            case WagonType.Locomotive:
-            case WagonType.Medical:
-            default:
-                break;
-        }
+        _titleLabel.Text = data.Title;
+        PlayCost = data.PlayCost;
+        _costLabel.Text = PlayCost.ToString();
+        _descriptionLabel.Text = data.Description;
+        _artTexture.Texture = data.Art;
     }
 
     /// <summary>
@@ -148,7 +118,7 @@ public partial class CardUi : Control {
                     Modulate = new Color(1f, 1f, 1f);
                     main?.HidePreview();
 
-                    bool success = main != null && main.TryPlayCard(TypeToApply, PlayCost, GetGlobalMousePosition()).IsOk;
+                    bool success = main != null && main.TryPlayCard(Data, GetGlobalMousePosition()).IsOk;
                     if (!success) {
                         TopLevel = false;
                         GlobalPosition = _startPosition;
@@ -161,7 +131,7 @@ public partial class CardUi : Control {
 
             case InputEventMouseMotion mouseMotion when _isDragging:
                 GlobalPosition = GetGlobalMousePosition() - _dragOffset;
-                main?.UpdatePreview(TypeToApply, GetGlobalMousePosition());
+                main?.UpdatePreview(Data, GetGlobalMousePosition());
                 break;
         }
     }

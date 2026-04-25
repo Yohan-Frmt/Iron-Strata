@@ -5,6 +5,8 @@ using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Registry;
 
+using IronStrata.Scripts.Core.Data;
+
 namespace IronStrata.Scripts.Systems.Render;
 
 /// <summary>
@@ -52,10 +54,10 @@ public class EnemyMultiMeshSystem(Node3D parent) : ISystem {
 
             if (multimesh.InstanceCount < entities.Count) { multimesh.InstanceCount = entities.Count + 100; }
 
-            EnemyDefinition enemyDefinition = EnemyRegistry.EnemyDefs[type];
+            EnemyData enemyData = EnemyRegistry.EnemyDefs[type];
             for (int entityIndex = 0; entityIndex < entities.Count; entityIndex++) {
                 Vector3 position = world.Get<PositionComponent>(entities[entityIndex]).Value;
-                Basis basis = Basis.Identity.Scaled(enemyDefinition.Scale);
+                Basis basis = Basis.Identity.Scaled(enemyData.Scale);
                 Transform3D transform = new(basis, position);
                 multimesh.SetInstanceTransform(entityIndex, transform);
             }
@@ -72,15 +74,15 @@ public class EnemyMultiMeshSystem(Node3D parent) : ISystem {
     /// and transformation settings for the given enemy type.
     /// </returns>
     private MultiMeshInstance3D SetupMultiMesh(EnemyType type) {
-        EnemyDefinition definition = EnemyRegistry.EnemyDefs[type];
+        EnemyData data = EnemyRegistry.EnemyDefs[type];
         MultiMeshInstance3D multiMeshInstance = new();
         MultiMesh multiMesh = new();
 
         multiMeshInstance.Multimesh = multiMesh;
         multiMesh.TransformFormat = MultiMesh.TransformFormatEnum.Transform3D;
-        multiMesh.Mesh = definition.ModelMesh;
+        multiMesh.Mesh = data.ModelMesh;
 
-        StandardMaterial3D material = new() { AlbedoColor = definition.Tint };
+        StandardMaterial3D material = new() { AlbedoColor = data.Tint };
         multiMeshInstance.MaterialOverride = material;
 
         parent.AddChild(multiMeshInstance);

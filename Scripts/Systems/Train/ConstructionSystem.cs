@@ -9,6 +9,9 @@ using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 
+using IronStrata.Scripts.Core.Data;
+using IronStrata.Scripts.Registry;
+
 namespace IronStrata.Scripts.Systems.Train;
 
 /// <summary>
@@ -97,14 +100,18 @@ public class ConstructionSystem : ISystem {
     }
 
     /// <summary>
-    /// Updates the visual preview of a wagon placement within the construction system, including
-    /// raycasting to identify the appropriate location and applying the configuration for the
-    /// preview object based on the current mouse position and selected wagon type.
+    /// Updates the visual preview of a wagon placement or action target within the construction system.
     /// </summary>
-    /// <param name="world">The game world instance, used to query entities and retrieve components related to the construction system.</param>
-    /// <param name="cardType">The type of wagon being previewed, determining the configuration applied to the preview object.</param>
-    /// <param name="mousePosition">The current position of the mouse in screen coordinates, used for detecting the intended placement location.</param>
-    public void UpdatePreview(World world, WagonType cardType, Vector2 mousePosition) {
+    /// <param name="world">The game world instance.</param>
+    /// <param name="card">The card data to preview.</param>
+    /// <param name="mousePosition">The current position of the mouse.</param>
+    public void UpdatePreview(World world, CardData card, Vector2 mousePosition) {
+        if (card.Type == CardType.Action) {
+            _previewGhost.Visible = false;
+            return;
+        }
+
+        WagonType cardType = card.WagonTypeToApply;
         Option<Entity> cameraEntityOption = world.QueryFirst<CameraComponent>();
         if (cameraEntityOption.IsNone) { return; }
 
@@ -156,21 +163,86 @@ public class ConstructionSystem : ISystem {
 
 
     /// <summary>
-    /// Attempts to play a card (build or upgrade a wagon) at the current mouse position.
+    /// Attempts to play a card (build or upgrade a wagon, or perform an action) at the current mouse position.
     /// </summary>
-    /// <returns>True if the card was successfully played, false otherwise.</returns>
-    public Result<bool, string> TryPlayCard(World world, WagonType cardType, int cost, Vector2 mousePos) {
+    /// <returns>A Result object containing a boolean indicating success or failure.</returns>
+    public Result<bool, string> TryPlayCard(World world, CardData card, Vector2 mousePos) {
         Option<Entity> resourceEntityOption = world.QueryFirst<ResourceComponent>();
         if (resourceEntityOption.IsNone) { return Result.Err<bool, string>("Resources not found!"); }
 
         ref ResourceComponent resources = ref world.Get<ResourceComponent>(resourceEntityOption.Unwrap());
-        if (resources.Scrap < cost) { return Result.Err<bool, string>("Not enough scrap!"); }
+        if (resources.Scrap < card.PlayCost) { return Result.Err<bool, string>("Not enough scrap!"); }
 
         Option<Entity> cameraEntityOption = world.QueryFirst<CameraComponent>();
         if (cameraEntityOption.IsNone) { return Result.Err<bool, string>("Camera not found"); }
 
         ref readonly CameraComponent camera = ref world.Get<CameraComponent>(cameraEntityOption.Unwrap());
-        return ExecutePlacement(world, camera.Camera, cardType, cost, mousePos, ref resources);
+
+        if (card.Type == CardType.Wagon) {
+            return ExecutePlacement(world, camera.Camera, card.WagonTypeToApply, card.PlayCost, mousePos, ref resources);
+        }
+
+        return ExecuteAction(world, camera.Camera, card, mousePos, ref resources);
+    }
+
+    /// <summary>
+    /// Executes an action card's effect.
+    /// </summary>
+    private Result<bool, string> ExecuteAction(
+        World world, Camera3D camera, CardData card, Vector2 mousePosition, ref ResourceComponent resources
+    ) {
+        switch (card.ActionType) {
+            case ActionType.AddScrap:
+                resources.Scrap += (int)card.ActionValue;
+                resources.Scrap -= card.PlayCost;
+                return Result.Ok<bool, string>(true);
+            case ActionType.DrawCard:
+                // DrawCard logic is partially handled in Main, but we need to deduct cost and allow it.
+                resources.Scrap -= card.PlayCost;
+                return Result.Ok<bool, string>(true);
+            case ActionType.Heal:
+            case ActionType.BoostRange:
+                Option<(Node3D Collider, Vector3 Position)> rayResult =
+                    PerformRaycast(camera, mousePosition).Bind(GetColliderData);
+                if (rayResult.IsNone) return Result.Err<bool, string>("Target required");
+
+                (Node3D collider, Vector3 position) = rayResult.Unwrap();
+                if (collider.HasMeta("EntityId")) {
+                    Entity targetEntity = new((int)collider.GetMeta("EntityId"));
+                    if (ApplyActionToWagon(world, targetEntity, card)) {
+                        resources.Scrap -= card.PlayCost;
+                        return Result.Ok<bool, string>(true);
+                    }
+                }
+                return Result.Err<bool, string>("Invalid target for action");
+            default:
+                return Result.Err<bool, string>("Unknown action type");
+        }
+    }
+
+    /// <summary>
+    /// Applies an action's effect to a specific wagon entity.
+    /// </summary>
+    private static bool ApplyActionToWagon(World world, Entity targetEntity, CardData card) {
+        if (!world.IsAlive(targetEntity)) return false;
+
+        switch (card.ActionType) {
+            case ActionType.Heal:
+                if (world.Has<HealthComponent>(targetEntity)) {
+                    ref HealthComponent health = ref world.Get<HealthComponent>(targetEntity);
+                    health.Current = Mathf.Min(health.Max, health.Current + card.ActionValue);
+                    return true;
+                }
+                break;
+            case ActionType.BoostRange:
+                if (world.Has<TurretComponent>(targetEntity)) {
+                    ref TurretComponent turret = ref world.Get<TurretComponent>(targetEntity);
+                    turret.Range += card.ActionValue;
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
     /// <summary>
@@ -396,22 +468,26 @@ public class ConstructionSystem : ISystem {
     /// <param name="layer">The layer index to assign to the wagon within the specified slot.</param>
     /// <param name="type">The type of the wagon determining its attributes, appearance, and functionality.</param>
     private static void CreateNewWagon(World world, int slot, int layer, WagonType type) {
-        Color tint = type switch {
-            WagonType.Combat => TrainLayout.ColorCombat,
-            WagonType.Living => TrainLayout.ColorLiving,
-            WagonType.Storage => TrainLayout.ColorStorage,
-            WagonType.Research => TrainLayout.ColorResearch,
-            _ => Colors.Gray
-        };
+        if (!DataRegistry.WagonDataMap.TryGetValue(type, out WagonData data)) {
+            GD.PushError($"[ConstructionSystem] Wagon type {type} not found in registry.");
+            return;
+        }
 
         Entity entity = world.CreateEntity();
         world.Add(entity, new WagonTypeComponent { Type = type, BlueprintId = "card_spawn" });
         world.Add(entity, new WagonSlotComponent { SlotIndex = slot, Layer = layer });
-        world.Add(entity, new HealthComponent { Max = 150f, Current = 150f });
-        world.Add(entity, new RenderableComponent { Tint = tint, Label = type.ToString().ToUpper() });
+        world.Add(entity, new HealthComponent { Max = data.Health, Current = data.Health });
+        world.Add(entity, new RenderableComponent { Tint = data.Tint, Label = data.Label });
 
-        if (type == WagonType.Combat) {
-            world.Add(entity, new TurretComponent { Range = 35f, Damage = 15f, FireRate = 6f });
+        if (data.HasTurret) {
+            world.Add(
+                entity,
+                new TurretComponent {
+                    Range = data.TurretRange,
+                    Damage = data.TurretDamage,
+                    FireRate = data.TurretFireRate
+                }
+            );
         }
     }
 }

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WagonData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Core/Data/WagonData.cs" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+Type = 4
+Health = 150.0
+Tint = Color(0.14, 0.08, 0.22, 1)
+Label = "RESEARCH"
+HasTurret = false

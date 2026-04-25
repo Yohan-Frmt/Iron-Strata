@@ -8,6 +8,7 @@ using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
 using IronStrata.Scripts.Core.Autoloads;
 using IronStrata.Scripts.Core.Constants;
+using IronStrata.Scripts.Core.Data;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Map;
@@ -86,6 +87,7 @@ public partial class Main : Node3D {
     /// establishing connections, or preparing runtime behavior.
     /// </summary>
     public override void _Ready() {
+        DataRegistry.Initialize();
         _world = GameWorld.Instance.World;
         WorldEnvironment.Setup(this);
 
@@ -192,7 +194,7 @@ public partial class Main : Node3D {
         Control bottomHud = GetNode<Control>("UI/VBoxMainLayout/PanelBottomBar");
 
         _cardScene = GD.Load<PackedScene>("res://Scenes/Cards/card_ui.tscn");
-        drawButton.Pressed += DrawCard;
+        drawButton.Pressed += () => DrawCard();
 
         Entity trainEntity = _world.CreateEntity();
         _world.Add(trainEntity, new TrainMovementComponent { MaxSpeed = 5f, Acceleration = 1.0f, Deceleration = 5.0f });
@@ -281,18 +283,30 @@ public partial class Main : Node3D {
     /// resource cost for drawing a card, creates a new card of a random type
     /// (Combat or Storage), and adds it to the player's hand container.
     /// </summary>
-    private void DrawCard() {
+    /// <param name="ignoreCost">If true, the card draw cost will be skipped. Defaults to false.</param>
+    private void DrawCard(bool ignoreCost = false) {
         Option<Entity> resourceEntityOption = _world.QueryFirst<ResourceComponent>();
         if (resourceEntityOption.IsNone) { return; }
 
         ref ResourceComponent resources = ref _world.Get<ResourceComponent>(resourceEntityOption.Unwrap());
-        if (resources.Scrap < ResourceRegistry.CardDrawCost || _handContainer.GetChildCount() >= 5) { return; }
+        int cost = ignoreCost ? 0 : ResourceRegistry.CardDrawCost;
+        if (resources.Scrap < cost || _handContainer.GetChildCount() >= 5) { return; }
 
-        resources.Scrap -= ResourceRegistry.CardDrawCost;
+        if (DataRegistry.CardDataMap.Count == 0) {
+            GD.PushWarning("[Main] No cards found in registry.");
+            return;
+        }
+
+        resources.Scrap -= cost;
         CardUi newCard = _cardScene.Instantiate<CardUi>();
-        WagonType randomType = GD.Randf() > 0.5f ? WagonType.Combat : WagonType.Storage;
+
+        // Pick a random card from the registry
+        List<string> cardIds = new(DataRegistry.CardDataMap.Keys);
+        string randomId = cardIds[GD.RandRange(0, cardIds.Count - 1)];
+        CardData cardData = DataRegistry.CardDataMap[randomId];
+
         _handContainer.AddChild(newCard);
-        newCard.Setup(randomType);
+        newCard.Setup(cardData);
     }
 
     /// <summary>
@@ -306,16 +320,23 @@ public partial class Main : Node3D {
     /// A result object containing a boolean indicating whether the card was successfully played,
     /// and an optional string providing additional error information if the attempt fails.
     /// </returns>
-    public Result<bool, string> TryPlayCard(WagonType cardType, int cost, Vector2 mousePosition) =>
-        _constructionSystem.TryPlayCard(_world, cardType, cost, mousePosition);
+    public Result<bool, string> TryPlayCard(CardData card, Vector2 mousePosition) {
+        Result<bool, string> result = _constructionSystem.TryPlayCard(_world, card, mousePosition);
+        if (result.IsOk && card.Type == CardType.Action && card.ActionType == ActionType.DrawCard) {
+            for (int i = 0; i < (int)card.ActionValue; i++) {
+                DrawCard();
+            }
+        }
+        return result;
+    }
 
     /// <summary>
     /// Updates the 3D preview of a wagon currently being placed during the construction phase.
     /// </summary>
     /// <param name="cardType">The type of the wagon, representing its functionality or category, to be displayed in the preview.</param>
     /// <param name="mousePosition">The current mouse position in screen coordinates, used to determine the location of the preview in the game world.</param>
-    public void UpdatePreview(WagonType cardType, Vector2 mousePosition) =>
-        _constructionSystem.UpdatePreview(_world, cardType, mousePosition);
+    public void UpdatePreview(CardData card, Vector2 mousePosition) =>
+        _constructionSystem.UpdatePreview(_world, card, mousePosition);
 
     /// <summary>
     /// Hides the construction preview in the game, removing any visual or interactive elements
@@ -333,49 +354,42 @@ public partial class Main : Node3D {
     /// <param name="world">The world instance in which the test train entities will be created and registered,
     /// and to which the wagons are connected.</param>
     private static void SpawnTestTrain(World world) {
-        Entity locomotive = CreateWagon(world, 0, 0, WagonType.Locomotive, "loco", 500f, TrainLayout.ColorLoco, "LOCO");
+        Entity locomotive = CreateWagon(world, 0, 0, WagonType.Locomotive);
 
-        Entity combat = CreateWagon(
-            world, 1, 0, WagonType.Combat, "combat", 2000000f, TrainLayout.ColorCombat, "COMBAT"
-        );
+        Entity combat = CreateWagon(world, 1, 0, WagonType.Combat);
         world.Add(combat, new ConnectionComponent { PreviousEntityId = locomotive.Id, NextEntityId = -1, Integrity = 1f });
 
-        Entity living = CreateWagon(
-            world, 2, 0, WagonType.Living, "living", 2000000f, TrainLayout.ColorLiving, "LIVING"
-        );
+        Entity living = CreateWagon(world, 2, 0, WagonType.Living);
         world.Add(living, new ConnectionComponent { PreviousEntityId = combat.Id, NextEntityId = -1, Integrity = 1f });
 
-        Entity combat2 = CreateWagon(
-            world, 3, 0, WagonType.Combat, "combat", 2000000f, TrainLayout.ColorCombat, "COMBAT"
-        );
+        Entity combat2 = CreateWagon(world, 3, 0, WagonType.Combat);
         world.Add(combat2, new ConnectionComponent { PreviousEntityId = living.Id, NextEntityId = -1, Integrity = 1f });
     }
 
     /// <summary>
-    /// Creates and initializes a new wagon entity in the specified world with the provided attributes,
-    /// configuring its behavior, appearance, and additional components required for gameplay functionality.
+    /// Creates and initializes a new wagon entity based on its data resource.
     /// </summary>
-    /// <param name="world">The world instance in which the wagon entity will be created and managed.</param>
-    /// <param name="slot">The slot position of the wagon within the designated layer.</param>
-    /// <param name="layer">The layer to which the wagon belongs, affecting its grouping and hierarchy.</param>
-    /// <param name="type">The type of wagon, determining its role, functionality, and behavior (e.g., locomotive, combat).</param>
-    /// <param name="blueprint">The blueprint identifier used to define the wagon's structure, appearance, and attributes.</param>
-    /// <param name="health">The initial and maximum health value of the wagon, representing its durability.</param>
-    /// <param name="tint">The color tint applied to the wagon's visual appearance.</param>
-    /// <param name="label">The name or label assigned to the wagon for identification purposes.</param>
-    /// <returns>The newly created wagon entity with all specified components initialized.</returns>
-    private static Entity CreateWagon(
-        World world, int slot, int layer, WagonType type, string blueprint, float health,
-        Color tint, string label
-    ) {
-        Entity entity = world.CreateEntity();
-        world.Add(entity, new WagonTypeComponent { Type = type, BlueprintId = blueprint });
-        world.Add(entity, new WagonSlotComponent { SlotIndex = slot, Layer = layer });
-        world.Add(entity, new HealthComponent { Max = health, Current = health });
-        world.Add(entity, new RenderableComponent { Tint = tint, Label = label });
+    private static Entity CreateWagon(World world, int slot, int layer, WagonType type) {
+        if (!DataRegistry.WagonDataMap.TryGetValue(type, out WagonData data)) {
+            GD.PushError($"[Main] Wagon type {type} not found in registry.");
+            return Entity.Null;
+        }
 
-        if (type == WagonType.Combat) {
-            world.Add(entity, new TurretComponent { Range = 30f, Damage = 15f, FireRate = 10f });
+        Entity entity = world.CreateEntity();
+        world.Add(entity, new WagonTypeComponent { Type = type, BlueprintId = "spawn_test" });
+        world.Add(entity, new WagonSlotComponent { SlotIndex = slot, Layer = layer });
+        world.Add(entity, new HealthComponent { Max = data.Health, Current = data.Health });
+        world.Add(entity, new RenderableComponent { Tint = data.Tint, Label = data.Label });
+
+        if (data.HasTurret) {
+            world.Add(
+                entity,
+                new TurretComponent {
+                    Range = data.TurretRange,
+                    Damage = data.TurretDamage,
+                    FireRate = data.TurretFireRate
+                }
+            );
         }
 
         return entity;

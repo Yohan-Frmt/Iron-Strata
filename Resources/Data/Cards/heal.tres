@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Core/Data/CardData.cs" id="1_script"]
+[ext_resource type="Texture2D" path="res://Resources/Assets/Images/Cards/Icons/DEF.png" id="2_art"]
+
+[resource]
+script = ExtResource("1_script")
+Title = "Emergency Repairs"
+Description = "Restores 50 HP to a wagon."
+PlayCost = 15
+Type = 1
+ActionType = 0
+ActionValue = 50.0
+Art = ExtResource("2_art")
