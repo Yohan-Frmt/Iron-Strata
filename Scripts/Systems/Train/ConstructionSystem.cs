@@ -70,23 +70,22 @@ public class ConstructionSystem : ISystem {
         _previewGhost = previewGhost;
         _bottomHud = bottomHud;
         _trainRoot = trainRoot;
-        _previewMat = (StandardMaterial3D)_previewGhost.Mesh.SurfaceGetMaterial(0);
+        _previewMat = (StandardMaterial3D)_previewGhost.GetSurfaceOverrideMaterial(0);
+
+        // Ensure preview ghost moves with the train
+        if (_previewGhost.GetParent() != _trainRoot) {
+            _previewGhost.GetParent()?.RemoveChild(_previewGhost);
+            _trainRoot.AddChild(_previewGhost);
+        }
     }
 
     /// <summary>
-    /// Updates the construction system state, controlling HUD visibility,
-    /// preview ghost interactions, and transit status based on the current location.
+    /// Updates the construction system state, checking visibility interactions.
     /// </summary>
     /// <param name="world">The game world instance containing entities and their components.</param>
     /// <param name="delta">The time elapsed since the last update, used for timing calculations.</param>
     public void Update(World world, double delta) {
-        Option<Entity> locationEntityOption = world.QueryFirst<LocationComponent>();
-        if (locationEntityOption.IsNone) { return; }
-
-        ref LocationComponent location = ref world.Get<LocationComponent>(locationEntityOption.Unwrap());
-        if (_bottomHud != null) { _bottomHud.Visible = location.IsInTransit; }
-
-        if (!location.IsInTransit && _previewGhost.Visible) { _previewGhost.Visible = false; }
+        // HUD and preview are always accessible — building is allowed at any time
     }
 
     /// <summary>
@@ -106,17 +105,6 @@ public class ConstructionSystem : ISystem {
     /// <param name="cardType">The type of wagon being previewed, determining the configuration applied to the preview object.</param>
     /// <param name="mousePosition">The current position of the mouse in screen coordinates, used for detecting the intended placement location.</param>
     public void UpdatePreview(World world, WagonType cardType, Vector2 mousePosition) {
-        Option<Entity> locationEntityOption = world.QueryFirst<LocationComponent>();
-        bool shouldExit = true;
-        if (locationEntityOption.IsSome) {
-            shouldExit = !world.Get<LocationComponent>(locationEntityOption.Unwrap()).IsInTransit;
-        }
-
-        if (shouldExit) {
-            _previewGhost.Visible = false;
-            return;
-        }
-
         Option<Entity> cameraEntityOption = world.QueryFirst<CameraComponent>();
         if (cameraEntityOption.IsNone) { return; }
 
@@ -207,12 +195,15 @@ public class ConstructionSystem : ISystem {
         (Node3D collider, Vector3 position) = rayResult.Unwrap();
         if (collider.HasMeta("EntityId")) {
             int entityId = (int)collider.GetMeta("EntityId");
-            ApplyCardToWagon(world, new Entity(entityId), type);
-            resources.Scrap -= cost;
-            return Result.Ok<bool, string>(true);
+            if (ApplyCardToWagon(world, new Entity(entityId), type)) {
+                resources.Scrap -= cost;
+                return Result.Ok<bool, string>(true);
+            }
+
+            return Result.Err<bool, string>("Cannot apply to this wagon");
         }
 
-        if (collider.Name != "FloorBody" || !IsValidFloorSpace(world, position)) {
+        if (!collider.HasMeta("IsFloor") || !IsValidFloorSpace(world, position)) {
             return Result.Err<bool, string>("Invalid placement area");
         }
 
@@ -272,7 +263,7 @@ public class ConstructionSystem : ISystem {
             );
         }
 
-        if (collider.Name == "FloorBody" && IsValidFloorSpace(world, hitPosition)) {
+        if (collider.HasMeta("IsFloor") && IsValidFloorSpace(world, hitPosition)) {
             return Option<PreviewConfig>.Some(
                 new PreviewConfig {
                     Position = TrainLayout.GetLocalPosition(GetMaxSlot(world) + 1, 0),
@@ -297,9 +288,19 @@ public class ConstructionSystem : ISystem {
     /// True if the position is a valid floor space for a wagon; otherwise, false.
     /// </returns>
     private bool IsValidFloorSpace(World world, Vector3 globalHitPosition) {
+        // The train extends in the NEGATIVE X direction.
+        // lastWagonX is a large negative value (e.g. -20 for slot 4).
+        // A floor hit is valid if it lands near or behind that last wagon,
+        // meaning its local X must be <= lastWagonX + half-a-wagon of tolerance.
         Vector3 localHit = _trainRoot.ToLocal(globalHitPosition);
         float lastWagonX = -GetMaxSlot(world) * (TrainLayout.WagonLength + TrainLayout.WagonGap);
-        return localHit.X < lastWagonX + 2f;
+
+        // Limit Z to stay near the train track width
+        bool withinWidth = Mathf.Abs(localHit.Z) < TrainLayout.WagonWidth * 1.5f;
+        // Allow clicking anywhere from the second-to-last wagon onwards to the back
+        bool withinLength = localHit.X <= lastWagonX + TrainLayout.WagonLength;
+
+        return withinWidth && withinLength;
     }
 
     /// <summary>
@@ -349,8 +350,9 @@ public class ConstructionSystem : ISystem {
     /// <param name="world">The game world instance, providing access to entities and components.</param>
     /// <param name="hitEntity">The entity representing the wagon slot where the card is to be applied.</param>
     /// <param name="cardType">The type of the wagon card being applied.</param>
-    private static void ApplyCardToWagon(World world, Entity hitEntity, WagonType cardType) {
-        if (!world.IsAlive(hitEntity)) { return; }
+    /// <returns>True if the card was successfully applied, false otherwise.</returns>
+    private static bool ApplyCardToWagon(World world, Entity hitEntity, WagonType cardType) {
+        if (!world.IsAlive(hitEntity)) { return false; }
 
         ref WagonSlotComponent hitSlot = ref world.Get<WagonSlotComponent>(hitEntity);
         Entity topEntity = hitEntity;
@@ -365,20 +367,24 @@ public class ConstructionSystem : ISystem {
         }
 
         WagonType topType = world.Get<WagonTypeComponent>(topEntity).Type;
-        if (topType == WagonType.Locomotive) { return; }
+        if (topType == WagonType.Locomotive) { return false; }
 
         if (topType == cardType) {
             ref HealthComponent health = ref world.Get<HealthComponent>(topEntity);
             health.Max += 50f;
             health.Current += 50f;
 
-            if (cardType != WagonType.Combat || !world.Has<TurretComponent>(topEntity)) { return; }
+            if (cardType == WagonType.Combat && world.Has<TurretComponent>(topEntity)) {
+                ref TurretComponent turret = ref world.Get<TurretComponent>(topEntity);
+                turret.Damage += 10f;
+                turret.FireRate += 3f;
+            }
 
-            ref TurretComponent turret = ref world.Get<TurretComponent>(topEntity);
-            turret.Damage += 10f;
-            turret.FireRate += 3f;
+            return true;
         }
-        else { CreateNewWagon(world, hitSlot.SlotIndex, highestLayer + 1, cardType); }
+
+        CreateNewWagon(world, hitSlot.SlotIndex, highestLayer + 1, cardType);
+        return true;
     }
 
     /// <summary>

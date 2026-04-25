@@ -30,17 +30,103 @@ public partial class MapOverlay : Control {
     /// Color used for rendering the rail lines on the map overlay.
     /// </summary>
     /// <remarks>
-    /// Defines the visual appearance (color and opacity) of rail paths in the UI.
+    /// Defines the visual appearance of rail paths in the UI.
     /// </remarks>
     private readonly Color _railColor = new(0.5f, 0.5f, 0.5f);
 
-    private readonly Color _cityColor = new(0.2f, 0.6f, 1.0f);
-    private readonly Color _dangerColor = new(1.0f, 0.3f, 0.3f);
+    /// <summary>
+    /// Color used for rendering combat-type nodes on the map overlay.
+    /// </summary>
+    /// <remarks>
+    /// Red-tinted color to visually distinguish combat encounters.
+    /// </remarks>
+    private readonly Color _combatColor = new(1.0f, 0.3f, 0.3f);
+
+    /// <summary>
+    /// Color used for rendering event-type nodes on the map overlay.
+    /// </summary>
+    /// <remarks>
+    /// Green-tinted color to visually distinguish event nodes.
+    /// </remarks>
+    private readonly Color _eventColor = new(0.3f, 1.0f, 0.3f);
+
+    /// <summary>
+    /// Color used for rendering scavenge-type nodes on the map overlay.
+    /// </summary>
+    /// <remarks>
+    /// Blue-tinted color to visually distinguish scavenging locations.
+    /// </remarks>
+    private readonly Color _scavengeColor = new(0.3f, 0.5f, 1.0f);
+
+    /// <summary>
+    /// Color used to visually distinguish safe city locations on the map overlay.
+    /// </summary>
+    private readonly Color _cityColor = new(1.0f, 0.8f, 0.2f); // Yellow
+
+    /// <summary>
+    /// Color used to visually distinguish trader nodes on the map overlay.
+    /// </summary>
+    private readonly Color _traderColor = new(0.7f, 0.3f, 1.0f); // Purple
+
+    /// <summary>
+    /// Color used to visually distinguish the final gate node on the map overlay.
+    /// </summary>
+    private readonly Color _gateColor = new(1.0f, 1.0f, 1.0f); // White
+
+    /// <summary>
+    /// Default color used for rendering nodes that don't match specific types.
+    /// </summary>
+    /// <remarks>
+    /// Neutral gray color for generic or undefined node types.
+    /// </remarks>
+    private readonly Color _defaultColor = new(0.7f, 0.7f, 0.7f);
+
+    /// <summary>
+    /// Color used for rendering the player's train on the map overlay.
+    /// </summary>
+    /// <remarks>
+    /// Pure white color to make the train highly visible against the map.
+    /// </remarks>
     private readonly Color _trainColor = Colors.White;
+
+    /// <summary>
+    /// Background color for the entire map overlay.
+    /// </summary>
+    /// <remarks>
+    /// Nearly opaque black to provide contrast for map elements while maintaining slight transparency.
+    /// </remarks>
     private readonly Color _backgroundColor = new(0, 0, 0, 0.85f);
+
+    /// <summary>
+    /// Color used for rendering debug click visualization markers.
+    /// </summary>
+    /// <remarks>
+    /// Pink-tinted color to make debug click points easily identifiable.
+    /// </remarks>
     private readonly Color _debugClickColor = new(1.0f, 0.4f, 0.7f);
+
+    /// <summary>
+    /// Collection of recent click positions with timestamps for debug visualization.
+    /// </summary>
+    /// <remarks>
+    /// Stores up to 100 recent clicks, automatically removing those older than 5 seconds.
+    /// </remarks>
     private readonly List<(Vector2 Position, ulong Time)> _debugClicks = [];
+
+    /// <summary>
+    /// Current mouse position tracked for debug visualization.
+    /// </summary>
+    /// <remarks>
+    /// Updated during input events to display mouse location on the overlay.
+    /// </remarks>
     private Vector2 _debugMousePos = Vector2.Zero;
+
+    /// <summary>
+    /// Label control used to display debug information on the map overlay.
+    /// </summary>
+    /// <remarks>
+    /// Shows real-time debug data including mouse position, overlay state, and UI interactions.
+    /// </remarks>
     private Label _debugLabel;
 
     /// <summary>
@@ -117,7 +203,6 @@ public partial class MapOverlay : Control {
             }
         }
 
-        // Clean up old debug clicks (keep for 5 seconds)
         ulong now = Time.GetTicksMsec();
         _debugClicks.RemoveAll(c => now - c.Time > 5000);
 
@@ -293,7 +378,15 @@ public partial class MapOverlay : Control {
 
         foreach (MapNode node in map.AllNodes.Values) {
             Vector2 nodeGuiPosition = node.Position * currentScale + centerOffset;
-            Color baseColor = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
+            Color baseColor = node.Type switch {
+                NodeType.Combat => _combatColor,
+                NodeType.Event => _eventColor,
+                NodeType.Scavenge => _scavengeColor,
+                NodeType.City => _cityColor,
+                NodeType.Trader => _traderColor,
+                NodeType.Gate => _gateColor,
+                _ => _defaultColor
+            };
 
             DrawCircle(nodeGuiPosition, 6f, baseColor);
 

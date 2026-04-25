@@ -6,6 +6,7 @@ using IronStrata.Scripts.Components.Map;
 using IronStrata.Scripts.Components.Render;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
+using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 using IronStrata.Scripts.Registry;
@@ -37,12 +38,11 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
             if (world.Has<LocationComponent>(entity)) {
                 ref LocationComponent location = ref world.Get<LocationComponent>(entity);
                 ref MapComponent map = ref world.Get<MapComponent>(entity);
-                
+
                 if (!location.IsInTransit) {
                     if (map.AllNodes.TryGetValue(location.CurrentNodeId, out MapNode currentNode)) {
-                        if ((currentNode.Type == NodeType.Combat || currentNode.Type == NodeType.Scavenge) && currentNode.Layer > 0) {
-                            shouldSpawn = true;
-                        }
+                        if (currentNode.Type is NodeType.Combat or NodeType.Scavenge &&
+                            currentNode.Layer > 0) { shouldSpawn = true; }
                     }
                 }
             }
@@ -53,7 +53,9 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
             if (_hordeTimer >= _hordeSpawnInterval) {
                 _hordeTimer = 0f;
                 foreach (HordeSpawnRule rule in EnemyRegistry.SpawnRules) {
-                    if (GD.Randf() <= rule.Chance) { SpawnHorde(world, rule.Count, rule.Type); }
+                    if (!(GD.Randf() <= rule.Chance)) { continue; }
+                    GD.Print($"[EnemySystem] Spawning {rule.Count} x {rule.Type}");
+                    SpawnHorde(world, rule.Count, rule.Type);
                 }
             }
         }
@@ -64,9 +66,21 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
 
         List<Entity> allEnemies = [.. world.Query<EnemyComponent, PositionComponent>()];
 
-        foreach (Entity entity in world.Query<EnemyComponent, PositionComponent, MovementComponent>()) {
-            ref EnemyComponent enemy = ref world.Get<EnemyComponent>(entity);
+        const float despawnDistance = 1500.0f;
+
+        List<Entity> enemyEntities = [.. world.Query<EnemyComponent, PositionComponent, MovementComponent>()];
+        foreach (Entity entity in enemyEntities) {
+            if (!world.IsAlive(entity)) { continue; }
+
             ref PositionComponent positionComponent = ref world.Get<PositionComponent>(entity);
+            float distanceToTrain = positionComponent.Value.DistanceTo(trainRoot.GlobalPosition);
+
+            if (distanceToTrain > despawnDistance) {
+                world.DestroyEntity(entity);
+                continue;
+            }
+
+            ref EnemyComponent enemy = ref world.Get<EnemyComponent>(entity);
             ref MovementComponent movementComponent = ref world.Get<MovementComponent>(entity);
             bool needsNewTarget = enemy.CurrentTarget.Match(target => !world.IsAlive(target), () => true);
             if (needsNewTarget) { enemy.CurrentTarget = FindBestTarget(enemy.Type, wagons, world); }
@@ -75,9 +89,10 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
 
             Entity target = enemy.CurrentTarget.Unwrap();
             ref WagonSlotComponent wagonSlotComponent = ref world.Get<WagonSlotComponent>(target);
-            const float wagonSize = 5f;
             const float wagonPhysicalRadius = 4.0f;
-            Vector3 targetGlobalPosition = trainRoot.GlobalPosition + new Vector3(-wagonSlotComponent.SlotIndex * wagonSize, 2.0f, 0);
+            Vector3 targetGlobalPosition = trainRoot.ToGlobal(
+                TrainLayout.GetLocalPosition(wagonSlotComponent.SlotIndex, wagonSlotComponent.Layer) + new Vector3(0, 2f, 0)
+            );
             float distanceToTargetCenter = positionComponent.Value.DistanceTo(targetGlobalPosition);
             if (distanceToTargetCenter <= enemy.AttackRange + wagonPhysicalRadius) {
                 enemy.AttackTimer -= (float)delta;
@@ -107,7 +122,9 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
 
                 foreach (Entity wagon in wagons) {
                     ref WagonSlotComponent wagonSlot = ref world.Get<WagonSlotComponent>(wagon);
-                    Vector3 wagonPosition = trainRoot.GlobalPosition + new Vector3(-wagonSlot.SlotIndex * wagonSize, 2.0f, 0);
+                    Vector3 wagonPosition = trainRoot.ToGlobal(
+                        TrainLayout.GetLocalPosition(wagonSlot.SlotIndex, wagonSlot.Layer)
+                    );
                     float distanceToWagon = positionComponent.Value.DistanceTo(wagonPosition);
                     if (!(distanceToWagon < wagonPhysicalRadius + 0.5f)) { continue; }
 
@@ -125,9 +142,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
                 if (movementComponent.IsFlying) { continue; }
 
                 positionComponent.Value.Y -= 9.81f * (float)delta;
-                if (positionComponent.Value.Y < 0) {
-                    positionComponent.Value.Y = 0;
-                }
+                if (positionComponent.Value.Y < 0) { positionComponent.Value.Y = 0; }
             }
         }
     }
@@ -150,7 +165,9 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
             if (!world.IsAlive(wagonEntity)) { continue; }
 
             ref WagonSlotComponent wagonSlot = ref world.Get<WagonSlotComponent>(wagonEntity);
-            if (wagonSlot.SlotIndex == hitSlot.SlotIndex && wagonSlot.Layer >= hitSlot.Layer) { DestroyWagon(world, wagonEntity); }
+            if (wagonSlot.SlotIndex == hitSlot.SlotIndex && wagonSlot.Layer >= hitSlot.Layer) {
+                DestroyWagon(world, wagonEntity);
+            }
             else if (wagonSlot.SlotIndex > hitSlot.SlotIndex) { AbandonWagon(world, wagonEntity, trainRoot); }
         }
     }
@@ -162,7 +179,10 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
     /// <param name="world">The game world containing the entity and its associated components.</param>
     /// <param name="wagonEntity">The wagon entity to be destroyed.</param>
     private static void DestroyWagon(World world, Entity wagonEntity) {
-        if (world.Has<RenderableComponent>(wagonEntity)) { world.Get<RenderableComponent>(wagonEntity).Node?.QueueFree(); }
+        if (world.Has<RenderableComponent>(wagonEntity)) {
+            world.Get<RenderableComponent>(wagonEntity).Node?.QueueFree();
+        }
+
         world.DestroyEntity(wagonEntity);
     }
 
@@ -244,6 +264,7 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
                         default:
                             throw new ArgumentOutOfRangeException(nameof(enemyType));
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(enemyType), enemyType, null);
@@ -296,8 +317,16 @@ public class EnemySystem(Node3D trainRoot) : ISystem {
             );
 
             world.Add(enemyEntity, new PositionComponent { Value = hordeEpicenter + randomOffset });
-            world.Add(enemyEntity, new MovementComponent { Speed = enemyDefinition.Speed + GD.Randf() * 2f, IsFlying = enemyDefinition.IsFlying });
-            world.Add(enemyEntity, new HealthComponent { Max = enemyDefinition.Health, Current = enemyDefinition.Health });
+            world.Add(
+                enemyEntity,
+                new MovementComponent {
+                    Speed = enemyDefinition.Speed + GD.Randf() * 2f,
+                    IsFlying = enemyDefinition.IsFlying
+                }
+            );
+            world.Add(
+                enemyEntity, new HealthComponent { Max = enemyDefinition.Health, Current = enemyDefinition.Health }
+            );
             world.Add(
                 enemyEntity,
                 new EnemyComponent {

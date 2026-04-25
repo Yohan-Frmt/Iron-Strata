@@ -32,7 +32,7 @@ public partial class CardUi : Control {
     internal static bool IsAnyCardDragged;
 
     /// <summary>
-    /// Indicates whether the card is currently being dragged by the player during a drag-and-drop interaction.
+    /// Indicates whether the player is currently dragging the card during a drag-and-drop interaction.
     /// Used to modify visual properties and handle positional updates while the card is being manipulated.
     /// </summary>
     private bool _isDragging;
@@ -113,6 +113,12 @@ public partial class CardUi : Control {
     }
 
     /// <summary>
+    /// Stores the offset between the mouse click position and the card's top-left corner.
+    /// Used to keep the card exactly under the mouse during drag.
+    /// </summary>
+    private Vector2 _dragOffset;
+
+    /// <summary>
     /// Handles user input specific to the card UI, including drag-and-drop interactions and card play attempts.
     /// Processes mouse button clicks and movements to manage dragging state, visual feedback, and card placement logic.
     /// </summary>
@@ -130,6 +136,7 @@ public partial class CardUi : Control {
                     _isDragging = true;
                     IsAnyCardDragged = true;
                     _startPosition = GlobalPosition;
+                    _dragOffset = GetGlobalMousePosition() - GlobalPosition;
                     TopLevel = true;
                     ZIndex = 100;
                     Modulate = new Color(1f, 1f, 1f, 0.4f);
@@ -153,7 +160,7 @@ public partial class CardUi : Control {
                 break;
 
             case InputEventMouseMotion mouseMotion when _isDragging:
-                GlobalPosition += mouseMotion.Relative;
+                GlobalPosition = GetGlobalMousePosition() - _dragOffset;
                 main?.UpdatePreview(TypeToApply, GetGlobalMousePosition());
                 break;
         }

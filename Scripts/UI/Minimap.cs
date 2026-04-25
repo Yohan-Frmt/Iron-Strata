@@ -28,22 +28,39 @@ public partial class Minimap : Control {
     private readonly Color _railColor = new(0.5f, 0.5f, 0.5f);
 
     /// <summary>
-    /// Represents the color used to visually distinguish city nodes on the minimap.
+    /// Color used to visually distinguish combat nodes on the minimap.
     /// </summary>
-    /// <remarks>
-    /// This color is applied when rendering city nodes to differentiate them from other node types,
-    /// enhancing readability and aiding in navigation.
-    /// </remarks>
-    private readonly Color _cityColor = new(0.2f, 0.6f, 1.0f);
+    private readonly Color _combatColor = new(1.0f, 0.3f, 0.3f);
 
     /// <summary>
-    /// Color used to represent dangerous or combat-related nodes on the minimap.
+    /// Color used to visually distinguish event nodes on the minimap.
     /// </summary>
-    /// <remarks>
-    /// This color is applied when visualizing nodes of type <c>Combat</c> in the Minimap,
-    /// helping to differentiate them from other node types such as cities.
-    /// </remarks>
-    private readonly Color _dangerColor = new(1.0f, 0.3f, 0.3f);
+    private readonly Color _eventColor = new(0.3f, 1.0f, 0.3f);
+
+    /// <summary>
+    /// Color used to visually distinguish scavenge nodes on the minimap.
+    /// </summary>
+    private readonly Color _scavengeColor = new(0.3f, 0.5f, 1.0f);
+
+    /// <summary>
+    /// Color used to visually distinguish safe city locations on the minimap.
+    /// </summary>
+    private readonly Color _cityColor = new(1.0f, 0.8f, 0.2f); // Yellow
+
+    /// <summary>
+    /// Color used to visually distinguish trader nodes on the minimap.
+    /// </summary>
+    private readonly Color _traderColor = new(0.7f, 0.3f, 1.0f); // Purple
+
+    /// <summary>
+    /// Color used to visually distinguish the final gate node on the minimap.
+    /// </summary>
+    private readonly Color _gateColor = new(1.0f, 1.0f, 1.0f); // White
+
+    /// <summary>
+    /// Default color applied to any other map nodes that do not have a specific color assigned.
+    /// </summary>
+    private readonly Color _defaultColor = new(0.7f, 0.7f, 0.7f);
 
     /// <summary>
     /// Color used to represent the train on the minimap visualization.
@@ -162,7 +179,15 @@ public partial class Minimap : Control {
             }
 
             float alpha = Mathf.Clamp(1.0f - distance / _revealRadius, 0.2f, 1.0f);
-            Color baseColor = node.Type == NodeType.Combat ? _dangerColor : _cityColor;
+            Color baseColor = node.Type switch {
+                NodeType.Combat => _combatColor,
+                NodeType.Event => _eventColor,
+                NodeType.Scavenge => _scavengeColor,
+                NodeType.City => _cityColor,
+                NodeType.Trader => _traderColor,
+                NodeType.Gate => _gateColor,
+                _ => _defaultColor
+            };
             Color colorWithFog = new(baseColor.R, baseColor.G, baseColor.B, alpha);
 
             DrawCircle(nodeGuiPosition, 4f, colorWithFog);

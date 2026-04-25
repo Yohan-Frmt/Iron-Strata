@@ -240,7 +240,8 @@ public static class EnemyRegistry {
             label: "Safeguard",
             scale: new Vector3(0.02f, 0.02f, 0.02f),
             tint: new Color(0.2f, 0.05f, 0.05f),
-            modelPath: "res://Resources/Assets/Models/Safeguard.obj"
+            modelPath: "res://Resources/Assets/Models/Safeguard.obj",
+            dispersionRadius: 20f
         ),
 
         [EnemyType.Wasp] = new EnemyDefinition(
@@ -254,7 +255,8 @@ public static class EnemyRegistry {
             tint: new Color(0.2f, 0.05f, 0.05f),
             label: "Wasp",
             modelPath: "res://Resources/Assets/Models/Wasp.obj",
-            isFlying: true
+            isFlying: true,
+            dispersionRadius: 30f
         )
     };
 
@@ -278,10 +280,11 @@ public static class EnemyRegistry {
     /// <remarks>
     /// This list contains predefined spawn configurations where each rule specifies
     /// the enemy type, the number of enemies to spawn, and the probability of spawning.
-    /// It is utilized by the game system to dynamically populate enemies during gameplay.
+    /// It is used by the game system to dynamically populate enemies during gameplay.
     /// </remarks>
     public static readonly List<HordeSpawnRule> SpawnRules = [
-        new(type: EnemyType.Crawler, count: 20, chance: 1f), new(type: EnemyType.Safeguard, count: 10, chance: 0.2f),
-        new(type: EnemyType.Wasp, count: 20, chance: 0.5f)
+        new(type: EnemyType.Crawler, count: 5, chance: 1f),
+        new(type: EnemyType.Safeguard, count: 1, chance: 0.2f),
+        new(type: EnemyType.Wasp, count: 2, chance: 0.5f)
     ];
 }

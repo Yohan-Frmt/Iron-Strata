@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using IronStrata.Scripts.Components.Camera;
@@ -90,8 +91,10 @@ public partial class Main : Node3D {
 
         Node3D trainRoot = new() { Name = "TrainRoot" };
         Node3D enemyRoot = new() { Name = "EnemyRoot" };
+        Node3D mapRoot = new() { Name = "MapRoot" };
         AddChild(trainRoot);
         AddChild(enemyRoot);
+        AddChild(mapRoot);
 
         SpotLight3D headlight = new() {
             Position = new Vector3(0f, 3f, 0f),
@@ -112,7 +115,7 @@ public partial class Main : Node3D {
             CollisionMask = 2
         };
 
-        Camera3D camera = new() { ProcessMode = ProcessModeEnum.Always };
+        Camera3D camera = new() { Far = 2000f, ProcessMode = ProcessModeEnum.Always };
         trainRoot.AddChild(springArm);
         springArm.AddChild(camera);
         camera.MakeCurrent();
@@ -124,17 +127,19 @@ public partial class Main : Node3D {
             new CameraComponent { SpringArm = springArm, Camera = camera, TargetRotation = springArm.Rotation }
         );
 
-        MeshInstance3D floor = new() { Name = "Floor", Mesh = new PlaneMesh { Size = new Vector2(10000f, 10000f) } };
+        MeshInstance3D floor = new() { Name = "Floor", Mesh = new PlaneMesh { Size = new Vector2(50000f, 50000f) } };
         floor.SetSurfaceOverrideMaterial(0, new StandardMaterial3D { AlbedoColor = new Color(0.15f, 0.15f, 0.18f) });
 
         StaticBody3D floorBody = new() { Name = "FloorBody" };
+        floorBody.SetMeta("IsFloor", true);
         CollisionShape3D floorShape = new() {
-            Shape = new BoxShape3D { Size = new Vector3(2000f, 1f, 2000f) },
+            Shape = new BoxShape3D { Size = new Vector3(50000f, 1f, 50000f) },
             Position = new Vector3(0, -0.5f, 0)
         };
         floorBody.AddChild(floorShape);
         floor.AddChild(floorBody);
-        AddChild(floor);
+        trainRoot.AddChild(floor);
+        floor.Position = new Vector3(0, -1.6f, 0);
 
         CanvasLayer hud = new() { Name = "HUD", Layer = 1 };
         AddChild(hud);
@@ -243,14 +248,14 @@ public partial class Main : Node3D {
 
         GameWorld.Instance.Runner
             .Add(new TrainMovementSystem(speedLabel))
-            .Add(new RailLightSystem(_worldRoot))
+            // .Add(new RailLightSystem(_worldRoot))
             .Add(new FogSystem(environmentNode))
             .Add(_cameraSystem)
             .Add(_pauseSystem)
             .Add(new InputSystem())
             .Add(new WagonConnectionSystem())
             .Add(new MapSystem(trainRoot))
-            .Add(new MapRenderSystem(floor))
+            .Add(new MapRenderSystem(mapRoot))
             .Add(new EnemySystem(trainRoot))
             .Add(new TurretSystem(trainRoot))
             .Add(new ResourceSystem(scrapLabel, drawButton))

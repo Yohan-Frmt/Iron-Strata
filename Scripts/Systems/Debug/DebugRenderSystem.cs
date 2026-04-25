@@ -2,6 +2,7 @@ using Godot;
 using IronStrata.Scripts.Components.Character;
 using IronStrata.Scripts.Components.Shared;
 using IronStrata.Scripts.Components.Train;
+using IronStrata.Scripts.Core.Constants;
 using IronStrata.Scripts.Core.ECS;
 using IronStrata.Scripts.Core.Types;
 
@@ -79,10 +80,9 @@ public class DebugRenderSystem : ISystem {
             if (slotOption.IsNone) { continue; }
 
             WagonSlotComponent wagonSlotComponent = slotOption.Unwrap();
-            int slotIndex = wagonSlotComponent.SlotIndex;
-            const float wagonSize = 5f;
-            Vector3 targetLocalPosition = new(-slotIndex * wagonSize, 0, 0);
-            Vector3 targetGlobalPosition = _trainRoot.GlobalPosition + targetLocalPosition;
+            Vector3 targetGlobalPosition = _trainRoot.ToGlobal(
+                TrainLayout.GetLocalPosition(wagonSlotComponent.SlotIndex, wagonSlotComponent.Layer) + new Vector3(0, 2f, 0)
+            );
             DrawLine3D(positionComponent.Value, targetGlobalPosition, new Color(1f, 0.5f, 0f, 0.8f));
         }
 
@@ -90,9 +90,9 @@ public class DebugRenderSystem : ISystem {
             ref readonly WagonSlotComponent wagonSlotComponent = ref world.Get<WagonSlotComponent>(entity);
             ref readonly TurretComponent weapon = ref world.Get<TurretComponent>(entity);
 
-            Vector3 targetLocalPosition = new(-wagonSlotComponent.SlotIndex * 5f, 0, 0);
-            Vector3 wagonGlobalPosition = _trainRoot.GlobalPosition + targetLocalPosition;
-
+            Vector3 wagonGlobalPosition = _trainRoot.ToGlobal(
+                TrainLayout.GetLocalPosition(wagonSlotComponent.SlotIndex, wagonSlotComponent.Layer) + new Vector3(0, 2f, 0)
+            );
             DrawCircle3D(wagonGlobalPosition, weapon.Range, new Color(0f, 0.5f, 1f, 0.5f));
         }
 

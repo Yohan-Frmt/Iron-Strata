@@ -35,7 +35,7 @@ public struct TrainMovementComponent() {
     /// This value is used during deceleration phases to calculate the gradual decrease in speed,
     /// ensuring smooth and realistic braking behavior.
     /// </summary>
-    public float Deceleration = 220f;
+    public float Deceleration = 2200f;
 
     /// <summary>
     /// Represents the total distance traveled by the train, measured in units.

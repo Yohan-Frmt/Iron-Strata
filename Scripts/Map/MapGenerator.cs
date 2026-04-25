@@ -137,7 +137,7 @@ public class MapGenerator {
     private static NodeType DetermineNodeType(int layer) {
         switch (layer) {
             case 0:
-                return NodeType.City;
+                return NodeType.Gate;
             case _totalLayers - 1:
                 return NodeType.Gate;
             case _totalLayers / 2:

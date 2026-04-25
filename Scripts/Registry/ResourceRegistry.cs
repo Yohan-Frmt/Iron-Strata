@@ -30,5 +30,5 @@ public static class ResourceRegistry {
     /// Represents the initial amount of scrap resources available in the system.
     /// This is used as the starting value for tracking scrap resource availability.
     /// </summary>
-    public const int StartingScrap = 0;
+    public const int StartingScrap = 250;
 }

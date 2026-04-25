@@ -98,5 +98,5 @@ public class MapSystem(Node3D trainRoot) : ISystem {
     /// </summary>
     /// <param name="type">The type of the node to evaluate.</param>
     /// <returns>True if the node is safe; otherwise, false.</returns>
-    private static bool IsSafeNode(NodeType type) => type is NodeType.City or NodeType.Trader;
+    private static bool IsSafeNode(NodeType type) => type is NodeType.Gate or NodeType.Trader;
 }

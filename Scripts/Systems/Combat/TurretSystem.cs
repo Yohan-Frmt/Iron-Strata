@@ -28,7 +28,7 @@ public class TurretSystem(Node3D trainRoot) : ISystem {
             if (turret.Cooldown > 0) { continue; }
 
             Vector3 localPos = TrainLayout.GetLocalPosition(slot.SlotIndex, slot.Layer);
-            Vector3 turretGlobalPos = trainRoot.GlobalPosition + localPos + new Vector3(0, 2f, 0);
+            Vector3 turretGlobalPos = trainRoot.ToGlobal(localPos + new Vector3(0, 2f, 0));
 
             Option<Entity> closestEnemy = Option<Entity>.None;
             float minDistanceSq = turret.Range * turret.Range;
