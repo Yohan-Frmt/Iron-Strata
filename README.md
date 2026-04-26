@@ -1,6 +1,6 @@
 # Iron Strata
 
-Iron Strata is a high-stakes survival roguelike set within a boundless, brutalist world of infinite concrete and forgotten machinery. Players command The Strata—a moving fortress that serves as the last functioning ecosystem for the remnants of humanity. Every run is a journey through procedurally generated tunnels, hostile silicon-based lifeforms, and the crushing indifference of an architecture that has outlived its purpose.
+Iron Strata is a high-stakes survival roguelike set within a boundless, brutalist world of infinite concrete and forgotten machinery. Players command The Strata, a moving fortress that serves as the last functioning ecosystem for the remnants of humanity. Every run is a journey through procedurally generated tunnels, hostile silicon-based lifeforms, and the crushing indifference of an architecture that has outlived its purpose.
 
 The game combines the spatial strategy of a deckbuilder, the tension of tower defense, and the emotional depth of a colony management simulator.
 
@@ -24,7 +24,7 @@ Every passenger is a unique individual with a name, history, specialty, and stre
 *   **Stakes:** Loss is permanent. The systems are designed to foster attachment, making the survival of every crew member a critical priority.
 
 ### III. The Brutalist Odyssey (Atmosphere)
-Inspired by the works of Tsutomu Nihei (BLAME!), the game focuses on scale incongruity—the contrast between fragile humanity and the gargantuan, raw concrete architecture of the Megastructure.
+Inspired by the works of Tsutomu Nihei (BLAME!), the game focuses on scale incongruity, the contrast between fragile humanity and the gargantuan, raw concrete architecture of the Megastructure.
 
 ## Key Systems
 
